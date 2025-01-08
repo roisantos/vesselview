@@ -1,0 +1,51 @@
+{
+    "models": {
+        "FRNet-base": {
+            "type": "FRNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "cls_init_block": "ResidualBlock",
+            "cls_conv_block": "ResidualBlock"
+        },
+        "FRNet": {
+            "type": "FRNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "cls_init_block": "RRCNNBlock",
+            "cls_conv_block": "RecurrentConvNeXtBlock"
+        }
+    },
+    "datasets": {
+        "FIVES512": {
+            "paths": {
+                "train": "dataset/FIVES512/train",
+                "val": "dataset/FIVES512/val",
+                "test": "dataset/FIVES512/test"
+            },
+            "preprocessing": {
+                "start": 0,
+                "end": 1
+            }
+        },
+        "FIVES1024": {
+            "paths": {
+                "train": "dataset/FIVES1024/train",
+                "val": "dataset/FIVES1024/val",
+                "test": "dataset/FIVES1024/test"
+            },
+            "preprocessing": {
+                "start": 0,
+                "end": 1
+            }
+        }
+    },
+    "training": {
+        "epochs": 300,
+        "accumulation_steps": 4,        
+        "mixed_precision": true,        
+        "early_stopping_threshold": 100,
+        "learning_rate": 1e-4,
+        "weight_decay": 0.001,
+        "batch_size":4
+    }
+}

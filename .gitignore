@@ -1,0 +1,13 @@
+log
+inference_results
+inference_results_test
+Test_set
+test_runs
+torch
+dataset
+tfg
+log
+__pycache__
+test_runs
+runs
+venv
