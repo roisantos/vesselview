@@ -29,6 +29,11 @@ models = {
     )),
     
     
+    "RoiNet": ObjectCreator(cls=RoiNet, args=dict(
+        ch_in=1, ch_out=1, ls_mid_ch=[32, 64, 128, 128, 64, 32], out_k_size=11,
+        k_size=3, cls_init_block=ResidualBlock, cls_conv_block=ResidualBlock
+    )),
+    
     "FRNet": ObjectCreator(cls=FRNet, args=dict(
         ch_in=1, ch_out=1, cls_init_block=RRCNNBlock, cls_conv_block=RecurrentConvNeXtBlock
     )),

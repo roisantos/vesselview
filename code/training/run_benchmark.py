@@ -21,6 +21,7 @@ from utils.utils import *
 #from config.settings_benchmark import models  # Assuming `models` is a dictionary with available models
 from models.common import *
 from models.frnet import * 
+from models.roinet import * 
 
 # Initialize SummaryWriter for TensorBoard
 writer = SummaryWriter()
@@ -63,8 +64,8 @@ def load_models_from_json(config_path):
 
     models = {}
     for name, model_config in config["models"].items():
-        if model_config["type"] == "FRNet":
-            models[name] = lambda: FRNet(
+        if model_config["type"] == "RoiNet":
+            models[name] = lambda: RoiNet(
                 ch_in=model_config.get("ch_in", 1),
                 ch_out=model_config.get("ch_out", 1),
                 cls_init_block=eval(model_config.get("cls_init_block", "ResidualBlock")),
