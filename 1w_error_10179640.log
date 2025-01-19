@@ -1,0 +1,79 @@
+cesga/2020 unloaded
+        Preparing the environment for use of the CESGA 2020 software stack.
+        Please rebuild modules cache: module --ignore-cache avail
+     
+cesga/2020 loaded
+python/3.9.9 loaded
+jupyter-server/1.13.5-python-3.9.9 loaded
+jupyterlab/3.2.4-python-3.9.9 loaded
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.0.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/./code/training/run_benchmark.py", line 19, in <module>
+    from ds.dataset import prepare_datasets_from_json
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/ds/dataset.py", line 17, in <module>
+    from models.common import *
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/models/common.py", line 4, in <module>
+    from timm.layers import  DropPath
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/timm/__init__.py", line 2, in <module>
+    from .layers import is_scriptable, is_exportable, set_scriptable, set_exportable
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/timm/layers/__init__.py", line 8, in <module>
+    from .classifier import create_classifier, ClassifierHead, NormMlpClassifierHead, ClNormMlpClassifierHead
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/timm/layers/classifier.py", line 15, in <module>
+    from .create_norm import get_norm_layer
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/timm/layers/create_norm.py", line 14, in <module>
+    from torchvision.ops.misc import FrozenBatchNorm2d
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/__init__.py", line 5, in <module>
+    from torchvision import datasets, io, models, ops, transforms, utils
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/__init__.py", line 17, in <module>
+    from . import detection, optical_flow, quantization, segmentation, video
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/detection/__init__.py", line 1, in <module>
+    from .faster_rcnn import *
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/detection/faster_rcnn.py", line 16, in <module>
+    from .anchor_utils import AnchorGenerator
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/detection/anchor_utils.py", line 10, in <module>
+    class AnchorGenerator(nn.Module):
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/detection/anchor_utils.py", line 63, in AnchorGenerator
+    device: torch.device = torch.device("cpu"),
+/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torchvision/models/detection/anchor_utils.py:63: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:77.)
+  device: torch.device = torch.device("cpu"),
+  0%|          | 0/600 [00:00<?, ?batch/s]  0%|          | 0/600 [00:00<?, ?batch/s]
+Traceback (most recent call last):
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/./code/training/run_benchmark.py", line 306, in <module>
+    train_and_evaluate(name_model, dataset, config, logging_enabled=logging_enabled)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/./code/training/run_benchmark.py", line 149, in train_and_evaluate
+    result_train = traverseDataset(
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/utils/utils.py", line 124, in traverseDataset
+    for i, (name, data, label) in enumerate(tepoch):
+  File "/opt/cesga/2020/software/Core/python/3.9.9/lib/python3.9/site-packages/tqdm/std.py", line 1180, in __iter__
+    for obj in iterable:
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 628, in __next__
+    data = self._next_data()
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 671, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 61, in fetch
+    return self.collate_fn(data)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/./code/training/run_benchmark.py", line 73, in custom_collate
+    collated_batch = default_collate(batch)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 265, in default_collate
+    return collate(batch, collate_fn_map=default_collate_fn_map)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 143, in collate
+    return [collate(samples, collate_fn_map=collate_fn_map) for samples in transposed]  # Backwards compatibility.
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 143, in <listcomp>
+    return [collate(samples, collate_fn_map=collate_fn_map) for samples in transposed]  # Backwards compatibility.
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 120, in collate
+    return collate_fn_map[elem_type](batch, collate_fn_map=collate_fn_map)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 172, in collate_numpy_array_fn
+    return collate([torch.as_tensor(b) for b in batch], collate_fn_map=collate_fn_map)
+  File "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/vroi/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 172, in <listcomp>
+    return collate([torch.as_tensor(b) for b in batch], collate_fn_map=collate_fn_map)
+RuntimeError: Could not infer dtype of numpy.float32
+srun: error: a100-49: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=10179640.0

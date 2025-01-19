@@ -1,0 +1,233 @@
+slurmstepd: info: Setting TMPDIR to /scratch/10179640. Previous errors about TMPDIR can be discarded
+Loaded configuration:
+{
+    "models": {
+        "FRNet": {
+            "type": "FRNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "cls_init_block": "RRCNNBlock",
+            "cls_conv_block": "RecurrentConvNeXtBlock"
+        },
+        "RoiNet": {
+            "type": "RoiNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "ls_mid_ch": [
+                32,
+                64,
+                128,
+                128,
+                64,
+                32
+            ],
+            "out_k_size": 11,
+            "k_size": 3,
+            "cls_init_block": "ResidualBlock",
+            "cls_conv_block": "ResidualBlock"
+        }
+    },
+    "datasets": {
+        "FIVES": {
+            "paths": {
+                "train": "dataset/FIVES/train",
+                "val": "dataset/FIVES/val",
+                "test": "dataset/FIVES/test"
+            },
+            "preprocessing": {
+                "start": 0,
+                "end": 1
+            }
+        }
+    },
+    "training": {
+        "epochs": 300,
+        "accumulation_steps": 1,
+        "mixed_precision": true,
+        "early_stopping_threshold": 100,
+        "num_workers": 0,
+        "learning_rate": 0.0001,
+        "weight_decay": 0.001,
+        "batch_size": 1,
+        "logging_enabled": false
+    }
+}
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train/label
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val/label
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test/label
+Testing dataset: FIVES (train split)
+Index: 0, Name: 519_N.png
+Image Path: dataset/FIVES/train/image/519_N.png, Label Path: dataset/FIVES/train/label/519_N.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 0: Name=519_N.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 1, Name: 428_G.png
+Image Path: dataset/FIVES/train/image/428_G.png, Label Path: dataset/FIVES/train/label/428_G.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 1: Name=428_G.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 2, Name: 223_D.png
+Image Path: dataset/FIVES/train/image/223_D.png, Label Path: dataset/FIVES/train/label/223_D.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 2: Name=223_D.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 3, Name: 443_G.png
+Image Path: dataset/FIVES/train/image/443_G.png, Label Path: dataset/FIVES/train/label/443_G.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 3: Name=443_G.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 4, Name: 528_N.png
+Image Path: dataset/FIVES/train/image/528_N.png, Label Path: dataset/FIVES/train/label/528_N.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 4: Name=528_N.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 5, Name: 350_G.png
+Image Path: dataset/FIVES/train/image/350_G.png, Label Path: dataset/FIVES/train/label/350_G.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 5: Name=350_G.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 6, Name: 99_A.png
+Image Path: dataset/FIVES/train/image/99_A.png, Label Path: dataset/FIVES/train/label/99_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 6: Name=99_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 7, Name: 582_N.png
+Image Path: dataset/FIVES/train/image/582_N.png, Label Path: dataset/FIVES/train/label/582_N.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 7: Name=582_N.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 8, Name: 357_G.png
+Image Path: dataset/FIVES/train/image/357_G.png, Label Path: dataset/FIVES/train/label/357_G.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 8: Name=357_G.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 9, Name: 140_A.png
+Image Path: dataset/FIVES/train/image/140_A.png, Label Path: dataset/FIVES/train/label/140_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 9: Name=140_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 10, Name: 45_A.png
+Image Path: dataset/FIVES/train/image/45_A.png, Label Path: dataset/FIVES/train/label/45_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 10: Name=45_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 11, Name: 66_A.png
+Image Path: dataset/FIVES/train/image/66_A.png, Label Path: dataset/FIVES/train/label/66_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 11: Name=66_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 12, Name: 251_D.png
+Image Path: dataset/FIVES/train/image/251_D.png, Label Path: dataset/FIVES/train/label/251_D.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 12: Name=251_D.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 13, Name: 180_D.png
+Image Path: dataset/FIVES/train/image/180_D.png, Label Path: dataset/FIVES/train/label/180_D.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 13: Name=180_D.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 14, Name: 165_D.png
+Image Path: dataset/FIVES/train/image/165_D.png, Label Path: dataset/FIVES/train/label/165_D.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 14: Name=165_D.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 15, Name: 302_G.png
+Image Path: dataset/FIVES/train/image/302_G.png, Label Path: dataset/FIVES/train/label/302_G.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 15: Name=302_G.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 16, Name: 237_D.png
+Image Path: dataset/FIVES/train/image/237_D.png, Label Path: dataset/FIVES/train/label/237_D.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 16: Name=237_D.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 17, Name: 4_A.png
+Image Path: dataset/FIVES/train/image/4_A.png, Label Path: dataset/FIVES/train/label/4_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 17: Name=4_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 18, Name: 471_N.png
+Image Path: dataset/FIVES/train/image/471_N.png, Label Path: dataset/FIVES/train/label/471_N.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 18: Name=471_N.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Index: 19, Name: 131_A.png
+Image Path: dataset/FIVES/train/image/131_A.png, Label Path: dataset/FIVES/train/label/131_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Sample 19: Name=131_A.png, Image Shape=(1, 2080, 2080), Label Shape=(1, 2080, 2080)
+Image Dtype: float32, Label Dtype: uint8
+Models: ['RoiNet']
+Datasets: ['FIVES']
+
+
+Testing Model: RoiNet
+Current Model: RoiNet with Dataset: FIVES
+
+Modelo cargado en GPU:
+- Parámetros totales: 141346
+- Memoria ocupada por modelo en GPU: 0.54 MB
+
+==== Memoria GPU - Después de cargar el modelo en GPU ====
+GPU 0 - Total: 40339.3 MB | Allocated: 0.6 MB | Cached: 2.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40339.3 MB | Allocated: 0.6 MB | Cached: 2.0 MB
+
+Index: 570, Name: 28_A.png
+Image Path: dataset/FIVES/train/image/28_A.png, Label Path: dataset/FIVES/train/label/28_A.png
+Image Shape: (2048, 2048), Label Shape: (2048, 2048)
+Preprocessed Image Shape: (1, 2080, 2080), Preprocessed Label Shape: (1, 2080, 2080)
+Raw batch contents: [('28_A.png', array([[[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]]], dtype=float32), array([[[0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        ...,
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0]]], dtype=uint8))]
+Error during collate: Could not infer dtype of numpy.float32
+Batch item 0: <class 'tuple'>, ('28_A.png', array([[[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]]], dtype=float32), array([[[0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        ...,
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0],
+        [0, 0, 0, ..., 0, 0, 0]]], dtype=uint8))
