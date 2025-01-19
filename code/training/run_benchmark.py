@@ -16,7 +16,7 @@ torch.cuda.empty_cache()
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.insert(0, ROOT_DIR)
 
-from datasets.dataset import prepareDatasets, prepare_datasets_from_json
+from ds.dataset import prepare_datasets_from_json
 from utils.utils import *
 #from config.settings_benchmark import models  # Assuming `models` is a dictionary with available models
 from models.common import *
@@ -108,11 +108,11 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
 
     # Configure DataLoaders
-    trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=64, pin_memory=True)
+    trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
     if(batch_size%2==0):
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=batch_size // 2, shuffle=True, collate_fn=custom_collate,num_workers=64, pin_memory=True)
+        valLoader = DataLoader(dataset=dataset['val'], batch_size=batch_size // 2, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
     else:
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=1, shuffle=True, collate_fn=custom_collate,num_workers=64, pin_memory=True)
+        valLoader = DataLoader(dataset=dataset['val'], batch_size=1, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
 
     testLoader = DataLoader(dataset=dataset['test'])
 

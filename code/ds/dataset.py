@@ -7,6 +7,7 @@ import json
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.insert(0, ROOT_DIR)
 
+
 import random
 import numpy as np
 from datetime import datetime
@@ -25,9 +26,9 @@ writer = SummaryWriter(log_dir=log_root)
 
 # Dataset path for FIVES512
 #path_FIVES = "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/dataset/FIVES512"
-path_FIVES = os.path.join("dataset", "FIVES512")
+path_FIVES = os.path.join("dataset", "FIVES")
 assert os.path.exists(path_FIVES), f"Dataset path does not exist: {path_FIVES}"
-path_FIVES512 = path_FIVES#os.path.join("dataset", "FIVES512")
+path_FIVES512 = os.path.join("dataset", "FIVES512")
 #assert os.path.exists(path_FIVES512), f"Dataset path does not exist: {path_FIVES512}"
 path_FIVES_1024 = os.path.join("dataset", "FIVES1024")
 #assert os.path.exists(path_FIVES_1024), f"Dataset path does not exist: {path_FIVES_1024}"

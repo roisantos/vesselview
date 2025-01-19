@@ -19,11 +19,11 @@
         }
     },
     "datasets": {
-        "FIVES512": {
+        "FIVES": {
             "paths": {
-                "train": "dataset/FIVES512/train",
-                "val": "dataset/FIVES512/val",
-                "test": "dataset/FIVES512/test"
+                "train": "dataset/FIVES/train",
+                "val": "dataset/FIVES/val",
+                "test": "dataset/FIVES/test"
             },
             "preprocessing": {
                 "start": 0,
