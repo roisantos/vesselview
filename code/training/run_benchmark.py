@@ -52,45 +52,18 @@ def select_device():
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def custom_collate(batch):
+    """Custom collate function to skip empty batches."""
     # Debugging: Log raw batch contents
-    print(f"Raw batch contents: {batch}")
+    # print(f"Raw batch contents: {batch}")
 
     # Filter out None values
     batch = [item for item in batch if item is not None]
 
-    # Check for empty batch
-    if len(batch) == 0:
-        raise ValueError("Empty batch encountered in custom_collate!")
+    # Debugging: Check if batch is empty
+    # if len(batch) == 0:
+    #     print("##### BATCH IS EMPTY #####")
 
-    # Validate batch contents
-    for i, item in enumerate(batch):
-        if not isinstance(item, (list, tuple)) or len(item) != 3:
-            print(f"Invalid batch item at index {i}: {item}")
-            raise ValueError(f"Batch item format is invalid: {item}")
-
-    # Separate names, images, and labels
-    try:
-        names = [item[0] for item in batch]  # Extract names (strings)
-        images = [item[1] for item in batch]  # Extract images (numpy arrays)
-        labels = [item[2] for item in batch]  # Extract labels (numpy arrays)
-
-        # Convert images and labels to tensors
-        images = torch.stack([torch.from_numpy(img) for img in images])  # Convert to float32 tensors
-        labels = torch.stack([torch.from_numpy(lbl) for lbl in labels])  # Convert to long tensors
-
-        # Debugging: Log shapes and data types after conversion
-        print(f"Collated Images Shape: {images.shape}, Dtype: {images.dtype}")
-        print(f"Collated Labels Shape: {labels.shape}, Dtype: {labels.dtype}")
-
-        return names, images, labels
-
-    except Exception as e:
-        # Debugging: Log error and batch contents
-        print(f"Error during collate: {e}")
-        for i, item in enumerate(batch):
-            print(f"Batch item {i}: {type(item)}, {item}")
-        raise
-
+    return None if len(batch) == 0 else default_collate(batch)
 
     
 def load_models_from_json(config_path):
