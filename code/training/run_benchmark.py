@@ -54,8 +54,8 @@ def select_device():
 def custom_collate(batch):
     """Custom collate function to skip empty batches."""
     batch = [item for item in batch if item is not None]
-    if(len(batch)==0):
-        print("#####BATCH ES 0 ######")
+    if len(batch) == 0:
+        raise ValueError("Empty batch encountered!")
     return None if len(batch) == 0 else default_collate(batch)
     
 def load_models_from_json(config_path):
