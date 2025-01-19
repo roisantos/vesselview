@@ -73,6 +73,17 @@ def prepare_datasets_from_json(config_path):
             "test": SegmentationDataset(paths["test"], **ds_config.get("preprocessing", {}))
         }
 
+        # Debugging: Test a few samples from the training dataset
+        train_dataset = datasets[name]["train"]
+        print(f"Testing dataset: {name} (train split)")
+        for i in range(20):  # Adjust the range as needed
+            try:
+                name, image, label = train_dataset[i]
+                print(f"Sample {i}: Name={name}, Image Shape={image.shape}, Label Shape={label.shape}")
+                print(f"Image Dtype: {image.dtype}, Label Dtype: {label.dtype}")
+            except Exception as e:
+                print(f"Error at index {i}: {e}")
+
     return datasets
 
 """

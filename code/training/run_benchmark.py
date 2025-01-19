@@ -52,11 +52,33 @@ def select_device():
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def custom_collate(batch):
-    """Custom collate function to skip empty batches."""
+    # Debugging: Log raw batch contents
+    print(f"Raw batch contents: {batch}")
+
+    # Filter out None values
     batch = [item for item in batch if item is not None]
+
+    # Check for empty batch
     if len(batch) == 0:
-        raise ValueError("Empty batch encountered!")
-    return None if len(batch) == 0 else default_collate(batch)
+        raise ValueError("Empty batch encountered in custom_collate!")
+
+    # Validate batch contents
+    for i, item in enumerate(batch):
+        if not isinstance(item, (list, tuple)) or len(item) != 3:
+            print(f"Invalid batch item at index {i}: {item}")
+            raise ValueError(f"Batch item format is invalid: {item}")
+
+    # Attempt to collate batch
+    try:
+        collated_batch = default_collate(batch)
+        print(f"Collated batch: {collated_batch}")
+        return collated_batch
+    except Exception as e:
+        print(f"Error during collate: {e}")
+        for i, item in enumerate(batch):
+            print(f"Batch item {i}: {type(item)}, {item}")
+        raise
+
     
 def load_models_from_json(config_path):
     with open(config_path, 'r') as f:
