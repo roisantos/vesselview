@@ -1,0 +1,81 @@
+slurmstepd: info: Setting TMPDIR to /scratch/10177997. Previous errors about TMPDIR can be discarded
+Loaded configuration:
+{
+    "models": {
+        "FRNet": {
+            "type": "FRNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "cls_init_block": "RRCNNBlock",
+            "cls_conv_block": "RecurrentConvNeXtBlock"
+        },
+        "RoiNet": {
+            "type": "RoiNet",
+            "ch_in": 1,
+            "ch_out": 1,
+            "ls_mid_ch": [
+                32,
+                64,
+                128,
+                128,
+                64,
+                32
+            ],
+            "out_k_size": 11,
+            "k_size": 3,
+            "cls_init_block": "ResidualBlock",
+            "cls_conv_block": "ResidualBlock"
+        }
+    },
+    "datasets": {
+        "FIVES": {
+            "paths": {
+                "train": "dataset/FIVES/train",
+                "val": "dataset/FIVES/val",
+                "test": "dataset/FIVES/test"
+            },
+            "preprocessing": {
+                "start": 0,
+                "end": 1
+            }
+        }
+    },
+    "training": {
+        "epochs": 300,
+        "accumulation_steps": 1,
+        "mixed_precision": true,
+        "early_stopping_threshold": 100,
+        "num_workers": 1,
+        "learning_rate": 0.0001,
+        "weight_decay": 0.001,
+        "batch_size": 1,
+        "logging_enabled": false
+    }
+}
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/train/label
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/val/label
+Absolute Dataset path: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test
+Image dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test/image
+Label dir: /mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/dataset/FIVES/test/label
+Models: ['RoiNet']
+Datasets: ['FIVES']
+
+
+Testing Model: RoiNet
+Current Model: RoiNet with Dataset: FIVES
+
+Modelo cargado en GPU:
+- Parámetros totales: 141346
+- Memoria ocupada por modelo en GPU: 0.54 MB
+
+==== Memoria GPU - Después de cargar el modelo en GPU ====
+GPU 0 - Total: 40339.3 MB | Allocated: 0.6 MB | Cached: 2.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40339.3 MB | Allocated: 0.6 MB | Cached: 2.0 MB
+
