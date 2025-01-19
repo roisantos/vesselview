@@ -157,43 +157,91 @@ class SegmentationDataset(Dataset):
     def __len__(self) -> int:
         return len(self.ls_item)
 
-    def __getitem__(self, index: int) -> Tuple[str, np.ndarray, np.ndarray]:
-        """
-        Retrieves a dataset item at the specified index.
+    # def __getitem__(self, index: int) -> Tuple[str, np.ndarray, np.ndarray]:
+    #     """
+    #     Retrieves a dataset item at the specified index.
         
-        Args:
-            index (int): Index of the item to retrieve.
+    #     Args:
+    #         index (int): Index of the item to retrieve.
             
-        Returns:
-            tuple: (name, image, label) where image and label are preprocessed numpy arrays.
-        """
-        index %= len(self)
-        item = self.ls_item[index]
+    #     Returns:
+    #         tuple: (name, image, label) where image and label are preprocessed numpy arrays.
+    #     """
+    #     index %= len(self)
+    #     item = self.ls_item[index]
 
-        # Load and preprocess image and label
-        name = item['name']
-        image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
-        label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
+    #     # Load and preprocess image and label
+    #     name = item['name']
+    #     image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
+    #     label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
 
-        # Validate that images loaded correctly
-        if image is None:
-            print(f"Error: Image failed to load at path: {item['path_image']}")
-            return None
-        if label is None:
-            print(f"Error: Label failed to load at path: {item['path_label']}")
-            return None
 
-        # Apply data augmentations with 50% probability
-        if np.random.rand() > 0.5:
-            image, label = self.apply_augmentation(image, label)
+    #     # Debugging: Print information about the loaded data
+    #     print(f"Index: {index}, Name: {name}")
+    #     print(f"Image Path: {item['path_image']}, Label Path: {item['path_label']}")
+    #     print(f"Image Shape: {None if image is None else image.shape}, Label Shape: {None if label is None else label.shape}")
 
-        # Threshold label to ensure binary values
-        _, label = cv2.threshold(label, 127, 1, cv2.THRESH_BINARY)
+    #     # Validate that images loaded correctly
+    #     if image is None:
+    #         raise ValueError(f"Image failed to load at path: {item['path_image']}")
+    #     if label is None:
+    #         raise ValueError(f"Label failed to load at path: {item['path_label']}")
 
-        # Preprocess image and label
-        image, label = self.preprocess_image_label(image, label)
+    #     # Apply data augmentations with 50% probability
+    #     if np.random.rand() > 0.5:
+    #         image, label = self.apply_augmentation(image, label)
 
-        return name, image, label
+    #     # Threshold label to ensure binary values
+    #     _, label = cv2.threshold(label, 127, 1, cv2.THRESH_BINARY)
+
+    #     # Preprocess image and label
+    #     image, label = self.preprocess_image_label(image, label)
+
+    #     # Debugging: Final preprocessed shapes
+    #     print(f"Preprocessed Image Shape: {image.shape}, Preprocessed Label Shape: {label.shape}")
+
+
+    #     return name, image, label
+    def __getitem__(self, index: int) -> Tuple[str, np.ndarray, np.ndarray]:
+        try:
+            index %= len(self)
+            item = self.ls_item[index]
+
+            # Load and preprocess image and label
+            name = item['name']
+            image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
+            label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
+
+            # Debugging: Print information about the loaded data
+            print(f"Index: {index}, Name: {name}")
+            print(f"Image Path: {item['path_image']}, Label Path: {item['path_label']}")
+            print(f"Image Shape: {None if image is None else image.shape}, Label Shape: {None if label is None else label.shape}")
+
+            # Validate that images loaded correctly
+            if image is None:
+                raise ValueError(f"Image failed to load at path: {item['path_image']}")
+            if label is None:
+                raise ValueError(f"Label failed to load at path: {item['path_label']}")
+
+            # Apply data augmentations with 50% probability
+            if np.random.rand() > 0.5:
+                image, label = self.apply_augmentation(image, label)
+
+            # Threshold label to ensure binary values
+            _, label = cv2.threshold(label, 127, 1, cv2.THRESH_BINARY)
+
+            # Preprocess image and label
+            image, label = self.preprocess_image_label(image, label)
+
+            # Debugging: Final preprocessed shapes
+            print(f"Preprocessed Image Shape: {image.shape}, Preprocessed Label Shape: {label.shape}")
+
+            return name, image, label
+
+        except Exception as e:
+            print(f"Error processing index {index}: {e}")
+            raise
+
 
     # Helper Methods
     # -----------------------------------------------------------------------------
