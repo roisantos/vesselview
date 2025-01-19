@@ -98,6 +98,7 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     epochs = training_config.get("epochs", 300)
     thresh_value = training_config.get("early_stopping_threshold", 100)
     batch_size = training_config.get("batch_size", 8)
+    num_workers = training_config.get("num_workers", 32)
     learning_rate = training_config.get("learning_rate", 1e-4)
     weight_decay = training_config.get("weight_decay", 0.001)
 
@@ -108,11 +109,11 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
 
     # Configure DataLoaders
-    trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
+    trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
     if(batch_size%2==0):
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=batch_size // 2, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
+        valLoader = DataLoader(dataset=dataset['val'], batch_size=batch_size // 2, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
     else:
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=1, shuffle=True, collate_fn=custom_collate,num_workers=1, pin_memory=True)
+        valLoader = DataLoader(dataset=dataset['val'], batch_size=1, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
 
     testLoader = DataLoader(dataset=dataset['test'])
 
