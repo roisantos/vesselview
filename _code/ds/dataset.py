@@ -86,6 +86,27 @@ def prepare_datasets_from_json(config_path):
 
     return datasets
 
+"""
+def prepare_datasets_from_json(config_path):
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+
+    datasets = {}
+    for name, ds_config in config["datasets"].items():
+        paths = ds_config["paths"]
+        batch_size = ds_config.get("batch_size", 8)  # Default to 8 if not specified
+
+        datasets[name] = {
+            "train": DataLoader(SegmentationDataset(paths["train"], **ds_config.get("preprocessing", {})), batch_size=batch_size, shuffle=True),
+            "val": DataLoader(SegmentationDataset(paths["val"], **ds_config.get("preprocessing", {})), batch_size=batch_size, shuffle=True),
+            "test": DataLoader(SegmentationDataset(paths["test"], **ds_config.get("preprocessing", {})), batch_size=batch_size, shuffle=True)
+        }
+    return datasets
+""" 
+
+
+    
+
 
 # Dataset Class
 # -----------------------------------------------------------------------------
@@ -147,6 +168,51 @@ class SegmentationDataset(Dataset):
     def __len__(self) -> int:
         return len(self.ls_item)
 
+    # def __getitem__(self, index: int) -> Tuple[str, np.ndarray, np.ndarray]:
+    #     """
+    #     Retrieves a dataset item at the specified index.
+        
+    #     Args:
+    #         index (int): Index of the item to retrieve.
+            
+    #     Returns:
+    #         tuple: (name, image, label) where image and label are preprocessed numpy arrays.
+    #     """
+    #     index %= len(self)
+    #     item = self.ls_item[index]
+
+    #     # Load and preprocess image and label
+    #     name = item['name']
+    #     image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
+    #     label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
+
+
+    #     # Debugging: Print information about the loaded data
+    #     print(f"Index: {index}, Name: {name}")
+    #     print(f"Image Path: {item['path_image']}, Label Path: {item['path_label']}")
+    #     print(f"Image Shape: {None if image is None else image.shape}, Label Shape: {None if label is None else label.shape}")
+
+    #     # Validate that images loaded correctly
+    #     if image is None:
+    #         raise ValueError(f"Image failed to load at path: {item['path_image']}")
+    #     if label is None:
+    #         raise ValueError(f"Label failed to load at path: {item['path_label']}")
+
+    #     # Apply data augmentations with 50% probability
+    #     if np.random.rand() > 0.5:
+    #         image, label = self.apply_augmentation(image, label)
+
+    #     # Threshold label to ensure binary values
+    #     _, label = cv2.threshold(label, 127, 1, cv2.THRESH_BINARY)
+
+    #     # Preprocess image and label
+    #     image, label = self.preprocess_image_label(image, label)
+
+    #     # Debugging: Final preprocessed shapes
+    #     print(f"Preprocessed Image Shape: {image.shape}, Preprocessed Label Shape: {label.shape}")
+
+
+    #     return name, image, label
     def __getitem__(self, index: int) -> Tuple[str, np.ndarray, np.ndarray]:
         try:
             index %= len(self)
@@ -154,7 +220,7 @@ class SegmentationDataset(Dataset):
 
             # Load and preprocess image and label
             name = item['name']
-            image = cv2.imread(item['path_image'], cv2.IMREAD_COLOR )
+            image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
             label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
 
             # Debugging: Print information about the loaded data
@@ -205,22 +271,19 @@ class SegmentationDataset(Dataset):
 
     def preprocess_image_label(self, image: np.ndarray, label: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Processes image and label for model input, including padding and normalization."""
-        # Normalize image to [0, 1] range
+        if image.ndim == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
         image = image.astype("float32") / 255.0
 
         # Ensure dimensions are multiples of 32 for model compatibility
         pad_x = (image.shape[1] // 32 + 1) * 32 - image.shape[1]
         pad_y = (image.shape[0] // 32 + 1) * 32 - image.shape[0]
-        image = cv2.copyMakeBorder(image, pad_y // 2, pad_y // 2, pad_x // 2, pad_x // 2, cv2.BORDER_CONSTANT, value=0)
-        label = cv2.copyMakeBorder(label, pad_y // 2, pad_y // 2, pad_x // 2, pad_x // 2, cv2.BORDER_CONSTANT, value=0)
+        image = cv2.copyMakeBorder(image, pad_y//2, pad_y//2, pad_x//2, pad_x//2, cv2.BORDER_CONSTANT, value=0)
+        label = cv2.copyMakeBorder(label, pad_y//2, pad_y//2, pad_x//2, pad_x//2, cv2.BORDER_CONSTANT, value=0)
 
-        # Adjust shape for model compatibility
-        if image.ndim == 3:  # For RGB images
-            image = np.transpose(image, (2, 0, 1))  # From (H, W, C) to (C, H, W)
-        else:  # For grayscale images
-            image = image[np.newaxis, ...]  # Add channel dimension
-
-        label = label[np.newaxis, ...]  # Add channel dimension for label
+        # Reshape for model compatibility
+        image = image.reshape((1, image.shape[0], image.shape[1]))
+        label = label.reshape((1, label.shape[0], label.shape[1]))
 
         return image, label
-

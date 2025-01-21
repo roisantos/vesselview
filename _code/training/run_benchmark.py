@@ -74,7 +74,7 @@ def load_models_from_json(config_path):
     for name, model_config in config["models"].items():
         if model_config["type"] == "RoiNet":
             models[name] = lambda: RoiNet(
-                ch_in=model_config.get("ch_in", 3),
+                ch_in=model_config.get("ch_in", 1),
                 ch_out=model_config.get("ch_out", 1),
                 cls_init_block=eval(model_config.get("cls_init_block", "ResidualBlock")),
                 cls_conv_block=eval(model_config.get("cls_conv_block", "ResidualBlock"))
