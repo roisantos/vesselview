@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J 1worker_fives        # Nombre del trabajo
-#SBATCH -o 1w_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e 1w_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J 3chFR2_fives        # Nombre del trabajo
+#SBATCH -o 3chFR2_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e 3chFR2_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=16G                # Memoria total

@@ -72,7 +72,7 @@ def load_models_from_json(config_path):
 
     models = {}
     for name, model_config in config["models"].items():
-        if model_config["type"] == "RoiNet":
+        if model_config["type"] == "FRNet":
             models[name] = lambda: RoiNet(
                 ch_in=model_config.get("ch_in", 3),
                 ch_out=model_config.get("ch_out", 1),
