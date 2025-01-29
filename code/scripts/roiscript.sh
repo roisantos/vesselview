@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J 3chREC_fives        # Nombre del trabajo
-#SBATCH -o 3chREC_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e 3chREC_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J FR3c10K3_fives        # Nombre del trabajo
+#SBATCH -o FR3c10K3_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e FR3c10K3_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=16G                # Memoria total

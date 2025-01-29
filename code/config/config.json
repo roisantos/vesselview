@@ -11,11 +11,11 @@
             "type": "RoiNet",
             "ch_in": 3,
             "ch_out": 1,
-            "ls_mid_ch": [32, 64, 128, 128, 64, 32],
+            "ls_mid_ch": [64, 128, 256, 256, 128, 64],
             "out_k_size": 11,
             "k_size": 3,
-            "cls_init_block": "RRCNNBlock",
-            "cls_conv_block": "RecurrentConvNeXtBlock"
+            "cls_init_block": "ResidualBlock",
+            "cls_conv_block": "ResidualBlock"
         }
     },
     "datasets": {
