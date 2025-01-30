@@ -72,7 +72,15 @@ def load_models_from_json(config_path):
 
     models = {}
     for name, model_config in config["models"].items():
-        if model_config["type"] == "FRNet":
+        if "RoiNet" in model_config["type"]:
+            models[name] = lambda: RoiNet(
+                ch_in=model_config.get("ch_in", 3),
+                ch_out=model_config.get("ch_out", 1),
+                ls_mid_ch=model_config.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
+                cls_init_block=eval(model_config.get("cls_init_block", "ResidualBlock")),
+                cls_conv_block=eval(model_config.get("cls_conv_block", "ResidualBlock"))
+            )
+        elif "FRNet" in model_config["type"]:
             models[name] = lambda: RoiNet(
                 ch_in=model_config.get("ch_in", 3),
                 ch_out=model_config.get("ch_out", 1),
