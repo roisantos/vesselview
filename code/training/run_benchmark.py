@@ -8,6 +8,8 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.nn import DataParallel
 import datetime as dt
 import json
+import argparse
+
 
 # Clear CUDA cache
 torch.cuda.empty_cache()
@@ -273,6 +275,11 @@ def save_best_results(model, results, model_name):
 # ---------------------------------------
 if __name__ == "__main__":
     torch.cuda.empty_cache()
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Run benchmark for a specific model")
+    parser.add_argument("-model", type=str, required=True, help="Name of the model to train")
+    args = parser.parse_args()
+
     # Load configuration from JSON file
     config_path = 'code/config/config.json'
     with open(config_path, 'r') as f:
@@ -288,13 +295,22 @@ if __name__ == "__main__":
     all_datasets = prepare_datasets_from_json(config_path)
     #all_datasets = prepareDatasets()
 
-    print(f"Models: {[name for name in models]}")
-    print(f"Datasets: {[name for name in all_datasets]}")
+    print(f"Available Models: {[name for name in models]}")
+    print(f"Available Datasets: {[name for name in all_datasets]}")
+    # Check if the requested model exists
+    model_name = args.model
+    if model_name not in models:
+        print(f"Error: Model '{model_name}' not found in the configuration.")
+        sys.exit(1)
 
-    # Iterate over each model and each dataset
-    for name_model in models:
-        print(f"\n\nTesting Model: {name_model}")
+    print(f"\n\nTraining Model: {model_name}")
+    for dataset_name, dataset in all_datasets.items():
+        print(f"Using Dataset: {dataset_name}")
+        train_and_evaluate(model_name, dataset, config, logging_enabled=logging_enabled)
+    # # Iterate over each model and each dataset
+    # for name_model in models:
+    #     print(f"\n\nTesting Model: {name_model}")
 
-        for dataset_name, dataset in all_datasets.items():
-            print(f"Current Model: {name_model} with Dataset: {dataset_name}")
-            train_and_evaluate(name_model, dataset, config, logging_enabled=logging_enabled)
+    #     for dataset_name, dataset in all_datasets.items():
+    #         print(f"Current Model: {name_model} with Dataset: {dataset_name}")
+    #         train_and_evaluate(name_model, dataset, config, logging_enabled=logging_enabled)
