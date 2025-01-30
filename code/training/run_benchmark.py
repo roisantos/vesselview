@@ -260,7 +260,7 @@ def train_and_evaluate_old(model_name, dataset, epochs=300, threshold=300, loggi
 
 def save_best_results(model, results, model_name):
     """Saves the best model and results in a unique timestamped directory."""
-    root_result = f"run_benchmark_runs/result_{dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}/{model_name}"
+    root_result = f"run_{model_name}/result_{dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     os.makedirs(root_result, exist_ok=True)
 
     # Save results and model
