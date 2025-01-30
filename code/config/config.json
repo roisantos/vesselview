@@ -18,7 +18,7 @@
             "cls_conv_block": "ResidualBlock"
         },
         "RoiNetx1.5": {
-            "type": "",
+            "type": "RoiNetx1.5",
             "ch_in": 3,
             "ch_out": 1,
             "ls_mid_ch": [48, 96, 192, 192, 96, 48],
