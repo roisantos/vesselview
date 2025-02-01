@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J Roix1.5        # Nombre del trabajo
-#SBATCH -o RoiNetx1.5_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNetx1.5_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J RoiB2x1.5        # Nombre del trabajo
+#SBATCH -o RoiB2x1.5_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiB2x1.5_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
-#SBATCH --mem=16G                # Memoria total
+#SBATCH --mem=64G                # Memoria total
 #SBATCH -p medium
 #SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución (2 horas)
 # Cargar módulos necesarios
