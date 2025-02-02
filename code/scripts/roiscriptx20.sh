@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J RoiB2x2        # Nombre del trabajo
-#SBATCH -o RoiB2x2_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiB2x2_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J RoiB4x2        # Nombre del trabajo
+#SBATCH -o RoiB4x2_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiB4x2_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
-#SBATCH --mem=64G                # Memoria total
+#SBATCH --mem=120G                # Memoria total
 #SBATCH -p medium
 #SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución (2 horas)
 # Cargar módulos necesarios
