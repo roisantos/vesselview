@@ -63,7 +63,7 @@
     },
     "training": {
         "epochs": 300,
-        "accumulation_steps": 1,        
+        "accumulation_steps": 4,        
         "mixed_precision": true,        
         "early_stopping_threshold": 100,
         "num_workers": 16,
