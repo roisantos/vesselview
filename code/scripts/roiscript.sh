@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J Roi2gpu        # Nombre del trabajo
 #SBATCH -o Roi2gpu_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e Roi2gpu_error_%j.log    # Archivo para la salida de errores
+#SBATCH -e Roi1g_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:2        # Solicita 4 GPU A100
 #SBATCH -c 64                    # 32 núcleos de CPU
 #SBATCH --mem=120G                # Memoria total
