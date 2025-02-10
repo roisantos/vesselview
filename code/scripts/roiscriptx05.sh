@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J Rc4x05        # Nombre del trabajo
-#SBATCH -o Rc4x05_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e Rc4x05_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J R9X9x05        # Nombre del trabajo
+#SBATCH -o R9X9x05_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e R9X9x05_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total

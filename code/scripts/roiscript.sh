@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J Roiacc4        # Nombre del trabajo
-#SBATCH -o Roiacc4_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e Roiacc4_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J R9X9        # Nombre del trabajo
+#SBATCH -o R9X9_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e R9X9_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
