@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J F9R6        # Nombre del trabajo
-#SBATCH -o F9R6_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e F9R6_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J F7R6        # Nombre del trabajo
+#SBATCH -o F7R6_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e F7R6_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
