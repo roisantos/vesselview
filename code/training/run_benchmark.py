@@ -124,7 +124,19 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
         [param for param in model.parameters() if param.requires_grad], 
         lr=learning_rate, weight_decay=weight_decay
     )
-    funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
+    # funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
+    loss_function = config["training"].get("loss_function", "Dice")
+    if loss_function == "Dice":
+        funcLoss = DiceLoss()
+        print("\nUSING: Dice")
+    elif loss_function == "clDice":
+        funcLoss = SoftCLDiceLoss(iter_=50, smooth=1e-12, exclude_background=False)
+        print("\nUSING: soft_cldice")
+    elif loss_function == "soft_dice_cldice":
+        funcLoss = SoftDiceCLDiceLoss(iter_=3, alpha=0.5, smooth=1e-6, exclude_background=False)
+        print("USING: soft_dice_cldice")
+    else:
+        raise ValueError(f"Loss function '{loss_function}' no reconocida")
 
     # Configure DataLoaders
     trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
