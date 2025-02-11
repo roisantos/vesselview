@@ -13,7 +13,7 @@ if not os.path.exists(log_dir):
 # Launch TensorBoard
 print(f"Starting TensorBoard at {log_dir}...")
 tensorboard_process = subprocess.Popen(
-    ["tensorboard", "--logdir", log_dir, "--port", "6006"],
+    ["tensorboard", "--logdir", os.path.abspath(log_dir), "--port", "6006"],
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE
 )
