@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J Vint1ch        # Nombre del trabajo
-#SBATCH -o Vint1ch_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e Vint1ch_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J CL        # Nombre del trabajo
+#SBATCH -o CL_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e CL_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
