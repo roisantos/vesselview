@@ -78,6 +78,6 @@
         "weight_decay": 0.001,
         "batch_size":1,
         "logging_enabled":true,
-        "loss_function": "clDice" 
+        "loss_function": "Dice" 
     }
 }
