@@ -15,4 +15,4 @@ module load python/3.9.9
 cd /home/usc/ec/rsm/fivesegmentor/
 source ../vroi/bin/activate
 # Ejecutar el script de entrenamiento
-srun python ./code/training/run_benchmark.py -model "FRNet"
+srun python ./code/training/run_benchmark.py -model "NoAcc"
