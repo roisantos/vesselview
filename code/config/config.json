@@ -1,12 +1,5 @@
 {
     "models": {
-        "NoAcc": {
-            "type": "FRNet",
-            "ch_in": 3,
-            "ch_out": 1,
-            "cls_init_block": "RRCNNBlock",
-            "cls_conv_block": "RecurrentConvNeXtBlock"
-        },
         "FRNet": {
             "type": "FRNet",
             "ch_in": 3,
@@ -46,8 +39,8 @@
             "ch_in": 3,
             "ch_out": 1,
             "ls_mid_ch": [16, 32, 64, 64, 32, 16],
-            "out_k_size": 11,
-            "k_size": 3,
+            "out_k_size": 25,
+            "k_size": 9,
             "cls_init_block": "ResidualBlock",
             "cls_conv_block": "ResidualBlock"
         },
@@ -83,7 +76,7 @@
         "num_workers": 8,
         "learning_rate": 1e-4,
         "weight_decay": 0.001,
-        "batch_size":1,
+        "batch_size":4,
         "logging_enabled":true
     }
 }
