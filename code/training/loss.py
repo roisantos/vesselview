@@ -129,3 +129,42 @@ class SoftDiceCLDiceLoss(nn.Module):
         cl_dice_loss = 1. - 2.0 * (tprec * tsens) / (tprec + tsens + epsilon)
         combined_loss = (1.0 - self.alpha) * dice_loss + self.alpha * cl_dice_loss
         return combined_loss
+    
+
+
+class FocalTverskyLoss(nn.Module):
+    def __init__(self, alpha=0.7, beta=0.3, gamma=0.75, smooth=1e-6):
+        """
+        Parameters:
+            alpha: Weight for false positives.
+            beta: Weight for false negatives.
+                   Typically, for vessel segmentation, you may set beta > alpha.
+            gamma: Focusing parameter to emphasize misclassified pixels.
+            smooth: Smoothing constant to avoid division by zero.
+        """
+        super(FocalTverskyLoss, self).__init__()
+        self.alpha = alpha
+        self.beta = beta
+        self.gamma = gamma
+        self.smooth = smooth
+
+    def forward(self, y_pred, y_true):
+        """
+        y_pred: Predicted probabilities (after sigmoid/softmax) of shape (B, C, H, W).
+        y_true: Ground truth mask of the same shape.
+        """
+        # Flatten the tensors (you can also do it per batch element)
+        y_pred = y_pred.contiguous().view(-1)
+        y_true = y_true.contiguous().view(-1)
+
+        # Compute true positives, false positives and false negatives
+        TP = (y_true * y_pred).sum()
+        FP = ((1 - y_true) * y_pred).sum()
+        FN = (y_true * (1 - y_pred)).sum()
+
+        # Compute the Tversky index
+        tversky = (TP + self.smooth) / (TP + self.alpha * FP + self.beta * FN + self.smooth)
+        # Compute the Focal Tversky loss
+        focal_tversky_loss = (1 - tversky) ** self.gamma
+
+        return focal_tversky_loss
