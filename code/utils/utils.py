@@ -165,7 +165,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
     
     # Log hook data if training and hooks are registered
 
-    if log_writer and (activations or gradients):  # Solo loguea si log_writer está habilitado
+    if log_writer and (activations or gradients) and (optimizer is not None):  # Solo loguea si log_writer está habilitado
         lr = scheduler.get_last_lr()[0] if scheduler else optimizer.param_groups[0]['lr']
         log_hook_data(epoch, activations, gradients, log_writer, lr, "Train")
         activations.clear()
