@@ -23,7 +23,11 @@ class RoiNet(nn.Module):
             if ch1 != ch2:
                 self.dict_module.add_module(f"conv{i}", cls_init_block(ch1, ch2, k_size=k_size, layer_num=i))
             else:
-                self.dict_module.add_module(f"conv{i}", cls_conv_block(ch1, ch2, k_size=k_size, layer_num=i))
+                if cls_conv_block == RecurrentConvNeXtBlock:
+                    module = RecurrentConvNeXtBlock(dim=ch1, layer_scale_init_value=1)
+                else:
+                    module = cls_conv_block(ch1, ch2, k_size=k_size, layer_num=i)
+                self.dict_module.add_module(f"conv{i}", module)
             
             # For blocks 1 and 2, add pooling to downsample and double the channels.
             if i == 1:
