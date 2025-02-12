@@ -29,24 +29,24 @@ class RoiNet(nn.Module):
             if i == 1:
                 self.dict_module.add_module(f"pool{i}", nn.Sequential(
                     nn.MaxPool2d(kernel_size=2, stride=2),
-                    nn.Conv2d(ch2, ch2 * 2, kernel_size=1)  # doubles channels: 64 -> 128
+                    nn.Conv2d(ch2, ch2 * 2, kernel_size=1)  # doubles channels: e.g. 32 -> 64 or 64 -> 128
                 ))
                 ch1 = ch2 * 2  # update channels after pooling
             elif i == 2:
                 self.dict_module.add_module(f"pool{i}", nn.Sequential(
                     nn.MaxPool2d(kernel_size=2, stride=2),
-                    nn.Conv2d(ch2, ch2 * 2, kernel_size=1)  # doubles channels: 128 -> 256
+                    nn.Conv2d(ch2, ch2 * 2, kernel_size=1)  # doubles channels: e.g. 128 -> 256
                 ))
                 ch1 = ch2 * 2
             # For blocks 3 and 4, add upsampling layers to recover spatial resolution.
             elif i == 3:
                 self.dict_module.add_module(f"up{i}", nn.Sequential(
-                    nn.ConvTranspose2d(ch2, ch2 // 2, kernel_size=2, stride=2)  # halves channels: 128 -> 64
+                    nn.ConvTranspose2d(ch2, ch2 // 2, kernel_size=2, stride=2)  # halves channels: e.g. 128 -> 64 or 64 -> 32
                 ))
                 ch1 = ch2 // 2
             elif i == 4:
                 self.dict_module.add_module(f"up{i}", nn.Sequential(
-                    nn.ConvTranspose2d(ch2, ch2 // 2, kernel_size=2, stride=2)  # halves channels: 64 -> 32
+                    nn.ConvTranspose2d(ch2, ch2 // 2, kernel_size=2, stride=2)  # halves channels: e.g. 64 -> 32 or 32 -> 16
                 ))
                 ch1 = ch2 // 2
             else:
@@ -59,26 +59,34 @@ class RoiNet(nn.Module):
         ))
         
         # --- Add merge layers for skip connections ---
-        # For the first skip: after upsampling in block 3 we are at half resolution.
-        # Skip connection from block 1: after pooling, block 1 yields channels=64*2 = 128.
-        # Up3 output (after conv3 + up3) has 64 channels.
-        # Merge by concatenating (64+128=192) then reducing to 64 channels.
+        # Merge3: for the first skip connection.
+        # Skip from block 1: after pooling, channels = ls_mid_ch[1] * 2.
+        # Up3 output: after conv3 and up3, channels = ls_mid_ch[3] // 2.
+        # Total input channels = (ls_mid_ch[1]*2) + (ls_mid_ch[3] // 2)
+        in_channels_merge3 = (ls_mid_ch[1] * 2) + (ls_mid_ch[3] // 2)
+        # Set output channels to ls_mid_ch[1] (default: 64 for RoiNet, 32 for RoiNetx0.5)
+        out_channels_merge3 = ls_mid_ch[1]
         self.dict_module.add_module("merge3", nn.Sequential(
-            nn.Conv2d(192, 64, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(in_channels_merge3, out_channels_merge3, kernel_size=3, padding=1, bias=False),
+            nn.BatchNorm2d(out_channels_merge3),
             nn.ReLU(inplace=True)
         ))
-        # For the second skip: after upsampling in block 4 we are at full resolution.
-        # Skip connection from block 0 (conv0) yields 32 channels.
-        # Up4 output (after conv4 + up4) has 32 channels.
-        # Merge by concatenating (32+32=64) then reducing to 32 channels.
+        
+        # Merge4: for the second skip connection.
+        # Skip from block 0: channels = ls_mid_ch[0]
+        # Up4 output: after conv4 and up4, channels = ls_mid_ch[4] // 2.
+        # Total input channels = ls_mid_ch[0] + (ls_mid_ch[4] // 2)
+        in_channels_merge4 = ls_mid_ch[0] + (ls_mid_ch[4] // 2)
+        # Set output channels to ls_mid_ch[0] (default: 32 for RoiNet, 16 for RoiNetx0.5)
+        out_channels_merge4 = ls_mid_ch[0]
         self.dict_module.add_module("merge4", nn.Sequential(
-            nn.Conv2d(64, 32, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(32),
+            nn.Conv2d(in_channels_merge4, out_channels_merge4, kernel_size=3, padding=1, bias=False),
+            nn.BatchNorm2d(out_channels_merge4),
             nn.ReLU(inplace=True)
         ))
         
         self.ls_mid_ch = ls_mid_ch
+
 
     def forward(self, x):
         # ----- Encoder -----
