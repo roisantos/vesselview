@@ -67,29 +67,38 @@ def custom_collate(batch):
 
     return None if len(batch) == 0 else default_collate(batch)
 
-    
+import json
+
 def load_models_from_json(config_path):
     with open(config_path, 'r') as f:
         config = json.load(f)
 
     models = {}
+    # Get the loss function specified in the training section
+    loss_function = config.get("training", {}).get("loss_function", "Dice")
+
     for name, model_config in config["models"].items():
+        # Append the loss function to the model name
+        new_name = f"{name}_{loss_function}"
+
         if "RoiNet" in model_config["type"]:
-            models[name] = lambda: RoiNet(
-                ch_in=model_config.get("ch_in", 3),
-                ch_out=model_config.get("ch_out", 1),
-                ls_mid_ch=model_config.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
-                cls_init_block=eval(model_config.get("cls_init_block", "ResidualBlock")),
-                cls_conv_block=eval(model_config.get("cls_conv_block", "ResidualBlock"))
+            # Capture model_config in the lambda using a default argument
+            models[new_name] = lambda mc=model_config: RoiNet(
+                ch_in=mc.get("ch_in", 3),
+                ch_out=mc.get("ch_out", 1),
+                ls_mid_ch=mc.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
+                cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
+                cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
         elif "FRNet" in model_config["type"]:
-            models[name] = lambda: FRNet(
-                ch_in=model_config.get("ch_in", 3),
-                ch_out=model_config.get("ch_out", 1),
-                cls_init_block=eval(model_config.get("cls_init_block", "ResidualBlock")),
-                cls_conv_block=eval(model_config.get("cls_conv_block", "ResidualBlock"))
+            models[new_name] = lambda mc=model_config: FRNet(
+                ch_in=mc.get("ch_in", 3),
+                ch_out=mc.get("ch_out", 1),
+                cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
+                cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
     return models
+
 
 # ---------------------------------------
 # TRAINING AND EVALUATION FUNCTION
@@ -101,6 +110,14 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     """
     device = select_device()
     model: torch.nn.Module = models[model_name]().to(device)
+
+    # Determine the logging name using the loss function from config.
+    # If model_name doesn't already contain the loss function, append it.
+    loss_function = config["training"].get("loss_function", "Dice")
+    if loss_function not in model_name:
+        model_log_name = f"{model_name}_{loss_function}"
+    else:
+        model_log_name = model_name
 
     print("\nModelo cargado en GPU:")
     print(f"- Parámetros totales: {sum(p.numel() for p in model.parameters())}")
@@ -121,11 +138,11 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     weight_decay = training_config.get("weight_decay", 0.001)
 
     optimizer = torch.optim.Adam(
-        [param for param in model.parameters() if param.requires_grad], 
+        [param for param in model.parameters() if param.requires_grad],
         lr=learning_rate, weight_decay=weight_decay
     )
-    # funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
-    loss_function = config["training"].get("loss_function", "Dice")
+
+    # Select the loss function based on config
     if loss_function == "Dice":
         funcLoss = DiceLoss()
         print("\nUSING: Dice")
@@ -142,11 +159,32 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
         raise ValueError(f"Loss function '{loss_function}' no reconocida")
 
     # Configure DataLoaders
-    trainLoader = DataLoader(dataset=dataset['train'], batch_size=batch_size, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
-    if(batch_size%2==0):
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=batch_size // 2, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
+    trainLoader = DataLoader(
+        dataset=dataset['train'],
+        batch_size=batch_size,
+        shuffle=True,
+        collate_fn=custom_collate,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+    if batch_size % 2 == 0:
+        valLoader = DataLoader(
+            dataset=dataset['val'],
+            batch_size=batch_size // 2,
+            shuffle=True,
+            collate_fn=custom_collate,
+            num_workers=num_workers,
+            pin_memory=True
+        )
     else:
-        valLoader = DataLoader(dataset=dataset['val'], batch_size=1, shuffle=True, collate_fn=custom_collate,num_workers=num_workers, pin_memory=True)
+        valLoader = DataLoader(
+            dataset=dataset['val'],
+            batch_size=1,
+            shuffle=True,
+            collate_fn=custom_collate,
+            num_workers=num_workers,
+            pin_memory=True
+        )
 
     testLoader = DataLoader(dataset=dataset['test'])
 
@@ -158,29 +196,42 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
 
         # Training
         result_train = traverseDataset(
-            model=model, loader=trainLoader, epoch=epoch, thresh_value=thresh_value,
-            log_section=f"{model_name}_{epoch}_train", log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
-            description=f"Train Epoch {epoch}", device=device, funcLoss=funcLoss, optimizer=optimizer
+            model=model,
+            loader=trainLoader,
+            epoch=epoch,
+            thresh_value=thresh_value,
+            log_section=f"{model_log_name}_{epoch}_train",
+            log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
+            description=f"Train Epoch {epoch}",
+            device=device,
+            funcLoss=funcLoss,
+            optimizer=optimizer
         )
 
         # Log training metrics
         for key, value in result_train.items():
-            writer.add_scalar(f"{model_name}/{key}_train", value, epoch)
+            writer.add_scalar(f"{model_log_name}/{key}_train", value, epoch)
 
         # Validation
         result_val = traverseDataset(
-            model=model, loader=valLoader, epoch=epoch, thresh_value=thresh_value,
-            log_section=f"{model_name}_{epoch}_val", log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
-            description=f"Val Epoch {epoch}", device=device, funcLoss=funcLoss
+            model=model,
+            loader=valLoader,
+            epoch=epoch,
+            thresh_value=thresh_value,
+            log_section=f"{model_log_name}_{epoch}_val",
+            log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
+            description=f"Val Epoch {epoch}",
+            device=device,
+            funcLoss=funcLoss
         )
 
         # Log validation metrics
         for key, value in result_val.items():
-            writer.add_scalar(f"{model_name}/{key}_val", value, epoch)
+            writer.add_scalar(f"{model_log_name}/{key}_val", value, epoch)
 
         # Evaluate dice score and update if it's the best model so far
         dice = result_val['dice']
-        print(f"Validation Dice: {dice} for Model: {model_name}")
+        print(f"Validation Dice: {dice} for Model: {model_log_name}")
 
         if dice > bestResult['dice']:
             bestResult.update({"epoch": epoch, "dice": dice})
@@ -188,91 +239,29 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
             print("New best dice found, evaluating on test set...")
 
             result_test = traverseDataset(
-                model=model, loader=testLoader, epoch=epoch, thresh_value=thresh_value,
-                log_section=None, log_writer=None, description=f"Test Epoch {epoch}", device=device, funcLoss=funcLoss
+                model=model,
+                loader=testLoader,
+                epoch=epoch,
+                thresh_value=thresh_value,
+                log_section=None,
+                log_writer=None,
+                description=f"Test Epoch {epoch}",
+                device=device,
+                funcLoss=funcLoss
             )
             ls_best_result.append(result_test)
-            save_best_results(model, ls_best_result, model_name)
+            # Use the new logging name for saving results
+            save_best_results(model, ls_best_result, model_log_name)
 
         # Early stopping
         if epoch - bestResult['epoch'] >= thresh_value:
             print(f"Stopping training: no improvement in last {thresh_value} epochs.")
             break
 
-def train_and_evaluate_old(model_name, dataset, epochs=300, threshold=300, logging_enabled=False):
-    """
-    Trains and evaluates a specific model on a dataset.
-    Saves the best model and results based on dice score.
-    """
-    device = select_device()
-    model: torch.nn.Module = models[model_name]().to(device)
-    optimizer = torch.optim.Adam(
-        [param for param in model.parameters() if param.requires_grad], 
-        lr=1e-4, weight_decay=0.001
-    )
-    funcLoss = DiceLoss() if 'loss' not in dataset else dataset['loss']
-    thresh_value = dataset.get('thresh')
-
-    # Configure DataLoaders
-    trainLoader = DataLoader(dataset=dataset['train'], batch_size=8, shuffle=True, collate_fn=custom_collate)
-    print("TrainLoader: ",trainLoader)
-    valLoader = DataLoader(dataset=dataset['val'], batch_size=4, shuffle=True, collate_fn=custom_collate)
-    testLoader = DataLoader(dataset=dataset['test'])
-
-    bestResult = {"epoch": -1, "dice": -1}
-    ls_best_result = []
-
-    for epoch in range(epochs):
-        torch.cuda.empty_cache()
-
-        # Training
-        print("debug1")
-        result_train = traverseDataset(
-            model=model, loader=trainLoader, epoch=epoch, thresh_value=thresh_value,
-            log_section=f"{model_name}_{epoch}_train", log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
-            description=f"Train Epoch {epoch}", device=device, funcLoss=funcLoss, optimizer=optimizer
-        )
-
-        # Log training metrics
-        for key, value in result_train.items():
-            writer.add_scalar(f"{model_name}/{key}_train", value, epoch)
-
-        # Validation
-        result_val = traverseDataset(
-            model=model, loader=valLoader, epoch=epoch, thresh_value=thresh_value,
-            log_section=f"{model_name}_{epoch}_val", log_writer=writer if (epoch % 1 == 0 and logging_enabled) else None,
-            description=f"Val Epoch {epoch}", device=device, funcLoss=funcLoss
-        )
-
-        # Log validation metrics
-        for key, value in result_val.items():
-            writer.add_scalar(f"{model_name}/{key}_val", value, epoch)
-
-        # Evaluate dice score and update if it's the best model so far
-        dice = result_val['dice']
-        print(f"Validation Dice: {dice} for Model: {model_name}")
-
-        if dice > bestResult['dice']:
-            bestResult.update({"epoch": epoch, "dice": dice})
-            ls_best_result.append({"epoch": epoch, "val_dice": dice})
-            print("New best dice found, evaluating on test set...")
-
-            result_test = traverseDataset(
-                model=model, loader=testLoader, epoch=epoch, thresh_value=thresh_value,
-                log_section=None, log_writer=None, description=f"Test Epoch {epoch}", device=device, funcLoss=funcLoss
-            )
-            ls_best_result.append(result_test)
-            save_best_results(model, ls_best_result, model_name)
-
-        # Early stopping
-        if epoch - bestResult['epoch'] >= threshold:
-            print(f"Stopping training: no improvement in last {threshold} epochs.")
-            break
 
 # ---------------------------------------
 # SAVE RESULTS FUNCTION
 # ---------------------------------------
-
 def save_best_results(model, results, model_name):
     """Saves the best model and results in a unique timestamped directory."""
     root_result = f"run_{model_name}/result_{dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
@@ -284,6 +273,7 @@ def save_best_results(model, results, model_name):
     torch.save(model.state_dict(), os.path.join(root_result, "model_best.pth"))
     with open(os.path.join(root_result, "finished.flag"), "w") as f:
         f.write("training and testing finished.")
+
 
 # ---------------------------------------
 # MAIN EXECUTION
