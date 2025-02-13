@@ -1,5 +1,18 @@
-Estructura: 
 
+
+Para configurar una loss function, cambia dos cosas:
+el config.json
+la opción en la llamada a run_benchmark.py en el script .sh:
+srun python ./code/training/run_benchmark.py -model "RoiNet_Dice"
+
+Para lanzar FRNet  (la red original, con bloques RRCNNBlock y RecurrentConvNeXtBlock), uso el script fr.sh
+Para lanzar FRNetR (la red original, con bloques ResidualBlock), uso el script frr.sh
+Para lanzar RoiNet  uso los scripts roiscript.sh ,roiscriptx15.sh  (multiplica x 1.5),roiscriptx20.sh  (multiplica x 2.0). 
+(RoiNetR funciona pero no la uses, ni siquiera la pensé, le correspondería el script rr.sh)  (Nota: Los nombres de los modelos (con R o sin R) no tienen lógica, lo ves más claro en el config.json)
+
+En cualquier caso, estoy usando kernels de 9x9 o 11x11. Probé con 5x5 y 3x3 y no subia de DICE 0.72 ... también es cierto que tenía otras cosas de la configuración, debería volver a probar. Esto es lo que pasa cuando no tienes tiempo para hacer una búsqueda de hiperparámetros . Pierdes más tiempo, no eres metódico... a ver cómo hacemos el ablation study.
+
+Con una sóla máquina (32 cores. 64 GB de RAM y una GPU) me entrena RoiNet x 1.5 (18 Millones de parámetros) . Pero si subo a x 2.0 (será más de 25 Millones de parámetros) ya me da error out of memory (OOM).
 
 
 1. Arquitectura y Configuración
