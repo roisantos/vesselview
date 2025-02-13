@@ -22,39 +22,20 @@ from torchvision.utils import save_image
 from models.roinet import RoiNet  # Import the RoiNet model
 from models.common import *        # Ensure ResidualBlock and others are available
 
-def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.5, threshold=0):
-    """
-    Apply an unsharp mask to the image.
-    
-    Args:
-        image (np.array): Input image (assumed 8-bit per channel).
-        kernel_size (tuple): Size of the Gaussian blur kernel.
-        sigma (float): Standard deviation for Gaussian kernel.
-        amount (float): Strength of the sharpening effect.
-        threshold (int): If the difference between the image and the blur is below the threshold, do not sharpen.
-        
-    Returns:
-        np.array: The sharpened image.
-    """
-    # Apply Gaussian blur to the image
-    blurred = cv2.GaussianBlur(image, kernel_size, sigma)
-    # Calculate the sharpened image
-    sharpened = float(amount + 1) * image - float(amount) * blurred
-    # Clip the values to maintain valid pixel range
-    sharpened = np.clip(sharpened, 0, 255).astype(np.uint8)
-    if threshold > 0:
-        # Create a low-contrast mask and only sharpen where the difference exceeds the threshold
-        low_contrast_mask = np.abs(image - blurred) < threshold
-        np.copyto(sharpened, image, where=low_contrast_mask)
-    return sharpened
-
-
 def compute_dice(pred, gt, eps=1e-6):
     """Compute Dice coefficient given binary numpy arrays for prediction and ground truth."""
     intersection = np.sum(pred * gt)
     return (2.0 * intersection) / (np.sum(pred) + np.sum(gt) + eps)
 
 def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
+    # Mapping from final letter to image type name
+    type_map = {
+        'N': 'Normal',
+        'A': 'AMD',
+        'D': 'DR',
+        'G': 'Glaucoma'
+    }
+    
     # Instantiate the model with 3 input channels (matching training)
     model = RoiNet(ch_in=3, ch_out=1, k_size=9, out_k_size=25)
 
@@ -69,11 +50,14 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    # Prepare lists to accumulate per-image inference times and Dice scores,
+    # Prepare lists to accumulate overall per-image inference times and Dice scores,
     # and a list of dictionaries for CSV writing.
     inference_times = []
     dice_scores = []
     results_for_csv = []
+
+    # Also prepare a dictionary to aggregate results per type.
+    per_type = {}
 
     # Process each image file in the input directory
     for filename in os.listdir(image_dir):
@@ -82,18 +66,20 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
         image_path = os.path.join(image_dir, filename)
         label_path = os.path.join(label_dir, filename)  # Assumes same filename in label_dir
-        # Load the image in color (BGR)
+
+        # Determine image type based on the final letter of the filename (before extension)
+        base_name = os.path.splitext(filename)[0]
+        image_type_letter = base_name[-1]
+        image_type = type_map.get(image_type_letter, "Unknown")
+
+        # Load the image in color (BGR, as in training)
         image = cv2.imread(image_path, cv2.IMREAD_COLOR)
         if image is None:
             print(f"Warning: Skipping file due to load failure: {image_path}")
             continue
 
-        # Apply unsharp mask to enhance vessel edges
-        image = unsharp_mask(image, kernel_size=(5,5), sigma=1.0, amount=1.5, threshold=0)
-
         # Normalize the image to [0, 1]
         image = image.astype("float32") / 255.0
-
 
         # Pad the image so its dimensions are multiples of 32 (matching training)
         pad_x = (image.shape[1] // 32 + 1) * 32 - image.shape[1]
@@ -154,33 +140,60 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
         # Append the results for this image to our list for CSV
         results_for_csv.append({
             "filename": filename,
+            "image_type": image_type,
             "inference_time_ms": inference_time * 1000,  # Convert seconds to ms
             "dice_score": dice
         })
 
-    # Compute and print average inference time and Dice score
+        # Aggregate the results per image type
+        if image_type not in per_type:
+            per_type[image_type] = {"times": [], "dice": []}
+        per_type[image_type]["times"].append(inference_time * 1000)
+        per_type[image_type]["dice"].append(dice)
+
+    # Compute and print overall average inference time and Dice score
     avg_time = np.mean(inference_times) * 1000  # in milliseconds
     avg_dice = np.mean(dice_scores) if dice_scores else 0.0
-    print(f"\nAverage Inference Time: {avg_time:.2f} ms")
-    print(f"Average Dice Score: {avg_dice:.4f}")
+    print(f"\nOverall Average Inference Time: {avg_time:.2f} ms")
+    print(f"Overall Average Dice Score: {avg_dice:.4f}\n")
+
+    # Compute and print averages per image type
+    for typ, stats in per_type.items():
+        avg_time_type = np.mean(stats["times"])
+        avg_dice_type = np.mean(stats["dice"])
+        print(f"Type: {typ} - Average Inference Time: {avg_time_type:.2f} ms, Average Dice: {avg_dice_type:.4f}")
 
     # Write the per-image results into a CSV file
     csv_file_path = os.path.join(output_dir, "results.csv")
     with open(csv_file_path, "w", newline="") as csvfile:
-        fieldnames = ["filename", "inference_time_ms", "dice_score"]
+        fieldnames = ["filename", "image_type", "inference_time_ms", "dice_score"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for row in results_for_csv:
             writer.writerow(row)
-    print(f"Results written to {csv_file_path}")
+    print(f"\nPer-image results written to {csv_file_path}")
+
+    # Optionally, write the summary per type to another CSV file
+    summary_csv_path = os.path.join(output_dir, "summary_by_type.csv")
+    with open(summary_csv_path, "w", newline="") as csvfile:
+        fieldnames = ["image_type", "avg_inference_time_ms", "avg_dice_score"]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for typ, stats in per_type.items():
+            writer.writerow({
+                "image_type": typ,
+                "avg_inference_time_ms": np.mean(stats["times"]),
+                "avg_dice_score": np.mean(stats["dice"])
+            })
+    print(f"Summary per image type written to {summary_csv_path}")
 
 # ------------------ User Settings ------------------
 # Directory containing the input images
-image_dir = r"../dataset/FIVES/test/imageup/upscayl_realesrgan-x4plus_x1"
+image_dir = r"../dataset/FIVES/test/image"
 # Directory containing the corresponding ground-truth labels
 label_dir = r"../dataset/FIVES/test/label"
 # Directory where the inference results will be saved
-output_dir = os.path.join('inference_results', 'RoiNet_inference_up')
+output_dir = os.path.join('inference_results', 'RoiNet_inference')
 # Path to the trained RoiNet model weights (update this if needed)
 model_path = '../bestmodel/model_best.pth'
 
