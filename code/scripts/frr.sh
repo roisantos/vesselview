@@ -4,7 +4,7 @@
 #SBATCH -e F11R664_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
-#SBATCH --mem=32G                # Memoria total
+#SBATCH --mem=64G                # Memoria total
 #SBATCH -p medium
 #SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución (2 horas)
 # Cargar módulos necesarios
