@@ -57,8 +57,8 @@
             "ch_in": 3,
             "ch_out": 1,
             "ls_mid_ch": [64, 128, 256, 256, 128, 64],
-            "out_k_size": 25,
-            "k_size": 9,
+            "out_k_size": 33,
+            "k_size": 11,
             "cls_init_block": "ResidualBlock",
             "cls_conv_block": "ResidualBlock"
         }
@@ -78,7 +78,7 @@
     },
     "training": {
         "epochs": 300,
-        "accumulation_steps": 1,        
+        "accumulation_steps": 4,        
         "mixed_precision": true,        
         "early_stopping_threshold": 100,
         "num_workers": 8,
