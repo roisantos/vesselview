@@ -22,6 +22,33 @@ from torchvision.utils import save_image
 from models.roinet import RoiNet  # Import the RoiNet model
 from models.common import *        # Ensure ResidualBlock and others are available
 
+def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.5, threshold=0):
+    """
+    Apply an unsharp mask to the image.
+    
+    Args:
+        image (np.array): Input image (assumed 8-bit per channel).
+        kernel_size (tuple): Size of the Gaussian blur kernel.
+        sigma (float): Standard deviation for Gaussian kernel.
+        amount (float): Strength of the sharpening effect.
+        threshold (int): If the difference between the image and the blur is below the threshold, do not sharpen.
+        
+    Returns:
+        np.array: The sharpened image.
+    """
+    # Apply Gaussian blur to the image
+    blurred = cv2.GaussianBlur(image, kernel_size, sigma)
+    # Calculate the sharpened image
+    sharpened = float(amount + 1) * image - float(amount) * blurred
+    # Clip the values to maintain valid pixel range
+    sharpened = np.clip(sharpened, 0, 255).astype(np.uint8)
+    if threshold > 0:
+        # Create a low-contrast mask and only sharpen where the difference exceeds the threshold
+        low_contrast_mask = np.abs(image - blurred) < threshold
+        np.copyto(sharpened, image, where=low_contrast_mask)
+    return sharpened
+
+
 def compute_dice(pred, gt, eps=1e-6):
     """Compute Dice coefficient given binary numpy arrays for prediction and ground truth."""
     intersection = np.sum(pred * gt)
@@ -55,15 +82,18 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
         image_path = os.path.join(image_dir, filename)
         label_path = os.path.join(label_dir, filename)  # Assumes same filename in label_dir
-
-        # Load the image in color (BGR, as in training)
+        # Load the image in color (BGR)
         image = cv2.imread(image_path, cv2.IMREAD_COLOR)
         if image is None:
             print(f"Warning: Skipping file due to load failure: {image_path}")
             continue
 
+        # Apply unsharp mask to enhance vessel edges
+        image = unsharp_mask(image, kernel_size=(5,5), sigma=1.0, amount=1.5, threshold=0)
+
         # Normalize the image to [0, 1]
         image = image.astype("float32") / 255.0
+
 
         # Pad the image so its dimensions are multiples of 32 (matching training)
         pad_x = (image.shape[1] // 32 + 1) * 32 - image.shape[1]
@@ -146,11 +176,11 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
 # ------------------ User Settings ------------------
 # Directory containing the input images
-image_dir = r"../dataset/FIVES/test/image"
+image_dir = r"../dataset/FIVES/test/imageup/upscayl_realesrgan-x4plus_x1"
 # Directory containing the corresponding ground-truth labels
 label_dir = r"../dataset/FIVES/test/label"
 # Directory where the inference results will be saved
-output_dir = os.path.join('inference_results', 'RoiNet_inference')
+output_dir = os.path.join('inference_results', 'RoiNet_inference_up')
 # Path to the trained RoiNet model weights (update this if needed)
 model_path = '../bestmodel/model_best.pth'
 
