@@ -15,7 +15,7 @@ module load cesga/2020
 module load python/3.9.9
 
 # 2. Activate your virtual environment (adjust the path)
-source ../../vroi/bin/activate
+source ../../vcompetencia/bin/activate
 
 # 3. Change directory to your project directory (adjust the path)
 cd /home/usc/ec/rsm/fivesegmentor/competencia
