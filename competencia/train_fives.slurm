@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J $1        # Job name: Retina_FIVES_<MODEL_NAME>
-#SBATCH -o fives_%1_output_%j.log   # Output file: fives_<MODEL_NAME>_output_<JOB_ID>.log
-#SBATCH -e fives_%1_error_%j.log    # Error file:  fives_<MODEL_NAME>_error_<JOB_ID>.log
+#SBATCH -J WNet        # Job name: Retina_FIVES_<MODEL_NAME>
+#SBATCH -o fives_WNet_output_%j.log   # Output file: fives_<MODEL_NAME>_output_<JOB_ID>.log
+#SBATCH -e fives_WNet_error_%j.log    # Error file:  fives_<MODEL_NAME>_error_<JOB_ID>.log
 #SBATCH --gres=gpu:a100:1       # Request 1 A100 GPU
 #SBATCH -c 32                   # Request 32 CPU cores
 #SBATCH --mem=32G               # Request 32GB of RAM
@@ -24,7 +24,7 @@ cd /home/usc/ec/rsm/fivesegmentor/
 
 # Use train_baseline.py for FIVES, with --config and --model
 # Available models (from networks/__init__.py): WNet, Unet, FR_UNet, SA_UNet, MANet
-srun python train_baseline.py --config config/fives.yaml --model "$1"
+srun python train_baseline.py --config config/fives.yaml --model "WNet"
 
 # --- Notes ---
 # - The $1 takes the first argument passed to the slurm script (the model name).
