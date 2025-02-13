@@ -1,0 +1,43 @@
+model:
+  type:  # This will be overridden by the --model argument
+  args:
+    {}
+
+loss:
+  type: DiceLoss  # Changed to DiceLoss
+  args:
+    {}
+
+dataset:
+  type: FIVES
+  # path: ../dataset/FIVES  <- REMOVED: Path is now handled in the dataset class.
+  args:
+    size: 512  # VERY IMPORTANT: Set the correct image size.  Keep this!
+
+optimizer:
+  type: Adam  # Keep this, but you can change it.
+  args:
+    lr: 1e-4  # You might want to tune this.
+    weight_decay: 1e-5  # You might want to tune this.
+
+lr_scheduler:
+  type: CosineAnnealingLR  # Keep this, but you can change it.
+  args:
+    T_max: 40  # You might want to tune this.
+
+# Data config
+batch_size: 1  # Changed to 1, as requested.
+random_seed: 23
+num_workers: 8  # Adjust based on your CPU cores.  8 might be too high for batch_size=1
+epochs: 100 # Adjust as needed.
+save_dir: ./model_results/ # Keep absolute path
+val_per_epochs: 1
+save_period: 5
+
+tensorboard: true
+threshold: 0.5
+threshold_low: 0.3
+DTI: false
+amp: true # automatic mixed precision
+tta: false
+CCC: false
