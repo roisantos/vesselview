@@ -69,6 +69,6 @@ input_dir = r"dataset\FIVES512\test\scaffoldsCENTER1024masked\masked"
 # Directory to save the results
 output_dir = os.path.join('inference_results', '2024-06-24 after 234 epochs DICE 085')
 # Path to the trained model
-model_path = 'result\FRNet-base FIVES512 after 214 epochs DICE 0.85 - 24-06-2024.pth'
+model_path = 'bestRoi.pth'
 
 run_inference_on_directory(input_dir, output_dir, model_path)
