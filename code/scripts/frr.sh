@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J F11R664        # Nombre del trabajo
-#SBATCH -o F11R664_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e F11R664_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J F5R664        # Nombre del trabajo
+#SBATCH -o F5R664_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e F5R664_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=64G                # Memoria total
