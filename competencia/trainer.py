@@ -10,14 +10,15 @@ from utils.helpers import dir_exists, get_instance, remove_files, double_thresho
 from utils.metrics import AverageMeter, get_metrics, get_metrics, count_connect_component
 import ttach as tta
 
-
 class Trainer:
     def __init__(self, model, loss, CFG, train_loader, val_loader, device):
         super(Trainer, self).__init__()
         self.device = device
         self.loss = loss
         self.CFG = CFG
-        self.test_loader = None    # Add this line
+        self.train_loader = train_loader  # Correctly initialize train_loader
+        self.val_loader = val_loader
+        self.test_loader = None  # Initialize test_loader to None
 
         # Use bracket notation for CFG access
         if self.CFG['amp'] is True:
