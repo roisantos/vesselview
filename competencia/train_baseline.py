@@ -80,9 +80,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.config, encoding='utf-8') as file:
-        CFG = Bunch(safe_load(file))
+        CFG = safe_load(file)  # Load as a standard dictionary
 
-    CFG.model.type = args.model  # Override model type
+    CFG['model']['type'] = args.model  # Override model type - CORRECTED
+
 
     main(CFG)
 

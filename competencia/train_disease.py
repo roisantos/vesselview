@@ -53,11 +53,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.config, encoding='utf-8') as file:
-        CFG = Bunch(safe_load(file))
+        CFG = safe_load(file)  # Load as a standard dictionary
+
+    CFG['model']['type'] = args.model  # Override model type - CORRECTED
 
     # adjust the save directory to store checkpoints for each disease.
     CFG.save_dir = f"{CFG.save_dir}{args.disease}/"  #Keep this, it's for organization
-    CFG.model.type = args.model  # Override model type
     main(CFG, args.disease)
 
     #python -u src/train_ood.py --config configs/ood.yaml --disease N
