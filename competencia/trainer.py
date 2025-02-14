@@ -10,6 +10,7 @@ from utils.helpers import dir_exists, get_instance, remove_files, double_thresho
 from utils.metrics import AverageMeter, get_metrics, get_metrics, count_connect_component
 import ttach as tta
 
+
 class Trainer:
     def __init__(self, model, loss, CFG, train_loader, val_loader, device):
         super(Trainer, self).__init__()
@@ -28,6 +29,16 @@ class Trainer:
 
         if device == 'cuda':
             cudnn.benchmark = True
+
+        self.optimizer = get_instance(
+            torch.optim, "optimizer", CFG, self.model.parameters())
+        self.lr_scheduler = get_instance(
+            torch.optim.lr_scheduler, "lr_scheduler", CFG, self.optimizer)
+        # start_time = datetime.now().strftime('%y%m%d%H%M%S')
+        self.checkpoint_dir = os.path.join(
+            CFG['save_dir'], CFG['dataset']['type'], CFG['loss']['type']) # Note: changed the directory structure because of the OOD training.
+        dir_exists(self.checkpoint_dir)
+        self.writer = tensorboard.SummaryWriter(log_dir=self.checkpoint_dir) # Correctly initialize writer
 
     def train(self):
         for epoch in range(1, self.CFG['epochs'] + 1):  # Use bracket notation
@@ -167,7 +178,7 @@ class Trainer:
         self.iou = AverageMeter()
         self.mcc = AverageMeter()
         self.CCC = AverageMeter()
-        
+
     def _metrics_update(self, auc, f1, acc, sen, spe, pre, iou, mcc):
         self.auc.update(auc)
         self.f1.update(f1)
