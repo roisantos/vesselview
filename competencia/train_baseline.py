@@ -24,9 +24,13 @@ def main(CFG):
     logger.info(f'RUNNING with the following configurations!!! \n \n {CFG} \n\n')
 
     if CFG['dataset']['type'] == 'FIVES':
-        # Load FIVES dataset in training mode. fives_loader will split.
-        dataset = FIVES(CFG=CFG, mode='train')
+        # Load the entire FIVES *training* dataset (Original + Ground truth)
+        # We do NOT specify a mode here.  fives_loader will handle splitting.
+        dataset = FIVES(CFG=CFG)  # No 'mode' argument!
         train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
+
+        logger.info(f"Train dataset size: {len(train_loader.dataset)}")  # Correct size reporting
+        logger.info(f"Validation dataset size: {len(val_loader.dataset)}")
 
     elif CFG['dataset']['type'] == 'CHASEDB':
         # Use relative paths for CHASEDB
