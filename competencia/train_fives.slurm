@@ -24,7 +24,7 @@ cd /home/usc/ec/rsm/fivesegmentor/competencia
 
 # Use train_baseline.py for FIVES, with --config and --model
 # Available models (from networks/__init__.py): WNet, Unet, FR_UNet, SA_UNet, MANet
-srun python train_baseline.py --config config/fives.yaml --model "WNet"
+srun python train_baseline.py --config config/fives.yaml
 
 # --- Notes ---
 # - The $1 takes the first argument passed to the slurm script (the model name).
