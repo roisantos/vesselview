@@ -1,9 +1,5 @@
-import os
 import time
-from datetime import datetime
-import cv2
 import torch
-import numpy as np
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
 import torchvision.transforms.functional as TF
@@ -16,37 +12,31 @@ import ttach as tta
 
 
 class Trainer:
-    def __init__(self, model, CFG, loss, train_loader, val_loader, device):
-        self.CFG = CFG
+    def __init__(self, model, loss, CFG, train_loader, val_loader, device):
+        super(Trainer, self).__init__()
         self.device = device
-        if self.CFG.amp is True:
-            self.scaler = torch.cuda.amp.GradScaler(enabled=True)
         self.loss = loss
-       
+        self.CFG = CFG
+        self.test_loader = test_loader  # Add this line
+
+        # Use bracket notation for CFG access
+        if self.CFG['amp'] is True:
+            self.scaler = torch.cuda.amp.GradScaler(enabled=True)
         self.model = model.to(self.device)
-        self.train_loader = train_loader
-        self.val_loader = val_loader
-        self.optimizer = get_instance(
-            torch.optim, "optimizer", CFG, self.model.parameters())
-        self.lr_scheduler = get_instance(
-            torch.optim.lr_scheduler, "lr_scheduler", CFG, self.optimizer)
-        # start_time = datetime.now().strftime('%y%m%d%H%M%S')
-        self.checkpoint_dir = os.path.join(
-            CFG.save_dir, self.CFG['dataset']['type'], self.CFG['loss']['type']) # Note: changed the directory structure because of the OOD training.
-        dir_exists(self.checkpoint_dir)
-        self.writer = tensorboard.SummaryWriter(log_dir=self.checkpoint_dir)
-        
-        cudnn.benchmark = True
+        # self.model.load_state_dict(checkpoint['state_dict'])  # This line is removed
+
+        if device == 'cuda':
+            cudnn.benchmark = True
 
     def train(self):
-        for epoch in range(1, self.CFG.epochs + 1):
+        for epoch in range(1, self.CFG['epochs'] + 1):  # Use bracket notation
             self._train_epoch(epoch)
-            if self.val_loader is not None and epoch % self.CFG.val_per_epochs == 0:
+            if self.val_loader is not None and epoch % self.CFG['val_per_epochs'] == 0:  # Use bracket notation
                 results = self._valid_epoch(epoch)
                 logger.info(f'## Info for epoch {epoch} ## ')
                 for k, v in results.items():
                     logger.info(f'{str(k):15s}: {v}')
-            if epoch % self.CFG.save_period == 0: # adjust to best model
+            if epoch % self.CFG['save_period'] == 0: # adjust to best model # Use bracket notation
                 self._save_checkpoint(epoch)
 
     def _train_epoch(self, epoch):
@@ -61,7 +51,7 @@ class Trainer:
             gt = gt.to(self.device) #cuda(non_blocking=True)
             self.optimizer.zero_grad()
 
-            if self.CFG.amp is True:
+            if self.CFG['amp'] is True:  # Use bracket notation
                 with torch.cuda.amp.autocast(enabled=True):
                     pre = self.model(img)
                     if isinstance(pre, tuple): # Wnet model returns a tuple in trainning mode.
@@ -91,7 +81,7 @@ class Trainer:
             if isinstance(pre, tuple):
                 pre = pre[1] # for evaluation, select the last output.
             self._metrics_update(
-                *get_metrics(pre, gt, threshold=self.CFG.threshold).values())
+                *get_metrics(pre, gt, threshold=self.CFG['threshold']).values())  # Use bracket notation
             tbar.set_description(
                 'TRAIN ({}) | Loss: {:.4f} | AUC {:.4f} F1 {:.4f} Acc {:.4f}  Sen {:.4f} Spe {:.4f} Pre {:.4f} IOU {:.4f} MCC {:.4f} |B {:.2f} D {:.2f} |'.format(
                     epoch, self.total_loss.average, *self._metrics_ave().values(), self.batch_time.average, self.data_time.average))
@@ -115,7 +105,7 @@ class Trainer:
             for img, gt in tbar: # type: ignore
                 img = img.to(self.device) #.cuda(non_blocking=True)
                 gt = gt.to(self.device) #.cuda(non_blocking=True)
-                if self.CFG.amp is True:
+                if self.CFG['amp'] is True:  # Use bracket notation
                     with torch.autocast(device_type='cuda', enabled=True):
                         predict = self.model(img)
                         if isinstance(predict, tuple): # Wnet model returns a tuple in trainning mode.
@@ -132,7 +122,7 @@ class Trainer:
                 if isinstance(predict, tuple):
                     predict = predict[1] # for evaluation, select the last output.
                 self._metrics_update(
-                    *get_metrics(predict, gt, threshold=self.CFG.threshold).values())
+                    *get_metrics(predict, gt, threshold=self.CFG['threshold']).values())  # Use bracket notation
                 tbar.set_description(
                     'EVAL ({})  | Loss: {:.4f} | AUC {:.4f} F1 {:.4f} Acc {:.4f} Sen {:.4f} Spe {:.4f} Pre {:.4f} IOU {:.4f} MCC {:.4f}|'.format(
                         epoch, self.total_loss.average, *self._metrics_ave().values()))
@@ -155,7 +145,7 @@ class Trainer:
             'epoch': epoch,
             'state_dict': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
-            'config': self.CFG
+            'config': self.CFG  # Save the entire config (as a dictionary)
         }
         filename = os.path.join(self.checkpoint_dir,
                                 f'checkpoint-epoch{epoch}.pth')
