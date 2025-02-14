@@ -74,3 +74,6 @@ class Tester(Trainer):
             logger.info(f'     CCC:  {self.CCC.average}')
         for k, v in self._metrics_ave().items():
             logger.info(f'{str(k):5s}: {v}')
+
+        
+        

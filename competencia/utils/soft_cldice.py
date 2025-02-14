@@ -72,3 +72,8 @@ def soft_dice(y_true, y_pred, smooth=1):
     dice = (2.*intersection + smooth)/(y_true.sum() + y_pred.sum() + smooth)
 
     return (1. - dice)
+
+
+
+
+

@@ -60,4 +60,4 @@ scatter.marker : .               ## The default marker type for scatter plots.
 
 #### * SAVING FIGURES *
 savefig.dpi:       200      # figure dots per inch or 'figure'
-savefig.facecolor: white
+savefig.facecolor: white 

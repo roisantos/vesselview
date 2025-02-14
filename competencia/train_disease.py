@@ -1,7 +1,7 @@
 import argparse
 from glob import glob
 import os
-from bunch import Bunch  # Keep this, it might be used elsewhere
+from bunch import Bunch
 from loguru import logger
 from ruamel.yaml import safe_load
 import torch
@@ -21,9 +21,8 @@ def main(CFG, disease):
 
     logger.info(f'RUNNING with the following configurations!!! \n \n {CFG} \n\n')
 
-    # Use relative path for FIVES
-    train_x, train_y, _, _  = load_subgroup_images(disease, root="../dataset/FIVES")
-    dataset = FIVES(CFG=CFG, images_path=train_x, mask_paths=train_y) #Keep this line, it is correct for train_disease
+    train_x, train_y, _, _  = load_subgroup_images(diag=disease, root=CFG['dataset']['path'])
+    dataset = FIVES(CFG=CFG, images_path=train_x, mask_paths=train_y)
     train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
 
     model = get_instance(models, 'model', CFG)
@@ -47,17 +46,17 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     # testing on a disease means, train, val on 3 other categories
-    parser.add_argument("-d", "--disease", help="Disease to test on")
-    parser.add_argument("-cf", "--config", help="Configuration file to load", required=True)
-    parser.add_argument("-m", "--model", help="Model to train", type=str, required=True) # Added model argument
+    parser.add_argument("-d", "--disease", help="Disease to test on") 
+    parser.add_argument("-cf", "--config", help="Configuration file to load", )
     args = parser.parse_args()
 
     with open(args.config, encoding='utf-8') as file:
-        CFG = safe_load(file) # Load as a standard dictionary
-
+        CFG = Bunch(safe_load(file))
+    
     # adjust the save directory to store checkpoints for each disease.
-    CFG['save_dir'] = f"{CFG['save_dir']}{args.disease}/"  #Keep this, it's for organization
-    CFG['model']['type'] = args.model  # Override model type - CORRECTED
+    CFG.save_dir = f"{CFG.save_dir}{args.disease}/" # /mnt/qb/berens/users/jfadugba97/RetinaSegmentation/final_results/OOD/N/
+    
     main(CFG, args.disease)
 
     #python -u src/train_ood.py --config configs/ood.yaml --disease N
+

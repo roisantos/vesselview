@@ -14,28 +14,21 @@ from datasets.transform import pipeline_tranforms
 
 class FIVES(Dataset):
 
-    def __init__(self, CFG, mode='train'):  # Remove indices, keep mode
+    def __init__(self, CFG, images_path, mask_paths, mode='train'):
         super(FIVES, self).__init__()
         self.mode = mode
+        self.images_path = images_path
+        self.masks_path = mask_paths
         self.transforms = pipeline_tranforms()
         self.CFG = CFG
-
-        # Use relative paths based on the project root and mode
-        if mode == 'train':
-            self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Original", "*")))  # Corrected path
-            self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Ground truth", "*")))  # Corrected path
-        elif mode == 'test':
-            self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Original", "*")))  # Corrected path
-            self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Ground truth", "*")))  # Corrected path
-        # No 'val' mode needed; splitting is done in fives_loader
-
+        
         self.n_samples = len(self.images_path)
-
+    
     def __getitem__(self, index):
         """ Reading image """
         image = cv2.imread(self.images_path[index], cv2.IMREAD_COLOR)
         image = clahe_equalized(image)
-        image = cv2.resize(image, (self.CFG['size'], self.CFG['size']), interpolation=cv2.INTER_NEAREST)
+        image = cv2.resize(image, (self.CFG.size, self.CFG.size), interpolation=cv2.INTER_NEAREST)
 
         image = image / 255.0  # type: ignore # (512, 512, 3) Normalizing to range (0,1)
         image = np.transpose(image, (2, 0, 1))  # (3, 512, 512)
@@ -44,7 +37,7 @@ class FIVES(Dataset):
 
         """ Reading mask """
         mask = cv2.imread(self.masks_path[index], cv2.IMREAD_GRAYSCALE)
-        mask = cv2.resize(mask,  (self.CFG['size'], self.CFG['size']), interpolation=cv2.INTER_NEAREST)
+        mask = cv2.resize(mask,  (self.CFG.size, self.CFG.size), interpolation=cv2.INTER_NEAREST)
         mask = mask / 255.0  # type: ignore # (512, 512)
         mask = np.expand_dims(mask, axis=0)  # (1, 512, 512)
         mask = mask.astype(np.float32)

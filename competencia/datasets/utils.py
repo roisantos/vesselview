@@ -3,23 +3,24 @@ import cv2
 import os
 from glob import glob
 from loguru import logger
-from torch.utils.data import SubsetRandomSampler, Subset
+
+from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import DataLoader
 
 
 # CLAHE
-def clahe_equalized(image):
+def clahe_equalized(image):  
     lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
     clahe = cv2.createCLAHE(clipLimit=1.5,tileGridSize=(8,8))
     lab[...,0] = clahe.apply(lab[...,0])
     bgr = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     bgr = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    return bgr
+    return bgr 
 
 def fives_loader(Dataset, CFG):
 
     # Split dataset into train and validation
-    validation_split = .2  # Hardcoded split
+    validation_split = .2
     shuffle_dataset = True
 
     # Creating data indices for training and validation splits:
@@ -28,24 +29,23 @@ def fives_loader(Dataset, CFG):
     split = int(np.floor(validation_split * dataset_size))
 
     if shuffle_dataset:
-        np.random.seed(CFG['random_seed'])
+        np.random.seed(CFG.random_seed)
         np.random.shuffle(indices)
 
     train_indices, val_indices = indices[split:], indices[:split]
-    # Create actual Subset objects using the indices
-    train_dataset = Subset(Dataset, train_indices)
-    val_dataset = Subset(Dataset, val_indices)
 
+    train_sampler = SubsetRandomSampler(train_indices)
+    valid_sampler = SubsetRandomSampler(val_indices)
 
-    train_loader = DataLoader(train_dataset, batch_size=CFG['batch_size'], pin_memory=True,
-                              drop_last=True, num_workers=CFG['num_workers'])
-    val_loader = DataLoader(val_dataset, batch_size=CFG['batch_size'], drop_last=True,
-                            pin_memory=True, num_workers=CFG['num_workers'])
-    
-    logger.info(f"Train dataset size: {len(train_loader.dataset)}")
-    logger.info(f"Validation dataset size: {len(val_loader.dataset)}")
+    train_loader = DataLoader(Dataset, batch_size=CFG.batch_size, pin_memory=True,
+                              sampler=train_sampler, drop_last=True, num_workers=CFG.num_workers)
+    val_loader = DataLoader(Dataset, batch_size=CFG.batch_size, drop_last=True,
+                            sampler=valid_sampler, pin_memory=True, num_workers=CFG.num_workers)
 
-    return train_loader, val_loader  # Return DataLoaders
+    logger.info(
+        'The total number of images for train and validation is %d' % len(Dataset))
+
+    return train_loader, val_loader
 
 def fives_test_loader(Dataset):
 
@@ -56,7 +56,6 @@ def fives_test_loader(Dataset):
 
 def load_subgroup_images(disease, root):
     def load_paths(subdir):
-        # Use os.path.join for proper path construction
         original = sorted(glob(os.path.join(root, subdir, 'Original/*')))
         ground_truth = sorted(glob(os.path.join(root, subdir, 'Ground truth/*')))
 
@@ -78,3 +77,4 @@ def load_subgroup_images(disease, root):
     valid_y, train_y = split_data(train_y + valid_y)
 
     return train_x, train_y, valid_x, valid_y
+

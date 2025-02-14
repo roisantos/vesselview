@@ -2,16 +2,15 @@ import os
 import numpy as np
 from glob import glob
 from PIL import Image
-import torch # Add missing import
 from torch.utils.data import Dataset
 
 class DRIVEDataset(Dataset):
 
     def __init__(self, data_path):
         super().__init__()
-        # Use os.path.join for proper path construction
-        self.images_path = sorted(glob(os.path.join(data_path, "images", "*")))
-        self.masks_path = sorted(glob(os.path.join(data_path, "labels", "*")))
+        
+        self.images_path = sorted(glob(data_path + "/images/*"))
+        self.masks_path = sorted(glob(data_path + "/labels/*"))
         self.n_samples = len(self.images_path)
         for i in self.masks_path:
             if os.path.exists(i) is False:

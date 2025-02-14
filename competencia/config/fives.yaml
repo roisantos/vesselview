@@ -1,36 +1,37 @@
 model:
-  type:  # This will be overridden by the --model argument
+  type: FR_UNet
   args:
     {}
-
+# loss: BCELoss, CE_DiceLoss, Soft_clDice, DiceLoss, 
 loss:
-  type: DiceLoss  # Changed to DiceLoss
+  type: Soft_clDice
   args:
     {}
 
 dataset:
   type: FIVES
-  # path: ../dataset/FIVES  <- REMOVED: Path is now handled in the dataset class.
+  path: ./datasets/FIVES
   args:
-    size: 2048  # VERY IMPORTANT: Set the correct image size.  Keep this!
-
+    {}
+  
 optimizer:
-  type: Adam  # Keep this, but you can change it.
+  type: Adam
   args:
-    lr: 1e-4  # You might want to tune this.
-    weight_decay: 1e-5  # You might want to tune this.
+    lr: 1e-4
+    weight_decay: 1e-5
 
 lr_scheduler:
-  type: CosineAnnealingLR  # Keep this, but you can change it.
+  type: CosineAnnealingLR
   args:
-    T_max: 40  # You might want to tune this.
-
+    T_max: 40
+    
 # Data config
-batch_size: 1  # Changed to 1, as requested.
+size: 2048
+batch_size: 1
 random_seed: 23
-num_workers: 8  # Adjust based on your CPU cores.  8 might be too high for batch_size=1
-epochs: 100 # Adjust as needed.
-save_dir: ./model_results/ # Keep absolute path
+num_workers: 8
+epochs: 70
+save_dir: ./model_results/FR_UNet/
 val_per_epochs: 1
 save_period: 5
 

@@ -3,7 +3,7 @@ import torch
 import cv2
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import matthews_corrcoef
-
+ 
 
 
 # code: https://github.com/lseventeen/FR-UNet/blob/master/utils/metrics.py
@@ -19,7 +19,7 @@ class AverageMeter(object):
     def initialize(self, val, weight):
         self.val = val
         self.avg = val
-        self.sum = val * weight # Corrected initialization
+        self.sum = np.multiply(val, weight)
         self.count = weight
         self.initialized = True
 
@@ -31,17 +31,17 @@ class AverageMeter(object):
 
     def add(self, val, weight):
         self.val = val
-        self.sum = np.add(self.sum, np.multiply(val, weight)) #Keep this
+        self.sum = np.add(self.sum, np.multiply(val, weight))
         self.count = self.count + weight
         self.avg = self.sum / self.count
 
     @property
     def value(self):
-        return np.round(self.val, 4)
+        return np.round(self.val, 4) # type: ignore
 
     @property
     def average(self):
-        return np.round(self.avg, 4)
+        return np.round(self.avg, 4) # type: ignore
 
 
 def get_metrics(predict, target, threshold=None, predict_b=None):
@@ -68,7 +68,7 @@ def get_metrics(predict, target, threshold=None, predict_b=None):
     spe = tn / (tn + fp)
     iou = tp / (tp + fp + fn)
     f1 = 2 * pre * sen / (pre + sen)
-
+    
     return {
         "AUC": np.round(auc, 4),
         "F1": np.round(f1, 4),

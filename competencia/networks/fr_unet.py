@@ -1,3 +1,4 @@
+
 import torch
 import torch.nn as nn
 from timm.models.layers import trunc_normal_
@@ -220,3 +221,4 @@ if __name__ == '__main__':
     model = FR_UNet(num_classes=1, num_channels=3, feature_scale=2,  dropout=0.2, laplace=True)
     output = model(x)
     print(output.size())
+

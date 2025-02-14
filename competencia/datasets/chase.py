@@ -12,14 +12,11 @@ from datasets.transform import pipeline_tranforms
 class CHASEDBDataset(Dataset):
 
     def __init__(self, CFG, image_path, mask_path):
-        # Use os.path.join for proper path construction
-        # self.images_path = sorted(glob(image_path)) # OLD
-        # self.masks_path = sorted(glob(mask_path))  # OLD
-        self.images_path = sorted(glob(os.path.join(image_path)))
-        self.masks_path = sorted(glob(os.path.join(mask_path)))
+        self.images_path = sorted(glob(image_path))
+        self.masks_path = sorted(glob(mask_path))
 
         self.transforms = pipeline_tranforms()
-        self.size = CFG['size']  # Corrected: Use bracket notation
+        self.size = CFG.size
         self.n_samples = len(self.images_path)
 
     def __getitem__(self, index):
