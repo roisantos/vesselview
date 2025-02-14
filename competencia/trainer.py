@@ -17,7 +17,7 @@ class Trainer:
         self.device = device
         self.loss = loss
         self.CFG = CFG
-        self.test_loader = test_loader  # Add this line
+        self.test_loader = None    # Add this line
 
         # Use bracket notation for CFG access
         if self.CFG['amp'] is True:
