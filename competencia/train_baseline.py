@@ -1,7 +1,7 @@
 import argparse
 from glob import glob
 import os
-from bunch import Bunch  # Keep this, it might be used elsewhere, but not for CFG
+from bunch import Bunch
 from loguru import logger
 from ruamel.yaml import safe_load
 import torch
@@ -24,8 +24,8 @@ def main(CFG):
     logger.info(f'RUNNING with the following configurations!!! \n \n {CFG} \n\n')
 
     if CFG['dataset']['type'] == 'FIVES':
-        # Use relative paths for FIVES, correctly instantiated
-        dataset = FIVES(CFG=CFG, mode='train')  # Pass CFG and mode, let FIVES handle paths
+        # Load FIVES dataset in training mode. fives_loader will split.
+        dataset = FIVES(CFG=CFG, mode='train')
         train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
 
     elif CFG['dataset']['type'] == 'CHASEDB':
@@ -82,8 +82,6 @@ if __name__ == '__main__':
     with open(args.config, encoding='utf-8') as file:
         CFG = safe_load(file) # Load as a standard dictionary
 
-    CFG['model']['type'] = args.model  # Override model type - CORRECTED
+    CFG['model']['type'] = args.model  # Override model type
 
     main(CFG)
-
-# python -u src/train.py --config configs/manet.yaml

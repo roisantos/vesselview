@@ -20,7 +20,7 @@ def clahe_equalized(image):
 def fives_loader(Dataset, CFG):
 
     # Split dataset into train and validation
-    validation_split = .2
+    validation_split = .2  # Hardcoded split, as in the original
     shuffle_dataset = True
 
     # Creating data indices for training and validation splits:
@@ -29,7 +29,7 @@ def fives_loader(Dataset, CFG):
     split = int(np.floor(validation_split * dataset_size))
 
     if shuffle_dataset:
-        np.random.seed(CFG['random_seed'])  # Corrected: Use bracket notation
+        np.random.seed(CFG['random_seed'])
         np.random.shuffle(indices)
 
     train_indices, val_indices = indices[split:], indices[:split]
@@ -37,6 +37,7 @@ def fives_loader(Dataset, CFG):
     train_sampler = SubsetRandomSampler(train_indices)
     valid_sampler = SubsetRandomSampler(val_indices)
 
+    # Return DataLoader instances, not just samplers
     train_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], pin_memory=True,
                               sampler=train_sampler, drop_last=True, num_workers=CFG['num_workers'])
     val_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], drop_last=True,
@@ -45,7 +46,7 @@ def fives_loader(Dataset, CFG):
     logger.info(
         'The total number of images for train and validation is %d' % len(Dataset))
 
-    return train_loader, val_loader
+    return train_loader, val_loader  # Return DataLoaders
 
 def fives_test_loader(Dataset):
 

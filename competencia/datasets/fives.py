@@ -14,26 +14,20 @@ from datasets.transform import pipeline_tranforms
 
 class FIVES(Dataset):
 
-    def __init__(self, CFG, images_path=None, mask_paths=None, mode='train'):
+    def __init__(self, CFG, mode='train'):  # Remove indices, add mode
         super(FIVES, self).__init__()
         self.mode = mode
         self.transforms = pipeline_tranforms()
         self.CFG = CFG
 
-        if images_path is not None and mask_paths is not None:
-            self.images_path = images_path
-            self.masks_path = mask_paths
-        else:
-            # Use relative paths based on the project root
-            if mode == 'train':
-                self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Original", "*")))
-                self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Ground truth", "*")))
-            elif mode == 'test':
-                self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Original", "*")))
-                self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Ground truth", "*")))
-            else: #Assuming validation set
-                self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "val", "Original", "*")))
-                self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "val", "Ground truth", "*")))
+        # Use relative paths based on the project root and mode
+        if mode == 'train':
+            self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Original", "*")))
+            self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "train", "Ground truth", "*")))
+        elif mode == 'test':
+            self.images_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Original", "*")))
+            self.masks_path = sorted(glob(os.path.join("..", "dataset", "FIVES", "test", "Ground truth", "*")))
+        # No 'val' mode needed; splitting is done in fives_loader
 
         self.n_samples = len(self.images_path)
 

@@ -23,7 +23,7 @@ def main(CFG, disease):
 
     # Use relative path for FIVES
     train_x, train_y, _, _  = load_subgroup_images(disease, root="../dataset/FIVES")
-    dataset = FIVES(CFG=CFG, images_path=train_x, mask_paths=train_y)
+    dataset = FIVES(CFG=CFG, images_path=train_x, mask_paths=train_y) #Keep this line, it is correct for train_disease
     train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
 
     model = get_instance(models, 'model', CFG)
