@@ -1,7 +1,7 @@
 import argparse
 from glob import glob
 import os
-from bunch import Bunch
+from bunch import Bunch  # Keep this, it might be used elsewhere, but not for CFG
 from loguru import logger
 from ruamel.yaml import safe_load
 import torch
@@ -35,8 +35,8 @@ def main(CFG):
         train_dataset = CHASEDBDataset(CFG, os.path.join(train_path, "images", "*"), os.path.join(train_path, "labels", "*"))
         val_dataset = CHASEDBDataset(CFG, os.path.join(valid_path, "images", "*"), os.path.join(valid_path, "labels", "*"))
 
-        train_loader = DataLoader(train_dataset, batch_size=CFG.batch_size, pin_memory=True, drop_last=True, num_workers=CFG.num_workers)
-        val_loader  = DataLoader(val_dataset, batch_size=CFG.batch_size, pin_memory=True, drop_last=True, num_workers=CFG.num_workers)
+        train_loader = DataLoader(train_dataset, batch_size=CFG['batch_size'], pin_memory=True, drop_last=True, num_workers=CFG['num_workers'])
+        val_loader  = DataLoader(val_dataset, batch_size=CFG['batch_size'], pin_memory=True, drop_last=True, num_workers=CFG['num_workers'])
 
 
     elif CFG['dataset']['type'] == 'DRIVE':
@@ -46,10 +46,10 @@ def main(CFG):
         train_dataset = DRIVEDataset(train_path)
         val_dataset = DRIVEDataset(valid_path)
 
-        train_loader = DataLoader(train_dataset, batch_size=CFG.batch_size,
-                                pin_memory=False, drop_last=True, num_workers=CFG.num_workers)
-        val_loader = DataLoader(val_dataset, batch_size=CFG.batch_size,
-                                pin_memory=False, drop_last=True, num_workers=CFG.num_workers)
+        train_loader = DataLoader(train_dataset, batch_size=CFG['batch_size'],
+                                pin_memory=False, drop_last=True, num_workers=CFG['num_workers'])
+        val_loader = DataLoader(val_dataset, batch_size=CFG['batch_size'],
+                                pin_memory=False, drop_last=True, num_workers=CFG['num_workers'])
     else:
         raise NotImplementedError("Dataset type should be either DRIVE | FIVES | CHASEDB ")
 
@@ -80,10 +80,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.config, encoding='utf-8') as file:
-        CFG = safe_load(file)  # Load as a standard dictionary
+        CFG = safe_load(file) # Load as a standard dictionary
 
     CFG['model']['type'] = args.model  # Override model type - CORRECTED
-
 
     main(CFG)
 

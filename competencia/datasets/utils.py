@@ -9,13 +9,13 @@ from torch.utils.data import DataLoader
 
 
 # CLAHE
-def clahe_equalized(image):  
+def clahe_equalized(image):
     lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
     clahe = cv2.createCLAHE(clipLimit=1.5,tileGridSize=(8,8))
     lab[...,0] = clahe.apply(lab[...,0])
     bgr = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     bgr = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    return bgr 
+    return bgr
 
 def fives_loader(Dataset, CFG):
 
@@ -29,7 +29,7 @@ def fives_loader(Dataset, CFG):
     split = int(np.floor(validation_split * dataset_size))
 
     if shuffle_dataset:
-        np.random.seed(CFG.random_seed)
+        np.random.seed(CFG['random_seed'])  # Corrected: Use bracket notation
         np.random.shuffle(indices)
 
     train_indices, val_indices = indices[split:], indices[:split]
@@ -37,10 +37,10 @@ def fives_loader(Dataset, CFG):
     train_sampler = SubsetRandomSampler(train_indices)
     valid_sampler = SubsetRandomSampler(val_indices)
 
-    train_loader = DataLoader(Dataset, batch_size=CFG.batch_size, pin_memory=True,
-                              sampler=train_sampler, drop_last=True, num_workers=CFG.num_workers)
-    val_loader = DataLoader(Dataset, batch_size=CFG.batch_size, drop_last=True,
-                            sampler=valid_sampler, pin_memory=True, num_workers=CFG.num_workers)
+    train_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], pin_memory=True,
+                              sampler=train_sampler, drop_last=True, num_workers=CFG['num_workers'])
+    val_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], drop_last=True,
+                            sampler=valid_sampler, pin_memory=True, num_workers=CFG['num_workers'])
 
     logger.info(
         'The total number of images for train and validation is %d' % len(Dataset))

@@ -1,7 +1,7 @@
 import argparse
 from glob import glob
 import os
-from bunch import Bunch
+from bunch import Bunch  # Keep this, it might be used elsewhere
 from loguru import logger
 from ruamel.yaml import safe_load
 import torch
@@ -53,12 +53,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.config, encoding='utf-8') as file:
-        CFG = safe_load(file)  # Load as a standard dictionary
-
-    CFG['model']['type'] = args.model  # Override model type - CORRECTED
+        CFG = safe_load(file) # Load as a standard dictionary
 
     # adjust the save directory to store checkpoints for each disease.
-    CFG.save_dir = f"{CFG.save_dir}{args.disease}/"  #Keep this, it's for organization
+    CFG['save_dir'] = f"{CFG['save_dir']}{args.disease}/"  #Keep this, it's for organization
+    CFG['model']['type'] = args.model  # Override model type - CORRECTED
     main(CFG, args.disease)
 
     #python -u src/train_ood.py --config configs/ood.yaml --disease N
