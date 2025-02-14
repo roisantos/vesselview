@@ -32,10 +32,10 @@ def fives_loader(Dataset, CFG):
         np.random.shuffle(indices)
 
     train_indices, val_indices = indices[split:], indices[:split]
-
     # Create actual Subset objects using the indices
     train_dataset = Subset(Dataset, train_indices)
     val_dataset = Subset(Dataset, val_indices)
+
 
     train_loader = DataLoader(train_dataset, batch_size=CFG['batch_size'], pin_memory=True,
                               drop_last=True, num_workers=CFG['num_workers'])
