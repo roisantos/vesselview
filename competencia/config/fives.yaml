@@ -12,7 +12,7 @@ dataset:
   type: FIVES
   # path: ../dataset/FIVES  <- REMOVED: Path is now handled in the dataset class.
   args:
-    size: 512  # VERY IMPORTANT: Set the correct image size.  Keep this!
+    size: 2048  # VERY IMPORTANT: Set the correct image size.  Keep this!
 
 optimizer:
   type: Adam  # Keep this, but you can change it.
