@@ -24,8 +24,8 @@ def main(CFG):
     logger.info(f'RUNNING with the following configurations!!! \n \n {CFG} \n\n')
 
     if CFG['dataset']['type'] == 'FIVES':
-        # Use relative paths for FIVES
-        dataset = FIVES(CFG=CFG, mode='train')  # Pass CFG to FIVES
+        # Use relative paths for FIVES, correctly instantiated
+        dataset = FIVES(CFG=CFG, mode='train')  # Pass CFG and mode, let FIVES handle paths
         train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
 
     elif CFG['dataset']['type'] == 'CHASEDB':
