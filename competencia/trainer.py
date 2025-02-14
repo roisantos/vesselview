@@ -168,17 +168,41 @@ class Trainer:
 
     def _reset_metrics(self):
         self.batch_time = AverageMeter()
+        self.batch_time.update(0, weight=1)
+        
         self.data_time = AverageMeter()
+        self.data_time.update(0, weight=1)
+        
         self.total_loss = AverageMeter()
+        self.total_loss.update(0, weight=1)
+        
         self.auc = AverageMeter()
+        self.auc.update(0, weight=1)
+        
         self.f1 = AverageMeter()
+        self.f1.update(0, weight=1)
+        
         self.acc = AverageMeter()
+        self.acc.update(0, weight=1)
+        
         self.sen = AverageMeter()
+        self.sen.update(0, weight=1)
+        
         self.spe = AverageMeter()
+        self.spe.update(0, weight=1)
+        
         self.pre = AverageMeter()
+        self.pre.update(0, weight=1)
+        
         self.iou = AverageMeter()
+        self.iou.update(0, weight=1)
+        
         self.mcc = AverageMeter()
+        self.mcc.update(0, weight=1)
+        
         self.CCC = AverageMeter()
+        self.CCC.update(0, weight=1)
+
 
     def _metrics_update(self, auc, f1, acc, sen, spe, pre, iou, mcc):
         self.auc.update(auc)
