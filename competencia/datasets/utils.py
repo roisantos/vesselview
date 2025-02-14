@@ -3,6 +3,7 @@ import cv2
 import os
 from glob import glob
 from loguru import logger
+from torch.utils.data import Subset
 
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.utils.data import DataLoader
@@ -34,18 +35,18 @@ def fives_loader(Dataset, CFG):
 
     train_indices, val_indices = indices[split:], indices[:split]
 
-    train_sampler = SubsetRandomSampler(train_indices)
-    valid_sampler = SubsetRandomSampler(val_indices)
+    # Create actual Subset objects using the indices
+    train_dataset = Subset(Dataset, train_indices)
+    val_dataset = Subset(Dataset, val_indices)
 
-    # Return DataLoader instances, not just samplers
-    train_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], pin_memory=True,
-                              sampler=train_sampler, drop_last=True, num_workers=CFG['num_workers'])
-    val_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], drop_last=True,
-                            sampler=valid_sampler, pin_memory=True, num_workers=CFG['num_workers'])
+
+    train_loader = DataLoader(train_dataset, batch_size=CFG['batch_size'], pin_memory=True,
+                               drop_last=True, num_workers=CFG['num_workers'])
+    val_loader = DataLoader(val_dataset, batch_size=CFG['batch_size'], drop_last=True,
+                            pin_memory=True, num_workers=CFG['num_workers'])
 
     logger.info(f"Train dataset size: {len(train_loader.dataset)}") # Corrected logging
     logger.info(f"Validation dataset size: {len(val_loader.dataset)}")
-
 
     return train_loader, val_loader  # Return DataLoaders
 

@@ -5,7 +5,8 @@ from bunch import Bunch
 from loguru import logger
 from ruamel.yaml import safe_load
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset  # Import Subset
+import numpy as np
 
 import networks as models
 from datasets.fives import FIVES
@@ -26,11 +27,11 @@ def main(CFG):
     if CFG['dataset']['type'] == 'FIVES':
         # Load the entire FIVES *training* dataset (Original + Ground truth)
         # We do NOT specify a mode here.  fives_loader will handle splitting.
-        dataset = FIVES(CFG=CFG)  # No 'mode' argument!
+        dataset = FIVES(CFG=CFG, mode='train')  # Pass CFG and mode
         train_loader, val_loader = fives_loader(Dataset=dataset, CFG=CFG)
-
         logger.info(f"Train dataset size: {len(train_loader.dataset)}")  # Correct size reporting
         logger.info(f"Validation dataset size: {len(val_loader.dataset)}")
+
 
     elif CFG['dataset']['type'] == 'CHASEDB':
         # Use relative paths for CHASEDB
