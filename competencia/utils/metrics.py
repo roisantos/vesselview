@@ -11,10 +11,10 @@ from sklearn.metrics import matthews_corrcoef
 class AverageMeter(object):
     def __init__(self):
         self.initialized = False
-        self.val = None
-        self.avg = None
-        self.sum = None
-        self.count = None
+        self.val = None  # Remove initialization with None
+        self.avg = None  # Remove initialization with None
+        self.sum = None  # Remove initialization with None
+        self.count = None  # Remove initialization with None
 
     def initialize(self, val, weight):
         self.val = val
