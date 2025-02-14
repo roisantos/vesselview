@@ -29,7 +29,7 @@ def fives_loader(Dataset, CFG):
     split = int(np.floor(validation_split * dataset_size))
 
     if shuffle_dataset:
-        np.random.seed(CFG['random_seed']) # Corrected: Use bracket notation
+        np.random.seed(CFG['random_seed'])
         np.random.shuffle(indices)
 
     train_indices, val_indices = indices[split:], indices[:split]
@@ -42,11 +42,12 @@ def fives_loader(Dataset, CFG):
                               sampler=train_sampler, drop_last=True, num_workers=CFG['num_workers'])
     val_loader = DataLoader(Dataset, batch_size=CFG['batch_size'], drop_last=True,
                             sampler=valid_sampler, pin_memory=True, num_workers=CFG['num_workers'])
-    
-    logger.info(f"Train dataset size: {len(train_loader.dataset)}")
+
+    logger.info(f"Train dataset size: {len(train_loader.dataset)}") # Corrected logging
     logger.info(f"Validation dataset size: {len(val_loader.dataset)}")
 
-    return train_loader, val_loader
+
+    return train_loader, val_loader  # Return DataLoaders
 
 def fives_test_loader(Dataset):
 
