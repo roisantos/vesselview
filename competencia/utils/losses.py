@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from soft_cldice import soft_skel, soft_dice
+from .soft_cldice import soft_skel, soft_dice
 import torch.nn.functional as F
 
 class FocalLoss(nn.Module):
