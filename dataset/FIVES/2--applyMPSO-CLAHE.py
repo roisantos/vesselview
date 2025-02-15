@@ -118,6 +118,7 @@ def mpso_color(images, bounds, num_populations=3, num_particles=10, iterations=5
 def main():
     # Define folders containing the images to be converted.
     train_folder = os.path.join("train", "image")
+    val_folder = os.path.join("val", "image")
     test_folder = os.path.join("test", "image")
     
     # ---------------------------------------------------------------------
@@ -147,9 +148,9 @@ def main():
     print(f"\nOptimized CLAHE Parameters:\n  Clip Limit = {best_clip_limit:.2f}\n  Tile Grid Size = {best_tile_grid_size}")
 
     # ---------------------------------------------------------------------
-    # Step 2: Process and overwrite all images in train/image and test/image.
+    # Step 2: Process and overwrite all images in train/image, val/image, and test/image.
     # ---------------------------------------------------------------------
-    folders = [train_folder, test_folder]
+    folders = [train_folder, val_folder, test_folder]
     for folder in folders:
         image_paths = glob.glob(os.path.join(folder, "*.*"))
         for img_path in image_paths:
