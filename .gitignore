@@ -4,7 +4,6 @@ inference_results_test
 Test_set
 test_runs
 torch
-dataset
 tfg
 log
 __pycache__
