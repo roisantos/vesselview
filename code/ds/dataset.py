@@ -50,6 +50,8 @@ def prepare_datasets_from_json(config_path):
 
     datasets = {}
     base_path = config["datasets"]["base_path"] # Get base path
+    print(f"Base path from config: {base_path}")
+
 
     for name, ds_config in config["datasets"].items():
         if name == "base_path":  # Skip the base_path entry itself
@@ -116,6 +118,9 @@ class SegmentationDataset(Dataset):
             valid_extensions = ('.png', '.jpg', '.jpeg')
             ls_image_files = [f for f in os.listdir(path_dir_image) if f.endswith(valid_extensions)]
             ls_label_files = [f for f in os.listdir(path_dir_label) if f.endswith(valid_extensions)]
+
+            print(f"Found image files: {ls_image_files}")  # Debug print
+            print(f"Found label files: {ls_label_files}")  # Debug print
             
             # Match images with labels
             for name in ls_image_files:
@@ -127,6 +132,7 @@ class SegmentationDataset(Dataset):
                     self.ls_item.append({"name": name, "path_image": path_image, "path_label": path_label})
 
         # Check for valid images
+        print(f"Dataset items before ValueError check: {self.ls_item}")  # Debug print
         if not self.ls_item:
             raise ValueError("Error: No valid images found in dataset.")
 
@@ -150,9 +156,9 @@ class SegmentationDataset(Dataset):
             label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
 
             # Debugging: Print information about the loaded data
-            print(f"Index: {index}, Name: {name}")
-            print(f"Image Path: {item['path_image']}, Label Path: {item['path_label']}")
-            print(f"Image Shape: {None if image is None else image.shape}, Label Shape: {None if label is None else label.shape}")
+            #print(f"Index: {index}, Name: {name}")
+            #print(f"Image Path: {item['path_image']}, Label Path: {item['path_label']}")
+            #print(f"Image Shape: {None if image is None else image.shape}, Label Shape: {None if label is None else label.shape}")
 
             # Validate that images loaded correctly
             if image is None:
@@ -171,7 +177,7 @@ class SegmentationDataset(Dataset):
             image, label = self.preprocess_image_label(image, label)
 
             # Debugging: Final preprocessed shapes
-            print(f"Preprocessed Image Shape: {image.shape}, Preprocessed Label Shape: {label.shape}")
+            #print(f"Preprocessed Image Shape: {image.shape}, Preprocessed Label Shape: {label.shape}")
 
             return name, image, label
 
