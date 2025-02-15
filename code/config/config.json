@@ -64,7 +64,7 @@
         }
     },
     "datasets": {
-        "base_path": "$STORE/FIVESc",
+        "base_path": "/$STORE/FIVESc",
         "FIVES": {
             "paths": {
                 "train": "train",
