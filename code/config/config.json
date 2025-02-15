@@ -64,11 +64,12 @@
         }
     },
     "datasets": {
+        "base_path": "dataset/FIVES",
         "FIVES": {
             "paths": {
-                "train": "dataset/FIVES/train",
-                "val": "dataset/FIVES/val",
-                "test": "dataset/FIVES/test"
+                "train": "train",
+                "val": "val",
+                "test": "test"
             },
             "preprocessing": {
                 "start": 0,
@@ -78,7 +79,7 @@
     },
     "training": {
         "epochs": 300,
-        "accumulation_steps": 4,        
+        "accumulation_steps": 1,        
         "mixed_precision": true,        
         "early_stopping_threshold": 100,
         "num_workers": 8,

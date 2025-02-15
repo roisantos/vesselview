@@ -24,14 +24,12 @@ timestamp = datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
 log_root = f"tensorboardLog/{timestamp}"
 writer = SummaryWriter(log_dir=log_root)
 
-# Dataset path for FIVES512
-#path_FIVES = "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/dataset/FIVES512"
-path_FIVES = os.path.join("dataset", "FIVES")
-assert os.path.exists(path_FIVES), f"Dataset path does not exist: {path_FIVES}"
-path_FIVES512 = os.path.join("dataset", "FIVES512")
-#assert os.path.exists(path_FIVES512), f"Dataset path does not exist: {path_FIVES512}"
-path_FIVES_1024 = os.path.join("dataset", "FIVES1024")
-#assert os.path.exists(path_FIVES_1024), f"Dataset path does not exist: {path_FIVES_1024}"
+# Load config
+config_path = os.path.join(ROOT_DIR, 'config/config.json')
+with open(config_path, 'r') as f:
+    config = json.load(f)
+dataset_base_path = config["datasets"]["base_path"]
+
 
 # Functions
 # -----------------------------------------------------------------------------
@@ -39,22 +37,11 @@ path_FIVES_1024 = os.path.join("dataset", "FIVES1024")
 def prepareDatasets():
     all_datasets = {}
     all_datasets['FIVES'] = {
-        "train":SegmentationDataset(os.path.join(path_FIVES,"train"), ),
-        "test":SegmentationDataset(os.path.join(path_FIVES, "test")),
-        "val":SegmentationDataset(os.path.join(path_FIVES, "val"))
+        "train":SegmentationDataset(os.path.join(dataset_base_path,"train"), ),
+        "test":SegmentationDataset(os.path.join(dataset_base_path, "test")),
+        "val":SegmentationDataset(os.path.join(dataset_base_path, "val"))
     }
-    #all_datasets['FIVES512'] = {
-    #    "train":SegmentationDataset(os.path.join(path_FIVES,"train"), ),
-    #    "test":SegmentationDataset(os.path.join(path_FIVES, "test")),
-    #    "val":SegmentationDataset(os.path.join(path_FIVES, "val"))
-    #}
-    #all_datasets['FIVES1024'] = {
-    #    "train":SegmentationDataset(os.path.join(path_FIVES_1024,"train"), ),
-    #    "test":SegmentationDataset(os.path.join(path_FIVES_1024, "test")),
-    #    "val":SegmentationDataset(os.path.join(path_FIVES_1024, "val"))
-    #}
 
-    
     return all_datasets
 
 def prepare_datasets_from_json(config_path):
@@ -62,21 +49,26 @@ def prepare_datasets_from_json(config_path):
         config = json.load(f)
 
     datasets = {}
+    base_path = config["datasets"]["base_path"] # Get base path
+
     for name, ds_config in config["datasets"].items():
+        if name == "base_path":  # Skip the base_path entry itself
+            continue
+
         paths = ds_config["paths"]
         batch_size = ds_config.get("batch_size", 8)
 
-        # Only create SegmentationDataset instances without DataLoader
+        # Construct full paths using the base_path
         datasets[name] = {
-            "train": SegmentationDataset(paths["train"], **ds_config.get("preprocessing", {})),
-            "val": SegmentationDataset(paths["val"], **ds_config.get("preprocessing", {})),
-            "test": SegmentationDataset(paths["test"], **ds_config.get("preprocessing", {}))
+            "train": SegmentationDataset(os.path.join(base_path, paths["train"]), **ds_config.get("preprocessing", {})),
+            "val": SegmentationDataset(os.path.join(base_path, paths["val"]), **ds_config.get("preprocessing", {})),
+            "test": SegmentationDataset(os.path.join(base_path, paths["test"]), **ds_config.get("preprocessing", {}))
         }
 
-        # Debugging: Test a few samples from the training dataset
+        # Debugging: Test a few samples from the training dataset (optional, can be removed in production)
         train_dataset = datasets[name]["train"]
         print(f"Testing dataset: {name} (train split)")
-        for i in range(20):  # Adjust the range as needed
+        for i in range(20):
             try:
                 name, image, label = train_dataset[i]
                 print(f"Sample {i}: Name={name}, Image Shape={image.shape}, Label Shape={label.shape}")
@@ -223,4 +215,3 @@ class SegmentationDataset(Dataset):
         label = label[np.newaxis, ...]  # Add channel dimension for label
 
         return image, label
-
