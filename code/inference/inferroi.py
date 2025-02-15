@@ -189,9 +189,9 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
 # ------------------ User Settings ------------------
 # Directory containing the input images
-image_dir = r"$STORE/FIVESoriginal/test/image"
+image_dir = r"mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal/test/image"
 # Directory containing the corresponding ground-truth labels
-label_dir = r"$STORE/FIVESoriginal/test/label"
+label_dir = r"mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal/test/label"
 # Directory where the inference results will be saved
 output_dir = os.path.join('inference_results', 'RoiNet_inference')
 # Path to the trained RoiNet model weights (update this if needed)
