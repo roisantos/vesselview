@@ -195,7 +195,7 @@ label_dir = r"$STORE/FIVESoriginal/test/label"
 # Directory where the inference results will be saved
 output_dir = os.path.join('inference_results', 'RoiNet_inference')
 # Path to the trained RoiNet model weights (update this if needed)
-model_path = '../records/R9X10.pth'
+model_path = '$HOME/fivesegmentor/records/R9X10.pth'
 
 # Run the inference
 run_inference_on_directory(image_dir, label_dir, output_dir, model_path)
