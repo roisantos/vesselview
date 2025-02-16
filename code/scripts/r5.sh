@@ -11,7 +11,7 @@
 module load cesga/2020
 module load python/3.9.9
 
-cd /home/usc/ec/rsm/fivesegmentor/
+cd /mnt/netapp2/Store_uni/home/usc/ec/rsm/fivesegmentor/
 source ../vroi/bin/activate
 # Ejecutar el script de entrenamiento
 srun python ./code/training/run_benchmark.py -model "RoiNet5_Dice"
