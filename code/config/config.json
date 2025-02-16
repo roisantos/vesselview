@@ -76,11 +76,11 @@
                 "end": 1
             },
             "augmentation": {
-                "geometric": true,
-                "elastic": true,
-                "intensity_and_color": true,
-                "gamma": true,
-                "noise": true
+                "geometric": false,
+                "elastic": false,
+                "intensity_and_color": false,
+                "gamma": false,
+                "noise": false
             }
         }
     },
