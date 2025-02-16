@@ -22,8 +22,8 @@ from ds.dataset import prepare_datasets_from_json
 from utils.utils import *
 #from config.settings_benchmark import models  # Assuming `models` is a dictionary with available models
 from models.common import *
-from models.frnet import * 
-from models.roinet import * 
+from models.frnet import *
+from models.roinet import *
 
 # Initialize SummaryWriter for TensorBoard
 writer = SummaryWriter()
@@ -31,19 +31,6 @@ writer = SummaryWriter()
 # ---------------------------------------
 # HELPER FUNCTIONS
 # ---------------------------------------
-
-def select_device_():
-    """Selects CUDA device if available, otherwise CPU."""
-    count_card = torch.cuda.device_count()
-    id_card = 0
-    if count_card > 1:
-        while True:
-            s = input(f"Choose video card number (0-{count_card-1}): ")
-            if s.isdigit() and (0 <= int(s) < count_card):
-                id_card = int(s)
-                break
-            print("Invalid input!")
-    return torch.device(f'cuda:{id_card}' if torch.cuda.is_available() else 'cpu')
 
 def select_device():
     """Selects CUDA device if available, otherwise CPU."""
@@ -74,26 +61,29 @@ def load_models_from_json(config_path):
         config = json.load(f)
 
     models = {}
-    # Get the loss function specified in the training section
     loss_function = config.get("training", {}).get("loss_function", "Dice")
 
     for name, model_config in config["models"].items():
-        # Append the loss function to the model name
-        new_name = f"{name}_{loss_function}"
+        # Construct the model name with the loss function *after* checking base model.
+        full_model_name = f"{name}_{loss_function}"
 
         if "RoiNet" in model_config["type"]:
-            # Capture model_config in the lambda using a default argument
-            models[new_name] = lambda mc=model_config: RoiNet(
+            models[full_model_name] = lambda mc=model_config: RoiNet(
                 ch_in=mc.get("ch_in", 3),
                 ch_out=mc.get("ch_out", 1),
                 ls_mid_ch=mc.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
+                out_k_size=mc.get("out_k_size", 25),  # Correctly get out_k_size
+                k_size=mc.get("k_size", 9),          # Correctly get k_size
                 cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
                 cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
         elif "FRNet" in model_config["type"]:
-            models[new_name] = lambda mc=model_config: FRNet(
+            models[full_model_name] = lambda mc=model_config: FRNet(
                 ch_in=mc.get("ch_in", 3),
                 ch_out=mc.get("ch_out", 1),
+                ls_mid_ch=mc.get("ls_mid_ch", [64] * 6), #Added default value
+                out_k_size=mc.get("out_k_size", 15),
+                k_size=mc.get("k_size", 5),
                 cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
                 cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
@@ -294,7 +284,7 @@ if __name__ == "__main__":
     print("Loaded configuration:")
     print(json.dumps(config, indent=4))
 
-    logging_enabled = config["training"].get("logging_enabled", True)  
+    logging_enabled = config["training"].get("logging_enabled", True)
 
     models = load_models_from_json(config_path)
     all_datasets = prepare_datasets_from_json(config_path)
@@ -302,11 +292,16 @@ if __name__ == "__main__":
 
     print(f"Available Models: {[name for name in models]}")
     print(f"Available Datasets: {[name for name in all_datasets]}")
-    # Check if the requested model exists
-    model_name = args.model
+
+    # Check if the requested model exists, considering the loss function suffix
+    model_base_name = args.model
+    loss_function = config["training"].get("loss_function", "Dice")
+    model_name = f"{model_base_name}_{loss_function}"
+
     if model_name not in models:
         print(f"Error: Model '{model_name}' not found in the configuration.")
         sys.exit(1)
+
 
     print(f"\n\nTraining Model: {model_name}")
     for dataset_name, dataset in all_datasets.items():
