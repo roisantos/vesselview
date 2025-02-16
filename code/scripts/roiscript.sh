@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J R7x10c        # Nombre del trabajo
-#SBATCH -o R7x10c_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e R7x10c_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J R9x10        # Nombre del trabajo
+#SBATCH -o R9x10_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e R9x10_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -14,4 +14,4 @@ module load python/3.9.9
 cd /home/usc/ec/rsm/fivesegmentor/
 source ../vroi/bin/activate
 # Ejecutar el script de entrenamiento
-srun python ./code/training/run_benchmark.py -model "RoiNet7_Dice"
+srun python ./code/training/run_benchmark.py -model "RoiNet_Dice"
