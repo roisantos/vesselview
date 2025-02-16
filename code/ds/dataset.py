@@ -13,21 +13,6 @@ import numpy as np
 from datetime import datetime
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from typing import import os
-import sys
-import cv2
-import json
-
-# Set up paths and logging directories
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-sys.path.insert(0, ROOT_DIR)
-
-
-import random
-import numpy as np
-from datetime import datetime
-from torch.utils.data import Dataset, DataLoader
-from torch.utils.tensorboard import SummaryWriter
 from typing import *
 from models.common import *
 from utils.utils import *
