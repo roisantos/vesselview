@@ -37,7 +37,7 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     }
     
     # Instantiate the model with 3 input channels (matching training)
-    model = RoiNet(ch_in=3, ch_out=1, k_size=7, out_k_size=21)
+    model = RoiNet(ch_in=3, ch_out=1, k_size=9, out_k_size=25)
 
     # Load the trained model weights
     model.load_state_dict(torch.load(model_path))
