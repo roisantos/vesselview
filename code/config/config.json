@@ -94,7 +94,7 @@
         }
     },
     "datasets": {
-        "base_path": "/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal",
+        "base_path": "/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESc",
         "FIVES": {
             "paths": {
                 "train": "train",
