@@ -195,7 +195,7 @@ label_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal/test/label"
 # Directory where the inference results will be saved
 output_dir = os.path.join('inference_results', 'RoiNet3x10_inference')
 # Path to the trained RoiNet model weights (update this if needed)
-model_path = '/mnt/netapp2/Home_FT2/home/usc/ec/rsm/fivesegmentor/records/model_best.pth'
+model_path = '/mnt/netapp2/Store_uni/home/usc/ec/rsm/fivesegmentor/records/model_best.pth'
 
 # Run the inference
 run_inference_on_directory(image_dir, label_dir, output_dir, model_path)
