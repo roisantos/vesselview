@@ -37,7 +37,7 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     }
     
     # Instantiate the model with 3 input channels (matching training)
-    model = RoiNet(ch_in=3, ch_out=1, k_size=3, out_k_size=11)
+    model = RoiNet(ch_in=3, ch_out=1, k_size=7, out_k_size=21)
 
     # Load the trained model weights
     model.load_state_dict(torch.load(model_path))
@@ -195,7 +195,7 @@ label_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESc/test/label"
 # Directory where the inference results will be saved
 output_dir = os.path.join('inference_results', 'RoiNet3x10_inference')
 # Path to the trained RoiNet model weights (update this if needed)
-model_path = '/mnt/netapp2/Home_FT2/home/usc/ec/rsm/fivesegmentor/records/R3X10c.pth'
+model_path = '/mnt/netapp2/Home_FT2/home/usc/ec/rsm/fivesegmentor/records/model_best.pth'
 
 # Run the inference
 run_inference_on_directory(image_dir, label_dir, output_dir, model_path)
