@@ -17,7 +17,8 @@ sys.path.insert(0, ROOT_DIR)
 from models.common import *
 
 class FRNet(nn.Module):
-    def __init__(self, ch_in, ch_out, ls_mid_ch=([64]*6), out_k_size=15, k_size=5,
+    #self, ch_in, ch_out, ls_mid_ch=([64]*6), out_k_size=15, k_size=5,
+    def __init__(self, ch_in, ch_out, ls_mid_ch=([32]*6), out_k_size=11, k_size=3,
                  cls_init_block = ResidualBlock, cls_conv_block = ResidualBlock) -> None:
         super().__init__()
         self.dict_module = nn.ModuleDict()

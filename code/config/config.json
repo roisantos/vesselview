@@ -7,6 +7,13 @@
             "cls_init_block": "RRCNNBlock",
             "cls_conv_block": "RecurrentConvNeXtBlock"
         },
+        "FRNet_1ch": {
+            "type": "FRNet_1ch",
+            "ch_in": 1,
+            "ch_out": 1,
+            "cls_init_block": "RRCNNBlock",
+            "cls_conv_block": "RecurrentConvNeXtBlock"
+        },
         "FRNetR": {
             "type": "FRNetR",
             "ch_in": 3,
@@ -19,38 +26,8 @@
             "ch_in": 3,
             "ch_out": 1,
             "ls_mid_ch": [32, 64, 128, 128, 64, 32],
-            "out_k_size": 11,
-            "k_size": 3,
-            "cls_init_block": "ResidualBlock",
-            "cls_conv_block": "ResidualBlock"
-        },
-        "RoiNet7": {
-            "type": "RoiNet",
-            "ch_in": 3,
-            "ch_out": 1,
-            "ls_mid_ch": [32, 64, 128, 128, 64, 32],
-            "out_k_size": 21,
-            "k_size": 7,
-            "cls_init_block": "ResidualBlock",
-            "cls_conv_block": "ResidualBlock"
-        },
-        "RoiNet5": {
-            "type": "RoiNet",
-            "ch_in": 3,
-            "ch_out": 1,
-            "ls_mid_ch": [32, 64, 128, 128, 64, 32],
-            "out_k_size": 15,
-            "k_size": 5,
-            "cls_init_block": "ResidualBlock",
-            "cls_conv_block": "ResidualBlock"
-        },
-        "RoiNet3": {
-            "type": "RoiNet",
-            "ch_in": 3,
-            "ch_out": 1,
-            "ls_mid_ch": [32, 64, 128, 128, 64, 32],
-            "out_k_size": 11,
-            "k_size": 3,
+            "out_k_size": 33,
+            "k_size": 11,
             "cls_init_block": "ResidualBlock",
             "cls_conv_block": "ResidualBlock"
         },
@@ -87,43 +64,34 @@
             "ch_in": 3,
             "ch_out": 1,
             "ls_mid_ch": [64, 128, 256, 256, 128, 64],
-            "out_k_size": 33,
-            "k_size": 11,
+            "out_k_size": 25,
+            "k_size": 9,
             "cls_init_block": "ResidualBlock",
             "cls_conv_block": "ResidualBlock"
         }
     },
     "datasets": {
-        "base_path": "/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal",
-        "FIVES": {
+        "FIVES512": {
             "paths": {
-                "train": "train",
-                "val": "val",
-                "test": "test"
+                "train": "dataset/FIVES512/train",
+                "val": "dataset/FIVES512/val",
+                "test": "dataset/FIVES512/test"
             },
             "preprocessing": {
                 "start": 0,
                 "end": 1
+            }
+        },
+        "FIVES": {
+            "paths": {
+                "train": "dataset/FIVES/train",
+                "val": "dataset/FIVES/val",
+                "test": "dataset/FIVES/test"
             },
-            "augmentation": {
-                "geometric": true,
-                "elastic": true,
-                "intensity_and_color": true,
-                "gamma": false,
-                "noise": false
+            "preprocessing": {
+                "start": 0,
+                "end": 1
             }
         }
-    },
-    "training": {
-        "epochs": 300,
-        "accumulation_steps": 1,
-        "mixed_precision": true,
-        "early_stopping_threshold": 100,
-        "num_workers": 12,
-        "learning_rate": 1e-4,
-        "weight_decay": 0.001,
-        "batch_size": 1,
-        "logging_enabled": true,
-        "loss_function": "Dice"
     }
 }

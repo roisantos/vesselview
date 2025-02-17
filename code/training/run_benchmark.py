@@ -18,7 +18,7 @@ torch.cuda.empty_cache()
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.insert(0, ROOT_DIR)
 
-from ds.dataset import prepare_datasets_from_json
+from ds.dataset import prepare_datasets_from_json, set_writer
 from utils.utils import *
 #from config.settings_benchmark import models  # Assuming `models` is a dictionary with available models
 from models.common import *
@@ -26,11 +26,21 @@ from models.frnet import *
 from models.roinet import * 
 
 # Initialize SummaryWriter for TensorBoard
-writer = SummaryWriter()
+#writer = SummaryWriter()
 
 # ---------------------------------------
 # HELPER FUNCTIONS
 # ---------------------------------------
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def select_device_():
     """Selects CUDA device if available, otherwise CPU."""
@@ -75,12 +85,12 @@ def load_models_from_json(config_path):
 
     models = {}
     # Get the loss function specified in the training section
-    loss_function = config.get("training", {}).get("loss_function", "Dice")
-
+    #loss_function = config.get("training", {}).get("loss_function", "Dice")
+    
     for name, model_config in config["models"].items():
         # Append the loss function to the model name
-        new_name = f"{name}_{loss_function}"
-
+        #new_name = f"{name}_{loss_function}"
+        new_name = name
         if "RoiNet" in model_config["type"]:
             # Capture model_config in the lambda using a default argument
             models[new_name] = lambda mc=model_config: RoiNet(
@@ -103,7 +113,9 @@ def load_models_from_json(config_path):
 # ---------------------------------------
 # TRAINING AND EVALUATION FUNCTION
 # ---------------------------------------
-def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
+
+#def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
+def train_and_evaluate(model_name, dataset, logging_enabled=False):
     """
     Trains and evaluates a specific model on a dataset.
     Saves the best model and results based on dice score.
@@ -113,11 +125,14 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
 
     # Determine the logging name using the loss function from config.
     # If model_name doesn't already contain the loss function, append it.
+    """
     loss_function = config["training"].get("loss_function", "Dice")
     if loss_function not in model_name:
         model_log_name = f"{model_name}_{loss_function}"
     else:
         model_log_name = model_name
+    """
+    
 
     print("\nModelo cargado en GPU:")
     print(f"- Parámetros totales: {sum(p.numel() for p in model.parameters())}")
@@ -129,6 +144,7 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
         model = DataParallel(model)
 
     # Get training parameters from config
+    """
     training_config = config.get("training", {})
     epochs = training_config.get("epochs", 300)
     thresh_value = training_config.get("early_stopping_threshold", 100)
@@ -136,6 +152,16 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     num_workers = training_config.get("num_workers", 32)
     learning_rate = training_config.get("learning_rate", 1e-4)
     weight_decay = training_config.get("weight_decay", 0.001)
+    """
+
+    #training_config = config.get("training", {})
+    epochs = args.epochs
+    thresh_value = args.thresh_value
+    batch_size = args.batch_size
+    num_workers = args.num_workers
+    learning_rate = args.lr
+    weight_decay = args.weight_decay
+    
 
     optimizer = torch.optim.Adam(
         [param for param in model.parameters() if param.requires_grad],
@@ -143,6 +169,12 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
     )
 
     # Select the loss function based on config
+    loss_function = args.loss
+    if loss_function not in model_name:
+        model_log_name = f"{model_name}_{loss_function}"
+    else:
+        model_log_name = model_name
+
     if loss_function == "Dice":
         funcLoss = DiceLoss()
         print("\nUSING: Dice")
@@ -262,8 +294,10 @@ def train_and_evaluate(model_name, dataset, config, logging_enabled=False):
 # ---------------------------------------
 # SAVE RESULTS FUNCTION
 # ---------------------------------------
+
+"""
 def save_best_results(model, results, model_name):
-    """Saves the best model and results in a unique timestamped directory."""
+    #Saves the best model and results in a unique timestamped directory.
     root_result = f"run_{model_name}/result_{dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     os.makedirs(root_result, exist_ok=True)
 
@@ -273,6 +307,18 @@ def save_best_results(model, results, model_name):
     torch.save(model.state_dict(), os.path.join(root_result, "model_best.pth"))
     with open(os.path.join(root_result, "finished.flag"), "w") as f:
         f.write("training and testing finished.")
+"""
+def save_best_results(model, results, model_name):
+    root_result = f"{global_output_dir}/{model_name}"
+    os.makedirs(root_result, exist_ok=True)
+
+    # Guardar resultados y modelo
+    with open(os.path.join(root_result, "best_result.json"), "w") as f:
+        json.dump(results, f, indent=2)
+    torch.save(model.state_dict(), os.path.join(root_result, "model_best.pth"))
+    with open(os.path.join(root_result, "finished.flag"), "w") as f:
+        f.write("training and testing finished.")
+
 
 
 # ---------------------------------------
@@ -280,7 +326,8 @@ def save_best_results(model, results, model_name):
 # ---------------------------------------
 if __name__ == "__main__":
     torch.cuda.empty_cache()
-    # Parse command-line arguments
+
+    """
     parser = argparse.ArgumentParser(description="Run benchmark for a specific model")
     parser.add_argument("-model", type=str, required=True, help="Name of the model to train")
     args = parser.parse_args()
@@ -289,8 +336,8 @@ if __name__ == "__main__":
     config_path = 'code/config/config.json'
     with open(config_path, 'r') as f:
         config = json.load(f)
-
-    # Print configuration before starting
+    
+   # Print configuration before starting
     print("Loaded configuration:")
     print(json.dumps(config, indent=4))
 
@@ -312,10 +359,97 @@ if __name__ == "__main__":
     for dataset_name, dataset in all_datasets.items():
         print(f"Using Dataset: {dataset_name}")
         train_and_evaluate(model_name, dataset, config, logging_enabled=logging_enabled)
-    # # Iterate over each model and each dataset
-    # for name_model in models:
-    #     print(f"\n\nTesting Model: {name_model}")
+    
+   
+    """
 
-    #     for dataset_name, dataset in all_datasets.items():
-    #         print(f"Current Model: {name_model} with Dataset: {dataset_name}")
-    #         train_and_evaluate(name_model, dataset, config, logging_enabled=logging_enabled)
+
+     # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Benchmark Training Script")
+    parser.add_argument("-model", type=str, required=True, help="Name of the model to train")
+    parser.add_argument("-dataset", type=str, required=True, help="Name of the dataset to use")
+    parser.add_argument("--config", type=str, default="code/config/config.json",
+                        help="Path to the config file (library of models and datasets)")
+    parser.add_argument("--epochs", type=int, default=300, help="Number of training epochs")
+    parser.add_argument("--early_stopping", type=int, default=100, help="Epochs with no improvement for early stopping")
+    parser.add_argument("--batch_size", type=int, default=8, help="Training batch size")
+    parser.add_argument("--num_workers", type=int, default=32, help="Number of DataLoader workers")
+    parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate")
+    parser.add_argument("--weight_decay", type=float, default=0.001, help="Weight decay")
+    parser.add_argument("--loss", type=str, default="Dice", choices=["Dice", "clDice", "soft_dice_cldice", "FocalTversky"],
+                        help="Loss function to use")
+    parser.add_argument("--logging", type=str2bool, default=True, help="Enable TensorBoard logging")
+    parser.add_argument("--output_prefix", type=str, default="", help="Prefix for the output folder")
+    #parser.add_argument("--augmentation", type=bool, default=False, help="Apply data augmentation")
+    parser.add_argument("--thresh_value", type=int, default=100, help="Thresh value")
+    
+    parser.add_argument("--augment_geometric", type=str2bool, default=False, help="Enable geometric augmentation")
+    parser.add_argument("--augment_elastic", type=str2bool, default=False, help="Enable elastic augmentation")
+    parser.add_argument("--augment_intensity", type=str2bool, default=False, help="Enable intensity and color augmentation")
+    parser.add_argument("--augment_gamma", type=str2bool, default=False, help="Enable gamma correction augmentation")
+    parser.add_argument("--augment_noise", type=str2bool, default=False, help="Enable noise addition augmentation")
+
+    args = parser.parse_args()
+
+    #Almacenaje de la augmentation
+    augmentation_config = {
+        "enabled": (args.augment_geometric or args.augment_elastic or args.augment_intensity or args.augment_gamma or args.augment_noise),
+        "geometric": args.augment_geometric,
+        "elastic": args.augment_elastic,
+        "intensity_and_color": args.augment_intensity,
+        "gamma": args.augment_gamma,
+        "noise": args.augment_noise
+    }
+    augmentation_enabled = augmentation_config["enabled"]
+
+
+    # Load configuration from JSON file
+    with open(args.config, 'r') as f:
+        config = json.load(f)
+
+    #Load models and dataset TODO: This is not efficient. Only the selected model and dataset should be loaded
+    models = load_models_from_json(args.config)
+    print(f"Available Models: {[name for name in models]}")
+    if args.model not in models:
+        print(f"Error: Model '{args.model}' not found in the config library.")
+        sys.exit(1)
+    model_name = args.model
+
+    datasets_library = config.get("datasets", {})
+    if args.dataset not in datasets_library:
+        print(f"Error: Dataset '{args.dataset}' not found in the config library.")
+        sys.exit(1)
+
+    all_datasets = prepare_datasets_from_json(args.config, args.model, augmentation_config)
+    print(f"Available Datasets: {[dataset for dataset in all_datasets]}\n")
+    dataset = all_datasets[args.dataset]
+    
+    
+    #Setting up the writer for the logs
+    timestamp = dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    global_output_dir = os.path.join("run_benchmark_runs", f"{args.output_prefix}result_{timestamp}")
+    os.makedirs(global_output_dir, exist_ok=True)
+    writer = SummaryWriter(log_dir=global_output_dir)
+    set_writer(writer)
+    
+    
+    
+    # Print configuration before starting
+    print("Training Configuration:")
+    print(f"  Model: {args.model}")
+    print(f"  Dataset: {args.dataset}")
+    print(f"  Epochs: {args.epochs}")
+    print(f"  Thresh value: {args.thresh_value}")
+    print(f"  Early Stopping Threshold: {args.early_stopping}")
+    print(f"  Batch Size: {args.batch_size}")
+    print(f"  Learning Rate: {args.lr}")
+    print(f"  Weight Decay: {args.weight_decay}")
+    print(f"  Loss Function: {args.loss}")
+    print(f"  Logging Enabled: {args.logging}")
+    print(f"  Augmentation: {augmentation_config}")
+    print(f"  Output Directory: {global_output_dir}")
+    
+    #Training start
+    #train_and_evaluate(model_name, dataset, config, logging_enabled=args.logging)
+    train_and_evaluate(model_name, dataset, logging_enabled=args.logging)
+

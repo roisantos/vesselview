@@ -19,74 +19,81 @@ from utils.utils import *
 from training.loss import *
 from tqdm import tqdm
 
-# Prepare logging with a timestamp
-timestamp = datetime.now().strftime('%Y-%m-%d_%H.%M.%S')
-log_root = f"tensorboardLog/{timestamp}"
-writer = SummaryWriter(log_dir=log_root)
+writer = None
 
-# Load config
-config_path = os.path.join(ROOT_DIR, 'config/config.json')
-with open(config_path, 'r') as f:
-    config = json.load(f)
-dataset_base_path = config["datasets"]["base_path"]
-
+# Dataset path for FIVES512
+#path_FIVES = "/mnt/netapp2/Home_FT2/home/usc/ec/rsm/tfg_codebase_cesga/code/dataset/FIVES512"
+path_FIVES = os.path.join("dataset", "FIVES")
+assert os.path.exists(path_FIVES), f"Dataset path does not exist: {path_FIVES}"
+path_FIVES512 = os.path.join("dataset", "FIVES512")
+#assert os.path.exists(path_FIVES512), f"Dataset path does not exist: {path_FIVES512}"
+path_FIVES_1024 = os.path.join("dataset", "FIVES1024")
+#assert os.path.exists(path_FIVES_1024), f"Dataset path does not exist: {path_FIVES_1024}"
 
 # Functions
 # -----------------------------------------------------------------------------
 
+def set_writer(new_writer):
+    global writer
+    writer = new_writer
+
 def prepareDatasets():
     all_datasets = {}
     all_datasets['FIVES'] = {
-        "train":SegmentationDataset(os.path.join(dataset_base_path,"train"), ),
-        "test":SegmentationDataset(os.path.join(dataset_base_path, "test")),
-        "val":SegmentationDataset(os.path.join(dataset_base_path, "val"))
+        "train":SegmentationDataset(os.path.join(path_FIVES,"train"), ),
+        "test":SegmentationDataset(os.path.join(path_FIVES, "test")),
+        "val":SegmentationDataset(os.path.join(path_FIVES, "val"))
     }
-
+    
     return all_datasets
+def prepare_datasets_from_json(config_path, model_name, augmentation_config):
 
-def prepare_datasets_from_json(config_path):
     with open(config_path, 'r') as f:
         config = json.load(f)
 
+    
+    if model_name is not None and model_name in config["models"]:
+        num_channels = config["models"][model_name].get("ch_in", 3)
+        print("USING CHANNELS = 1")
+    else:
+        num_channels = 3
+        print("USING DEFAULT CHANNELS = 3")
+    
+    
+
     datasets = {}
-    base_path = config["datasets"]["base_path"] # Get base path
-    print(f"Base path from config: {base_path}")
-
-
     for name, ds_config in config["datasets"].items():
-        if name == "base_path":  # Skip the base_path entry itself
-            continue
-
         paths = ds_config["paths"]
         batch_size = ds_config.get("batch_size", 8)
-        augmentation_config = ds_config.get("augmentation", {}) # Get augmentation config
 
-        # Construct full paths using the base_path
+        
+
+        # Only create SegmentationDataset instances without DataLoader
         datasets[name] = {
-            "train": SegmentationDataset(os.path.join(base_path, paths["train"]), augmentation_config=augmentation_config, **ds_config.get("preprocessing", {})),
-            "val": SegmentationDataset(os.path.join(base_path, paths["val"]), augmentation_config=augmentation_config, **ds_config.get("preprocessing", {})),
-            "test": SegmentationDataset(os.path.join(base_path, paths["test"]), augmentation_config=augmentation_config, **ds_config.get("preprocessing", {}))
+            "train": SegmentationDataset(paths["train"], augmentation_config=augmentation_config,**ds_config.get("preprocessing", {}),num_channels=num_channels),
+            "val": SegmentationDataset(paths["val"], augmentation_config=augmentation_config, **ds_config.get("preprocessing", {}),num_channels=num_channels),
+            "test": SegmentationDataset(paths["test"],augmentation_config=augmentation_config,  **ds_config.get("preprocessing", {}),num_channels=num_channels)
         }
 
-        # Debugging: Test a few samples from the training dataset (optional, can be removed in production)
+        # Debugging: Test a few samples from the training dataset
+        """
         train_dataset = datasets[name]["train"]
         print(f"Testing dataset: {name} (train split)")
-        for i in range(20):
+        for i in range(20):  # Adjust the range as needed
             try:
                 name, image, label = train_dataset[i]
                 print(f"Sample {i}: Name={name}, Image Shape={image.shape}, Label Shape={label.shape}")
                 print(f"Image Dtype: {image.dtype}, Label Dtype: {label.dtype}")
             except Exception as e:
                 print(f"Error at index {i}: {e}")
-
+        """
     return datasets
-
 
 # Dataset Class
 # -----------------------------------------------------------------------------
 
 class SegmentationDataset(Dataset):
-    def __init__(self, dataset_paths: Union[str, List[str]], augmentation_config=None, start: float = 0, end: float = 1) -> None:
+    def __init__(self, dataset_paths: Union[str, List[str]], augmentation_config=None, start: float = 0, end: float = 1, num_channels: int = 3) -> None:
         """
         Dataset class for segmentation tasks. Loads images and labels from given paths.
 
@@ -98,6 +105,7 @@ class SegmentationDataset(Dataset):
         """
         super().__init__()
         self.ls_item = []
+        self.num_channels = num_channels #TODO: add augmentation config in script
         self.augmentation_config = augmentation_config if augmentation_config is not None else {} # Default to empty dict
 
         # Ensure dataset_paths is a list
@@ -108,9 +116,9 @@ class SegmentationDataset(Dataset):
         for path_dataset in dataset_paths:
             path_dir_image = os.path.join(path_dataset, "image")
             path_dir_label = os.path.join(path_dataset, "label")
-            print(f"Absolute Dataset path: {os.path.abspath(path_dataset)}")
-            print(f"Image dir: {os.path.abspath(path_dir_image)}")
-            print(f"Label dir: {os.path.abspath(path_dir_label)}")
+            #print(f"Absolute Dataset path: {os.path.abspath(path_dataset)}")
+            #print(f"Image dir: {os.path.abspath(path_dir_image)}")
+            #print(f"Label dir: {os.path.abspath(path_dir_label)}")
 
             # Verify image and label directories exist
             if not os.path.exists(path_dir_image) or not os.path.exists(path_dir_label):
@@ -122,8 +130,8 @@ class SegmentationDataset(Dataset):
             ls_image_files = [f for f in os.listdir(path_dir_image) if f.endswith(valid_extensions)]
             ls_label_files = [f for f in os.listdir(path_dir_label) if f.endswith(valid_extensions)]
 
-            print(f"Found image files: {ls_image_files}")  # Debug print
-            print(f"Found label files: {ls_label_files}")  # Debug print
+            #print(f"Found image files: {ls_image_files}")  # Debug print
+            #print(f"Found label files: {ls_label_files}")  # Debug print
 
             # Match images with labels
             for name in ls_image_files:
@@ -135,7 +143,7 @@ class SegmentationDataset(Dataset):
                     self.ls_item.append({"name": name, "path_image": path_image, "path_label": path_label})
 
         # Check for valid images
-        print(f"Dataset items before ValueError check: {self.ls_item}")  # Debug print
+        #print(f"Dataset items before ValueError check: {self.ls_item}")  # Debug print
         if not self.ls_item:
             raise ValueError("Error: No valid images found in dataset.")
 
@@ -155,7 +163,11 @@ class SegmentationDataset(Dataset):
 
             # Load and preprocess image and label
             name = item['name']
-            image = cv2.imread(item['path_image'], cv2.IMREAD_COLOR )
+            if self.num_channels == 1:
+                image = cv2.imread(item['path_image'], cv2.IMREAD_GRAYSCALE)
+            else:
+                image = cv2.imread(item['path_image'], cv2.IMREAD_COLOR)
+
             label = cv2.imread(item['path_label'], cv2.IMREAD_GRAYSCALE)
 
             # Debugging: Print information about the loaded data
@@ -172,6 +184,7 @@ class SegmentationDataset(Dataset):
             # Apply data augmentations
             if self.augmentation_config.get("enabled", False):  # Check if augmentation is globally enabled
                 image, label = self.augment(image, label)
+                #print("@@@@@@@@@@@@@@@@ AUGMENTATION OCCURRING @@@@@@@@@@@")
 
 
             # Threshold label to ensure binary values
@@ -197,6 +210,7 @@ class SegmentationDataset(Dataset):
 
         # --- Geometric Transformations ---
         if self.augmentation_config.get("geometric", False): # Check config
+            #print("####### applying geometric augment @@@@@@@")
             if random.random() < 0.5:  # 50% chance of applying geometric transformations
                 # Rotation
                 angle = random.uniform(-15, 15)
@@ -223,6 +237,7 @@ class SegmentationDataset(Dataset):
 
         # --- Elastic Deformations (Simplified) ---
         if self.augmentation_config.get("elastic", False): # Check config
+            #print("####### applying elastic augment @@@@@@@")
             if random.random() < 0.3: # 30% chance
                 alpha = image.shape[1] * random.uniform(0.5,1.5)  #Reduced range
                 sigma = image.shape[1] * 0.05 #  sigma to 5% of image width
@@ -241,6 +256,7 @@ class SegmentationDataset(Dataset):
 
         # --- Intensity and Color Adjustments (Only on Image) ---
         if self.augmentation_config.get("intensity_and_color", False): # Check config
+            #print("####### applying intensity and color augment @@@@@@@")
             if random.random() < 0.5:
                 # Brightness and Contrast
                 alpha = random.uniform(0.7, 1.3)  # Contrast
@@ -255,6 +271,7 @@ class SegmentationDataset(Dataset):
 
         # --- Gamma Correction (Only on Image) ---
         if self.augmentation_config.get("gamma", False):# Check config
+            #print("####### applying gamma augment @@@@@@@")
             if random.random() < 0.5:
                 gamma = random.uniform(0.7, 1.3)
                 invGamma = 1.0 / gamma
@@ -263,6 +280,7 @@ class SegmentationDataset(Dataset):
 
         # --- Noise Addition (Only on Image) ---
         if self.augmentation_config.get("noise", False): # Check config
+            #print("####### applying noise augment @@@@@@@")
             if random.random() < 0.3:
                 sigma = random.uniform(0, 10)  # Gaussian noise standard deviation
                 gauss = np.random.normal(0, sigma, image.size)
@@ -279,6 +297,8 @@ class SegmentationDataset(Dataset):
         # Ensure dimensions are multiples of 32 for model compatibility
         pad_x = (image.shape[1] // 32 + 1) * 32 - image.shape[1]
         pad_y = (image.shape[0] // 32 + 1) * 32 - image.shape[0]
+        if (pad_x == 32): pad_x = 0 #Evitar padding innecesario
+        if (pad_y == 32): pad_y = 0
         image = cv2.copyMakeBorder(image, pad_y // 2, pad_y // 2, pad_x // 2, pad_x // 2, cv2.BORDER_CONSTANT, value=0)
         label = cv2.copyMakeBorder(label, pad_y // 2, pad_y // 2, pad_x // 2, pad_x // 2, cv2.BORDER_CONSTANT, value=0)
 

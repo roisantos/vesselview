@@ -125,11 +125,14 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
             tepoch.set_description(description)
             data, label = data.to(device), label.to(device)
             
+            """
             print(f"\nBatch {i} cargado en GPU")
             print(f"- Tamaño del lote: {data.size()} elementos")
             print(f"- Memoria ocupada por `data`: {data.element_size() * data.nelement() / (1024 ** 2):.2f} MB")
             print(f"- Memoria ocupada por `label`: {label.element_size() * label.nelement() / (1024 ** 2):.2f} MB")
             print_gpu_memory_info("Después de cargar lote")
+            """
+            
 
             if is_training:
                 optimizer.zero_grad()
