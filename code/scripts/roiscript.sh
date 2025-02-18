@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J roinetlac        # Nombre del trabajo
-#SBATCH -o roinetlac_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e roinetlac_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J roinetac        # Nombre del trabajo
+#SBATCH -o roinetac_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e roinelac_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita 4 GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total

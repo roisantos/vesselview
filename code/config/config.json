@@ -109,7 +109,7 @@
                 "geometric": true,
                 "elastic": true,
                 "intensity_and_color": true,
-                "gamma": false,
+                "gamma": true,
                 "noise": true
             }
         }
