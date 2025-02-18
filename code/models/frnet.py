@@ -1,17 +1,7 @@
 import torch
 import sys
 import os
-"""
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/config')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/datasets')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/evaluation')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/inference')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/models')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/scripts')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/utils')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/training')))
 
-"""
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.insert(0, ROOT_DIR)
 from models.common import *

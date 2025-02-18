@@ -16,3 +16,4 @@ source /mnt/netapp2/Home_FT2/home/usc/cursos/curso040/Documentos/tfg/codeBase/FR
 
 # Ejecutar el script de entrenamiento
 srun --gres=gpu:a100:1 -c 32 --mem=48G --time=02:00:00 --pty bash
+#srun --gres=gpu:a100:4 -c 48 --mem=48G --time=02:00:00 --pty

@@ -389,6 +389,9 @@ if __name__ == "__main__":
     parser.add_argument("--augment_gamma", type=str2bool, default=False, help="Enable gamma correction augmentation")
     parser.add_argument("--augment_noise", type=str2bool, default=False, help="Enable noise addition augmentation")
 
+    parser.add_argument("--restormer", type=str2bool, default=False, help="Enable restormer")
+
+
     args = parser.parse_args()
 
     #Almacenaje de la augmentation
@@ -420,7 +423,7 @@ if __name__ == "__main__":
         print(f"Error: Dataset '{args.dataset}' not found in the config library.")
         sys.exit(1)
 
-    all_datasets = prepare_datasets_from_json(args.config, args.model, augmentation_config)
+    all_datasets = prepare_datasets_from_json(args.config, args.model, augmentation_config, restormer_config=args.restormer)
     print(f"Available Datasets: {[dataset for dataset in all_datasets]}\n")
     dataset = all_datasets[args.dataset]
     

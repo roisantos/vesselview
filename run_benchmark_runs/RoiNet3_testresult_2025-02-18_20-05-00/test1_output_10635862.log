@@ -1,0 +1,159 @@
+slurmstepd: info: Setting TMPDIR to /scratch/10635862. Previous errors about TMPDIR can be discarded
+Restormer model not found. Restormer preprocessing will be disabled.
+Available Models: ['FRNet', 'FRNet_1ch', 'FRNetR', 'RoiNet', 'RoiNet7', 'RoiNet5', 'RoiNet3', 'RoiNetR', 'RoiNetx1.5', 'RoiNetx0.5', 'RoiNetx2']
+ #### restormer config: False ########
+USING CHANNELS = 1
+Available Datasets: ['FIVES512', 'FIVES']
+
+Training Configuration:
+  Model: RoiNet3
+  Dataset: FIVES512
+  Epochs: 300
+  Thresh value: 100
+  Early Stopping Threshold: 100
+  Batch Size: 12
+  Learning Rate: 0.0001
+  Weight Decay: 0.001
+  Loss Function: Dice
+  Logging Enabled: True
+  Augmentation: {'enabled': False, 'geometric': False, 'elastic': False, 'intensity_and_color': False, 'gamma': False, 'noise': False}
+  Output Directory: run_benchmark_runs/RoiNet3_testresult_2025-02-18_20-05-00
+
+Modelo cargado en GPU:
+- Parámetros totales: 30720070
+- Memoria ocupada por modelo en GPU: 117.19 MB
+
+==== Memoria GPU - Después de cargar el modelo en GPU ====
+GPU 0 - Total: 40442.4 MB | Allocated: 118.2 MB | Cached: 144.0 MB
+
+
+USING: Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 118.2 MB | Cached: 144.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22408.0 MB
+
+Validation Dice: 0.44525493621215206 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22408.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.6143090657274396 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.7038292387473907 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.757188976012103 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.7895780567921341 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.8223900917000696 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.8254980439143914 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.8329190983311877 for Model: RoiNet3_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
+Validation Dice: 0.8309439987847287 for Model: RoiNet3_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 1572.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 473.2 MB | Cached: 22928.0 MB
+
