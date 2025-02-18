@@ -11,6 +11,7 @@ __pycache__
 test_runs
 runs
 venv
+venv/
 competencia/model_results
 run_benchmark_runs
 run_benchmark_runs/
