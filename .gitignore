@@ -13,3 +13,4 @@ runs
 venv
 competencia/model_results
 run_benchmark_runs
+run_benchmark_runs/
