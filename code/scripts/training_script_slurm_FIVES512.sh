@@ -1,9 +1,27 @@
 #!/bin/bash
-# Example training launch script
+#SBATCH -J RoiNet_Dice_FIVES512_NoAugment        # Nombre del trabajo
+#SBATCH -o RoiNet_Dice_FIVES512_NoAugment_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet_Dice_FIVES512_NoAugment_error_%j.log    # Archivo para la salida de errores
+#SBATCH --gres=gpu:a100:1        # Solicita GPU A100
+#SBATCH -c 32                    # 32 núcleos de CPU
+#SBATCH --mem=32G                # Memoria total
+#SBATCH -p medium
+#SBATCH -t 3:00:00              # Tiempo máximo de ejecución
+
+# Cargar módulos necesarios
+module load cesga/2020
+module load python/3.9.9
+
+
+#cd /home/usc/ec/rsm/fivesegmentor/
+#source ../vroi/bin/activate
+cd /mnt/netapp2/Store_uni/home/usc/ci/avs/tfg/tfg/fork-roi/fivesegmentor
+source venv/bin/activate
+
 
 # User-defined configuration variables
 MODEL="RoiNet"
-DATASET="FIVES"
+DATASET="FIVES512"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
@@ -13,7 +31,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="Testing"
+OUTPUT_PREFIX="RoiNet_slurm_FIVES512_Dice_NoAugment"
 THRESH_VALUE=100
 
 # Augmentation variables

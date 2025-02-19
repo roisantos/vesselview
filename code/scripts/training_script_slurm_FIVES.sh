@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH -J test_1        # Nombre del trabajo
-#SBATCH -o test1_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e test1_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J RoiNet_Dice_FIVES_NoAugment        # Nombre del trabajo
+#SBATCH -o RoiNet_Dice_FIVES_NoAugment_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet_Dice_FIVES_NoAugment_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
 #SBATCH -p medium
-#SBATCH -t 00:30:00              # Tiempo máximo de ejecución
+#SBATCH -t 10:00:00              # Tiempo máximo de ejecución
 
 # Cargar módulos necesarios
 module load cesga/2020
@@ -31,7 +31,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet_slurm_"
+OUTPUT_PREFIX="Roinet_slurm_FIVES_Dice_NoAugment"
 THRESH_VALUE=100
 
 # Augmentation variables
