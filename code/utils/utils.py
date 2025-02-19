@@ -136,6 +136,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
 
             if is_training:
                 optimizer.zero_grad()
+                #print("Tamaño del batch que llega al modelo:", data.shape)
                 out = model(data)
                 loss = sum(funcLoss(x, label) for x in (out if isinstance(out, list) else [out]))
                 loss.backward()
@@ -143,6 +144,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
                 if scheduler: scheduler.step()
             else:
                 with torch.no_grad():
+                    #print("Tamaño del batch que llega al modelo:", data.shape)
                     out = model(data)
                     loss = funcLoss(out, label)
                     for index in range(loader.batch_size):

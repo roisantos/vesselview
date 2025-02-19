@@ -97,10 +97,9 @@ def prepare_datasets_from_json(config_path, model_name, augmentation_config, res
     
     if model_name is not None and model_name in config["models"]:
         num_channels = config["models"][model_name].get("ch_in", 3)
-        print("USING CHANNELS = 1")
+        print(f"USING CHANNELS = {num_channels}")
     else:
-        num_channels = 3
-        print("USING DEFAULT CHANNELS = 3")
+        print(f"ERROR: Can't get ch_in")
     
     
 

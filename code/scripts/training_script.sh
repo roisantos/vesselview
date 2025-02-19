@@ -2,12 +2,12 @@
 # Example training launch script
 
 # User-defined configuration variables
-MODEL="RoiNet3"
+MODEL="FRNet_1ch"
 DATASET="FIVES512"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
-BATCH_SIZE=12
+BATCH_SIZE=1
 NUM_WORKERS=32
 LR=1e-4
 WEIGHT_DECAY=0.001

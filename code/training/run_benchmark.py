@@ -426,6 +426,8 @@ if __name__ == "__main__":
     all_datasets = prepare_datasets_from_json(args.config, args.model, augmentation_config, restormer_config=args.restormer)
     print(f"Available Datasets: {[dataset for dataset in all_datasets]}\n")
     dataset = all_datasets[args.dataset]
+    #print(f"All datasets: {all_datasets}")
+    #print(f"Dataset a usar: {dataset}")
     
     
     #Setting up the writer for the logs
