@@ -6,7 +6,7 @@
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
 #SBATCH -p medium
-#SBATCH -t 00:5:00              # Tiempo máximo de ejecución
+#SBATCH -t 00:30:00              # Tiempo máximo de ejecución
 
 # Cargar módulos necesarios
 module load cesga/2020
@@ -20,18 +20,18 @@ source venv/bin/activate
 
 
 # User-defined configuration variables
-MODEL="FRNet"
-DATASET="FIVES512"
+MODEL="RoiNet"
+DATASET="FIVES"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
-BATCH_SIZE=12
+BATCH_SIZE=1
 NUM_WORKERS=32
 LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="FRNet_mientras_"
+OUTPUT_PREFIX="RoiNet_slurm_"
 THRESH_VALUE=100
 
 # Augmentation variables

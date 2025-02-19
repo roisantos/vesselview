@@ -2,8 +2,8 @@
 # Example training launch script
 
 # User-defined configuration variables
-MODEL="FRNet_1ch"
-DATASET="FIVES512"
+MODEL="RoiNet"
+DATASET="FIVES"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
@@ -13,7 +13,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet3_test"
+OUTPUT_PREFIX="RoiNet_Dice_FIVES_"
 THRESH_VALUE=100
 
 # Augmentation variables

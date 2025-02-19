@@ -89,7 +89,7 @@ def prepareDatasets():
     
 def prepare_datasets_from_json(config_path, model_name, augmentation_config, restormer_config):
     
-    print(f" #### restormer config: {restormer_config} ########")
+    #print(f" #### restormer config: {restormer_config} ########")
 
     with open(config_path, 'r') as f:
         config = json.load(f)
