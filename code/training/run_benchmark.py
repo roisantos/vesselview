@@ -84,8 +84,7 @@ def load_models_from_json(config_path):
                 ch_in=mc.get("ch_in", 3),
                 ch_out=mc.get("ch_out", 1),
                 ls_mid_ch=mc.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
-                k_size=mc.get("k_size", 9),
-                out_k_size=mc.get("out_k_size", 25),
+                k_size=mc.get("k_size", 3),
                 cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
                 cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )

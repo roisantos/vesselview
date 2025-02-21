@@ -13,10 +13,8 @@ module load cesga/2020
 module load python/3.9.9
 
 
-#cd /home/usc/ec/rsm/fivesegmentor/
-#source ../vroi/bin/activate
-cd /mnt/netapp2/Store_uni/home/usc/ci/avs/tfg/tfg/fork-roi/fivesegmentor
-source venv/bin/activate
+cd /mnt/netapp2/Store_uni/home/usc/ec/rsm/fivesegmentor
+source ../vroi/bin/activate
 
 
 # User-defined configuration variables
