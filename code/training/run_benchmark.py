@@ -22,8 +22,8 @@ from ds.dataset import prepare_datasets_from_json, set_writer
 from utils.utils import *
 #from config.settings_benchmark import models  # Assuming `models` is a dictionary with available models
 from models.common import *
-from models.frnet import * 
-from models.roinet import * 
+from models.frnet import *
+from models.roinet import *
 
 # Initialize SummaryWriter for TensorBoard
 #writer = SummaryWriter()
@@ -41,19 +41,6 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
-
-def select_device_():
-    """Selects CUDA device if available, otherwise CPU."""
-    count_card = torch.cuda.device_count()
-    id_card = 0
-    if count_card > 1:
-        while True:
-            s = input(f"Choose video card number (0-{count_card-1}): ")
-            if s.isdigit() and (0 <= int(s) < count_card):
-                id_card = int(s)
-                break
-            print("Invalid input!")
-    return torch.device(f'cuda:{id_card}' if torch.cuda.is_available() else 'cpu')
 
 def select_device():
     """Selects CUDA device if available, otherwise CPU."""
@@ -86,7 +73,7 @@ def load_models_from_json(config_path):
     models = {}
     # Get the loss function specified in the training section
     #loss_function = config.get("training", {}).get("loss_function", "Dice")
-    
+
     for name, model_config in config["models"].items():
         # Append the loss function to the model name
         #new_name = f"{name}_{loss_function}"
@@ -97,6 +84,8 @@ def load_models_from_json(config_path):
                 ch_in=mc.get("ch_in", 3),
                 ch_out=mc.get("ch_out", 1),
                 ls_mid_ch=mc.get("ls_mid_ch", [32, 64, 128, 128, 64, 32]),
+                k_size=mc.get("k_size", 9),
+                out_k_size=mc.get("out_k_size", 25),
                 cls_init_block=eval(mc.get("cls_init_block", "ResidualBlock")),
                 cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
@@ -108,6 +97,42 @@ def load_models_from_json(config_path):
                 cls_conv_block=eval(mc.get("cls_conv_block", "ResidualBlock"))
             )
     return models
+
+def log_parameters(args, config, dataset_name, model_name, augmentation_config, restormer_config, output_dir):
+    """Logs parameters to a file in a human-readable format."""
+    log_file_path = os.path.join(output_dir, f"parameters_{dataset_name}_{model_name}_{args.loss}_{augmentation_config['enabled']}_{restormer_config}.log")
+    with open(log_file_path, "w") as f:
+        f.write("---------- Training Parameters ----------\n")
+        f.write(f"Model: {model_name}\n")
+        f.write(f"Dataset: {dataset_name}\n\n")
+
+        f.write("---------- Command-line Arguments ----------\n")
+        for arg, value in vars(args).items():
+            f.write(f"{arg}: {value}\n")
+        f.write("\n")
+
+        f.write("---------- Configuration File ----------\n")
+        for section, section_config in config.items():
+            f.write(f"[{section}]\n")
+            for key, value in section_config.items():
+                if isinstance(value, dict):
+                    f.write(f"  {key}:\n")
+                    for sub_key, sub_value in value.items():
+                        f.write(f"    {sub_key}: {sub_value}\n")
+                else:
+                    f.write(f"  {key}: {value}\n")
+            f.write("\n")
+
+        f.write("---------- Augmentation Configuration ----------\n")
+        for key, value in augmentation_config.items():
+            f.write(f"{key}: {value}\n")
+        f.write("\n")
+
+        f.write(f"---------- Restormer Configuration ----------\n")
+        f.write(f"Restormer Enabled: {restormer_config}\n")
+        f.write("\n")
+
+    print(f"Parameters logged to: {log_file_path}")
 
 
 # ---------------------------------------
@@ -132,7 +157,7 @@ def train_and_evaluate(model_name, dataset, logging_enabled=False):
     else:
         model_log_name = model_name
     """
-    
+
 
     print("\nModelo cargado en GPU:")
     print(f"- Parámetros totales: {sum(p.numel() for p in model.parameters())}")
@@ -161,7 +186,7 @@ def train_and_evaluate(model_name, dataset, logging_enabled=False):
     num_workers = args.num_workers
     learning_rate = args.lr
     weight_decay = args.weight_decay
-    
+
 
     optimizer = torch.optim.Adam(
         [param for param in model.parameters() if param.requires_grad],
@@ -336,12 +361,12 @@ if __name__ == "__main__":
     config_path = 'code/config/config.json'
     with open(config_path, 'r') as f:
         config = json.load(f)
-    
+
    # Print configuration before starting
     print("Loaded configuration:")
     print(json.dumps(config, indent=4))
 
-    logging_enabled = config["training"].get("logging_enabled", True)  
+    logging_enabled = config["training"].get("logging_enabled", True)
 
     models = load_models_from_json(config_path)
     all_datasets = prepare_datasets_from_json(config_path)
@@ -359,8 +384,8 @@ if __name__ == "__main__":
     for dataset_name, dataset in all_datasets.items():
         print(f"Using Dataset: {dataset_name}")
         train_and_evaluate(model_name, dataset, config, logging_enabled=logging_enabled)
-    
-   
+
+
     """
 
 
@@ -382,7 +407,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_prefix", type=str, default="", help="Prefix for the output folder")
     #parser.add_argument("--augmentation", type=bool, default=False, help="Apply data augmentation")
     parser.add_argument("--thresh_value", type=int, default=100, help="Thresh value")
-    
+
     parser.add_argument("--augment_geometric", type=str2bool, default=False, help="Enable geometric augmentation")
     parser.add_argument("--augment_elastic", type=str2bool, default=False, help="Enable elastic augmentation")
     parser.add_argument("--augment_intensity", type=str2bool, default=False, help="Enable intensity and color augmentation")
@@ -431,17 +456,17 @@ if __name__ == "__main__":
     dataset = all_datasets[args.dataset]
     print(f"All datasets: {all_datasets}")
     print(f"Dataset a usar: {dataset}")
-    
-    
+
+
     #Setting up the writer for the logs
     timestamp = dt.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     global_output_dir = os.path.join("run_benchmark_runs", f"{args.output_prefix}result_{timestamp}")
     os.makedirs(global_output_dir, exist_ok=True)
     writer = SummaryWriter(log_dir=global_output_dir)
     set_writer(writer)
-    
-    
-    
+
+
+
     # Print configuration before starting
     print("Training Configuration:")
     print(f"  Model: {args.model}")
@@ -456,7 +481,10 @@ if __name__ == "__main__":
     print(f"  Logging Enabled: {args.logging}")
     print(f"  Augmentation: {augmentation_config}")
     print(f"  Output Directory: {global_output_dir}")
-    
+
+    # Log parameters before training
+    log_parameters(args, config, args.dataset, model_name, augmentation_config, args.restormer, global_output_dir)
+
     #Training start
     #train_and_evaluate(model_name, dataset, config, logging_enabled=args.logging)
     train_and_evaluate(model_name, dataset, logging_enabled=args.logging)
