@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="Roinet_slurm_FIVES_Dice_NoAugment"
+OUTPUT_PREFIX="TestNumParam_Roinet_slurm_FIVES_Dice_NoAugment"
 THRESH_VALUE=100
 
 # Augmentation variables

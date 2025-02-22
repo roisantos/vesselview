@@ -464,22 +464,41 @@ if __name__ == "__main__":
     writer = SummaryWriter(log_dir=global_output_dir)
     set_writer(writer)
 
+    # Imprimir configuración de entrenamiento completa con comentarios de uso
+    print("Configuración de Entrenamiento:")
+    print(f"  Model: {args.model}")  
+    #   -> Se utiliza para seleccionar el modelo desde la librería de modelos (load_models_from_json)
+    print(f"  Dataset: {args.dataset}")  
+    #   -> Se usa para escoger el dataset a partir del diccionario cargado (prepare_datasets_from_json)
+    print(f"  Config File: {args.config}")  
+    #   -> Ruta al archivo JSON de configuración, empleado para cargar modelos y datasets
+    print(f"  Epochs: {args.epochs}")  
+    #   -> Número de epochs; se usa en el bucle de entrenamiento en train_and_evaluate
+    print(f"  Early Stopping: {args.early_stopping}")  
+    #   -> Valor de early stopping (aunque se imprime, la lógica de early stopping utiliza thresh_value)
+    print(f"  Thresh Value: {args.thresh_value}")  
+    #   -> Umbral para detener el entrenamiento si no hay mejoras (se usa en: if epoch - bestResult['epoch'] >= thresh_value)
+    print(f"  Batch Size: {args.batch_size}")  
+    #   -> Tamaño del batch; se pasa a los DataLoaders para entrenamiento y validación
+    print(f"  Num Workers: {args.num_workers}")  
+    #   -> Número de hilos para cargar datos; se utiliza en la creación de DataLoader
+    print(f"  Learning Rate: {args.lr}")  
+    #   -> Tasa de aprendizaje; se usa para configurar el optimizador (Adam)
+    print(f"  Weight Decay: {args.weight_decay}")  
+    #   -> Decaimiento de peso para el optimizador Adam
+    print(f"  Loss Function: {args.loss}")  
+    #   -> Selección de la función de pérdida (por ejemplo, Dice, clDice, etc.); se usa en train_and_evaluate
+    print(f"  Logging Enabled: {args.logging}")  
+    #   -> Flag para habilitar el logging en TensorBoard (se usa para condicionar los writes en el SummaryWriter)
+    print(f"  Output Prefix: {args.output_prefix}")  
+    #   -> Prefijo para el directorio de salida; se utiliza para formar global_output_dir
+    print(f"  Augmentation Config: {augmentation_config}")  
+    #   -> Diccionario que reúne las flags de augmentación; se pasa a prepare_datasets_from_json para configurar el dataset
+    print(f"  Restormer Enabled: {args.restormer}")  
+    #   -> Flag que indica si se debe habilitar Restormer; se pasa a prepare_datasets_from_json
+    print(f"  Output Directory: {global_output_dir}")  
+    #   -> Directorio donde se guardarán resultados, logs y el modelo con mejor desempeño (se usa en save_best_results)
 
-
-    # Print configuration before starting
-    print("Training Configuration:")
-    print(f"  Model: {args.model}")
-    print(f"  Dataset: {args.dataset}")
-    print(f"  Epochs: {args.epochs}")
-    print(f"  Thresh value: {args.thresh_value}")
-    print(f"  Early Stopping Threshold: {args.early_stopping}")
-    print(f"  Batch Size: {args.batch_size}")
-    print(f"  Learning Rate: {args.lr}")
-    print(f"  Weight Decay: {args.weight_decay}")
-    print(f"  Loss Function: {args.loss}")
-    print(f"  Logging Enabled: {args.logging}")
-    print(f"  Augmentation: {augmentation_config}")
-    print(f"  Output Directory: {global_output_dir}")
 
     # Log parameters before training
     log_parameters(args, config, args.dataset, model_name, augmentation_config, args.restormer, global_output_dir)
