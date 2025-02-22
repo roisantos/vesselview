@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J RoiNet_Dice_FIVES_NoAugment        # Nombre del trabajo
-#SBATCH -o RoiNet_Dice_FIVES_NoAugment_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet_Dice_FIVES_NoAugment_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J r5aug       # Nombre del trabajo
+#SBATCH -o RoiNet5_FIVES_Dice_Augment_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet5_FIVES_Dice_Augment_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -18,7 +18,7 @@ source ../vroi/bin/activate
 
 
 # User-defined configuration variables
-MODEL="RoiNet"
+MODEL="RoiNet5"
 DATASET="FIVES"
 CONFIG="code/config/config.json"
 EPOCHS=300
@@ -29,15 +29,15 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="TestNumParam_Roinet_slurm_FIVES_Dice_NoAugment"
+OUTPUT_PREFIX="RoiNet5_FIVES_Dice_Augment"
 THRESH_VALUE=100
 
 # Augmentation variables
-AUGMENT_GEOMETRIC="False" 
-AUGMENT_ELASTIC="False"
-AUGMENT_INTENSITY="False"
-AUGMENT_GAMMA="False"
-AUGMENT_NOISE="False"
+AUGMENT_GEOMETRIC="True" 
+AUGMENT_ELASTIC="True"
+AUGMENT_INTENSITY="True"
+AUGMENT_GAMMA="True"
+AUGMENT_NOISE="True"
 
 # Restormer
 RESTORMER="False"

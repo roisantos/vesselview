@@ -1476,3 +1476,923 @@ Validation Dice: 0.7819462680917525 for Model: RoiNet_Dice
 ==== Memoria GPU - Inicio de época ====
 GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
 
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8020253131522187 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8176926950229793 for Model: RoiNet_Dice
+New best dice found, evaluating on test set...
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7845553280488055 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7885078632211258 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7304508872378153 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7514430863752888 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7804031484604046 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7765280134782919 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8058245177378818 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.766326200588999 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7713609166152567 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7478336723269732 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7871730432072305 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7981662226690626 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7957487021064472 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7920046366890335 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7734854053119897 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7743673457735613 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7991407951727865 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.799486283245306 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7745840836929142 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7601639890001406 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7675643285640774 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7973754685201271 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8096401860765652 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7383693187140066 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7708988090303078 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7555019534709466 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7817044583651253 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8043752058738091 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7720785867507722 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.772320366835488 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8035546632743731 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8049717087656318 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8040738714969777 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7979308455741153 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7896790774758604 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7885046406969906 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7500363439780365 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7039918762269649 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7689472067581239 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7838270413890717 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7840067104022344 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7951351758283629 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8126345710032254 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.794518162682778 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.741094160926388 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7894989959964385 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.6987444712722952 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7856126939503575 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7509454559932475 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7668325874121332 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.6616629355579929 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7962279045111103 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7462819869144469 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7648542365846766 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7936698775910946 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.781730917155436 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8005314855692087 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7502059198147092 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7863565543017366 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7859548471913361 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7378530379865543 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7908791610701701 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7978435509537217 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7599764240766876 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7839496101451061 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.771292911375145 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7742738450910477 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7690483429968131 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7378053623860104 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8104524787020462 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7831398951522235 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7819424635229986 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7302764773934931 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7817162116921269 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7750926685151887 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8136513566837558 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7813717390542897 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7270062260087229 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7885363813528045 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.787061738965841 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7611108449007363 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8144849664259749 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7895340200513584 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7391699307093285 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.5213709807418858 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7851611653484541 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7952618770931353 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8034130046149461 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8149441292502096 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7480795052372204 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7761489879200558 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8009083098596836 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.790631940650626 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.8092229612195881 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.810803465058768 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7878540737931607 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7991437611245182 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7983633675858599 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.7772277599349047 for Model: RoiNet_Dice
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 1226.0 MB
+
+
+==== Memoria GPU - Inicio de época ====
+GPU 0 - Total: 40442.4 MB | Allocated: 72.6 MB | Cached: 30596.0 MB
+
+Validation Dice: 0.6910622974199934 for Model: RoiNet_Dice
+Stopping training: no improvement in last 100 epochs.
