@@ -122,6 +122,17 @@
           "end": 1
         }
     },
+    "FIVESgan": {
+        "paths": {
+            "train": "dataset/FIVESgan/train",
+            "val": "dataset/FIVESgan/val",
+            "test": "dataset/FIVESgan/test"
+        },
+        "preprocessing": {
+          "start": 0,
+          "end": 1
+        }
+    },
     "FIVESc": {
         "paths": {
             "train": "dataset/FIVESc/train",

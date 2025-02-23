@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH -J r5aug       # Nombre del trabajo
-#SBATCH -o RoiNet5_FIVES_Dice_Augment_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet5_FIVES_Dice_Augment_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J r5gei_c       # Nombre del trabajo
+#SBATCH -o RoiNet5_FIVESc_Dice_GeomElasIntensNoise_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet5_FIVESc_Dice_GeomElasIntensNoise_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
 #SBATCH -p medium
-#SBATCH -t 10:00:00              # Tiempo máximo de ejecución
+#SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución
 
 # Cargar módulos necesarios
 module load cesga/2020
@@ -19,7 +19,7 @@ source ../vroi/bin/activate
 
 # User-defined configuration variables
 MODEL="RoiNet5"
-DATASET="FIVES"
+DATASET="FIVESc"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
@@ -29,15 +29,15 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet5_FIVES_Dice_Augment"
+OUTPUT_PREFIX="RoiNet5_FIVESc_Dice_gei_"
 THRESH_VALUE=100
 
 # Augmentation variables
 AUGMENT_GEOMETRIC="True" 
 AUGMENT_ELASTIC="True"
 AUGMENT_INTENSITY="True"
-AUGMENT_GAMMA="True"
-AUGMENT_NOISE="True"
+AUGMENT_GAMMA="False"
+AUGMENT_NOISE="False"
 
 # Restormer
 RESTORMER="False"
