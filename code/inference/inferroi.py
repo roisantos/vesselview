@@ -1,4 +1,3 @@
-
 import os
 import sys
 import time
@@ -11,16 +10,7 @@ import torch.nn.functional as F
 from torchvision.utils import save_image
 from sklearn.metrics import roc_auc_score, f1_score, accuracy_score, recall_score, precision_score, jaccard_score, matthews_corrcoef, confusion_matrix
 
-# Add directories to sys.path (adjust these as needed for your project structure)
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/config')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/datasets')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/evaluation')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/inference')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/models')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/scripts')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/utils')))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/training')))
-# Also add the parent directory ("code") of the current file ("code/inference")
+# Add the parent directory ("code") of the current file ("code/inference")
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models.roinet import RoiNet  # Import the RoiNet model
