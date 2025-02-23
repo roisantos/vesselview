@@ -1,10 +1,17 @@
-import cv2
-import torch
+from torchvision.utils import save_image
+from models.roinet import RoiNet  # Import the RoiNet model
+from models.common import *        # Ensure ResidualBlock and others are available
 import os
 import sys
-import numpy as np
 import time
 import csv
+import cv2
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from sklearn.metrics import roc_auc_score, f1_score, accuracy_score, recall_score, precision_score, jaccard_score, matthews_corrcoef, confusion_matrix
+
 
 # Add directories to sys.path (adjust these as needed for your project structure)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code/config')))
@@ -18,9 +25,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'code
 # Also add the parent directory ("code") of the current file ("code/inference")
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from torchvision.utils import save_image
-from models.roinet import RoiNet  # Import the RoiNet model
-from models.common import *        # Ensure ResidualBlock and others are available
 
 def compute_dice(pred, gt, eps=1e-6):
     """Compute Dice coefficient given binary numpy arrays for prediction and ground truth."""
@@ -50,7 +54,7 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    # Prepare lists to accumulate overall per-image inference times and Dice scores,
+    # Prepare lists to accumulate overall per-image inference times, Dice scores, and additional metrics,
     # and a list of dictionaries for CSV writing.
     inference_times = []
     dice_scores = []
@@ -58,7 +62,7 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
     # Also prepare a dictionary to aggregate results per type.
     per_type = {}
-
+    
     # Process each image file in the input directory
     for filename in os.listdir(image_dir):
         if not filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
@@ -93,10 +97,12 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
         # Convert to a torch tensor and add a batch dimension: (1, C, H, W)
         image_tensor = torch.from_numpy(image_transposed).unsqueeze(0).to(device)
 
-        # Measure inference time
+        # Measure inference time (synchronize if using GPU to ensure correct timing)
         start_time = time.perf_counter()
         with torch.no_grad():
             output = model(image_tensor)
+        if device.type == 'cuda':
+            torch.cuda.synchronize()  # Wait for all CUDA operations to finish
         inference_time = time.perf_counter() - start_time
         inference_times.append(inference_time)
 
@@ -135,21 +141,68 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
         dice = compute_dice(pred_binary, gt_label_padded.astype(np.float32))
         dice_scores.append(dice)
 
-        print(f"{filename} - Dice Score: {dice:.4f}")
+        # Flatten arrays for metric computation
+        gt_flat = gt_label_padded.flatten().astype(np.int32)
+        pred_flat = pred_binary.flatten().astype(np.int32)
+        pred_prob_flat = pred_prob.flatten()
+
+        # Compute additional metrics
+        try:
+            auc = roc_auc_score(gt_flat, pred_prob_flat)
+        except Exception as e:
+            auc = float('nan')
+        f1 = f1_score(gt_flat, pred_flat)
+        acc = accuracy_score(gt_flat, pred_flat)
+        sen = recall_score(gt_flat, pred_flat)  # Sensitivity / Recall
+        pre = precision_score(gt_flat, pred_flat)
+        iou = jaccard_score(gt_flat, pred_flat)
+        mcc = matthews_corrcoef(gt_flat, pred_flat)
+        # Specificity: compute from confusion matrix (TN / (TN + FP))
+        cm = confusion_matrix(gt_flat, pred_flat)
+        if cm.shape == (2, 2):
+            tn, fp, fn, tp = cm.ravel()
+            spe = tn / (tn + fp) if (tn + fp) != 0 else 0.0
+        else:
+            spe = float('nan')
+
+        # Print the computed metrics
+        print(f"{filename} - Dice: {dice:.4f}, AUC: {auc:.4f}, F1: {f1:.4f}, Acc: {acc:.4f}, "
+              f"Sen: {sen:.4f}, Spe: {spe:.4f}, Pre: {pre:.4f}, IoU: {iou:.4f}, MCC: {mcc:.4f}")
 
         # Append the results for this image to our list for CSV
         results_for_csv.append({
             "filename": filename,
             "image_type": image_type,
             "inference_time_ms": inference_time * 1000,  # Convert seconds to ms
-            "dice_score": dice
+            "dice_score": dice,
+            "auc": auc,
+            "f1": f1,
+            "acc": acc,
+            "sen": sen,
+            "spe": spe,
+            "pre": pre,
+            "iou": iou,
+            "mcc": mcc
         })
 
         # Aggregate the results per image type
         if image_type not in per_type:
-            per_type[image_type] = {"times": [], "dice": []}
+            per_type[image_type] = {
+                "times": [], "dice": [],
+                "auc": [], "f1": [], "acc": [],
+                "sen": [], "spe": [], "pre": [],
+                "iou": [], "mcc": []
+            }
         per_type[image_type]["times"].append(inference_time * 1000)
         per_type[image_type]["dice"].append(dice)
+        per_type[image_type]["auc"].append(auc)
+        per_type[image_type]["f1"].append(f1)
+        per_type[image_type]["acc"].append(acc)
+        per_type[image_type]["sen"].append(sen)
+        per_type[image_type]["spe"].append(spe)
+        per_type[image_type]["pre"].append(pre)
+        per_type[image_type]["iou"].append(iou)
+        per_type[image_type]["mcc"].append(mcc)
 
     # Compute and print overall average inference time and Dice score
     avg_time = np.mean(inference_times) * 1000  # in milliseconds
@@ -157,16 +210,27 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     print(f"\nOverall Average Inference Time: {avg_time:.2f} ms")
     print(f"Overall Average Dice Score: {avg_dice:.4f}\n")
 
-    # Compute and print averages per image type
+    # Compute and print averages per image type (including the new metrics)
     for typ, stats in per_type.items():
         avg_time_type = np.mean(stats["times"])
         avg_dice_type = np.mean(stats["dice"])
-        print(f"Type: {typ} - Average Inference Time: {avg_time_type:.2f} ms, Average Dice: {avg_dice_type:.4f}")
+        avg_auc = np.mean(stats["auc"])
+        avg_f1 = np.mean(stats["f1"])
+        avg_acc = np.mean(stats["acc"])
+        avg_sen = np.mean(stats["sen"])
+        avg_spe = np.mean(stats["spe"])
+        avg_pre = np.mean(stats["pre"])
+        avg_iou = np.mean(stats["iou"])
+        avg_mcc = np.mean(stats["mcc"])
+        print(f"Type: {typ} - Avg Time: {avg_time_type:.2f} ms, Dice: {avg_dice_type:.4f}, AUC: {avg_auc:.4f}, "
+              f"F1: {avg_f1:.4f}, Acc: {avg_acc:.4f}, Sen: {avg_sen:.4f}, Spe: {avg_spe:.4f}, "
+              f"Pre: {avg_pre:.4f}, IoU: {avg_iou:.4f}, MCC: {avg_mcc:.4f}")
 
     # Write the per-image results into a CSV file
     csv_file_path = os.path.join(output_dir, "results.csv")
     with open(csv_file_path, "w", newline="") as csvfile:
-        fieldnames = ["filename", "image_type", "inference_time_ms", "dice_score"]
+        fieldnames = ["filename", "image_type", "inference_time_ms", "dice_score",
+                      "auc", "f1", "acc", "sen", "spe", "pre", "iou", "mcc"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for row in results_for_csv:
@@ -176,14 +240,24 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
     # Optionally, write the summary per type to another CSV file
     summary_csv_path = os.path.join(output_dir, "summary_by_type.csv")
     with open(summary_csv_path, "w", newline="") as csvfile:
-        fieldnames = ["image_type", "avg_inference_time_ms", "avg_dice_score"]
+        fieldnames = ["image_type", "avg_inference_time_ms", "avg_dice_score",
+                      "avg_auc", "avg_f1", "avg_acc", "avg_sen", "avg_spe",
+                      "avg_pre", "avg_iou", "avg_mcc"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for typ, stats in per_type.items():
             writer.writerow({
                 "image_type": typ,
                 "avg_inference_time_ms": np.mean(stats["times"]),
-                "avg_dice_score": np.mean(stats["dice"])
+                "avg_dice_score": np.mean(stats["dice"]),
+                "avg_auc": np.mean(stats["auc"]),
+                "avg_f1": np.mean(stats["f1"]),
+                "avg_acc": np.mean(stats["acc"]),
+                "avg_sen": np.mean(stats["sen"]),
+                "avg_spe": np.mean(stats["spe"]),
+                "avg_pre": np.mean(stats["pre"]),
+                "avg_iou": np.mean(stats["iou"]),
+                "avg_mcc": np.mean(stats["mcc"])
             })
     print(f"Summary per image type written to {summary_csv_path}")
 

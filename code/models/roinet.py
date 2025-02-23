@@ -58,43 +58,35 @@ class RoiNet(nn.Module):
 
         # ------------------ Decoder ------------------
         # Block 3: Upsample from bottleneck.
-        # Note: In the loop below, we follow your original channel logic.
-        # Conv3: map from 256 to ls_mid_ch[3] (128).
         self.dict_module.add_module("conv3", cls_init_block(ch, ls_mid_ch[3], k_size=k_size, layer_num=3))
-        ch = ls_mid_ch[3]  # 128
-        # Upsample: halve the channels (128 -> 64) and double the resolution.
+        ch = ls_mid_ch[3]  # 128 originally, 192 in the scaled version
         self.dict_module.add_module("up3", nn.Sequential(
             nn.ConvTranspose2d(ch, ch // 2, kernel_size=2, stride=2)
         ))
-        ch = ch // 2  # now 64
-        # Merge with skip connection from Block 1 (pool1 output had 128 channels).
-        # Total channels: 64 (from upsampled conv3) + 128 = 192.
+        ch = ch // 2  # becomes 64 originally, 96 in the scaled version
+        # Merge with skip connection from Block 1 (pool1 output has ls_mid_ch[1]*2 channels)
         self.dict_module.add_module("merge3", nn.Sequential(
-            nn.Conv2d(192, ls_mid_ch[1], kernel_size=3, padding=1, bias=False),  # output to 64 channels
+            nn.Conv2d((ls_mid_ch[3] // 2) + (ls_mid_ch[1] * 2), ls_mid_ch[1], kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(ls_mid_ch[1]),
             nn.ReLU(inplace=True)
         ))
-        ch = ls_mid_ch[1]  # now 64
+        ch = ls_mid_ch[1]  # now set to ls_mid_ch[1]
 
         # Block 4: Further upsampling.
         self.dict_module.add_module("conv4", cls_init_block(ch, ls_mid_ch[4], k_size=k_size, layer_num=4))
-        ch = ls_mid_ch[4]  # 64
+        ch = ls_mid_ch[4]
         self.dict_module.add_module("up4", nn.Sequential(
             nn.ConvTranspose2d(ch, ch // 2, kernel_size=2, stride=2)
         ))
-        ch = ch // 2  # becomes 32
+        ch = ch // 2  # becomes ls_mid_ch[4]//2
         # Merge with skip connection from Block 0.
-        # Total channels: 32 (from upsample) + 32 (from conv0) = 64.
         self.dict_module.add_module("merge4", nn.Sequential(
-            nn.Conv2d(64, ls_mid_ch[0], kernel_size=3, padding=1, bias=False),  # output to 32 channels
+            nn.Conv2d((ls_mid_ch[4] // 2) + ls_mid_ch[0], ls_mid_ch[0], kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(ls_mid_ch[0]),
             nn.ReLU(inplace=True)
         ))
-        ch = ls_mid_ch[0]  # now 32
+        ch = ls_mid_ch[0]
 
-        # Block 5: Final conv block in decoder.
-        self.dict_module.add_module("conv5", cls_init_block(ch, ls_mid_ch[5], k_size=k_size, layer_num=5))
-        ch = ls_mid_ch[5]  # 32
 
         # ------------------ Final Classification ------------------
         # Instead of a heavy convolution with a large kernel and max over channels,
