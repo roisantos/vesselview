@@ -262,13 +262,13 @@ def run_inference_on_directory(image_dir, label_dir, output_dir, model_path):
 
 # ------------------ User Settings ------------------
 # Directory containing the input images
-image_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal/test/image"
+image_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESc/test/image"
 # Directory containing the corresponding ground-truth labels
-label_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESoriginal/test/label"
+label_dir = r"/mnt/netapp2/Store_uni/home/usc/ec/rsm/FIVESc/test/label"
 # Directory where the inference results will be saved
 output_dir = os.path.join('inference_results', 'RoiNetAugment_inference')
 # Path to the trained RoiNet model weights (update this if needed)
-model_path = '/mnt/netapp2/Store_uni/home/usc/ec/rsm/fivesegmentor/run_RoiNet_Dice/model_best.pth'
+model_path = '/mnt/netapp2/Store_uni/home/usc/ec/rsm/roinetlac/run_RoiNet_Dice/model_best.pth'
 
 # Run the inference
 run_inference_on_directory(image_dir, label_dir, output_dir, model_path)
