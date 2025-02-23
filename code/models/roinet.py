@@ -72,14 +72,13 @@ class RoiNet(nn.Module):
         ))
         ch = ls_mid_ch[1]  # now set to ls_mid_ch[1]
 
-        # Block 4: Further upsampling.
+        # Block 4: Further upsampling
         self.dict_module.add_module("conv4", cls_init_block(ch, ls_mid_ch[4], k_size=k_size, layer_num=4))
         ch = ls_mid_ch[4]
         self.dict_module.add_module("up4", nn.Sequential(
             nn.ConvTranspose2d(ch, ch // 2, kernel_size=2, stride=2)
         ))
-        ch = ch // 2  # becomes ls_mid_ch[4]//2
-        # Merge with skip connection from Block 0.
+        ch = ch // 2
         self.dict_module.add_module("merge4", nn.Sequential(
             nn.Conv2d((ls_mid_ch[4] // 2) + ls_mid_ch[0], ls_mid_ch[0], kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(ls_mid_ch[0]),
@@ -87,10 +86,11 @@ class RoiNet(nn.Module):
         ))
         ch = ls_mid_ch[0]
 
+        # ---- ADD THIS BLOCK 5 ----
+        self.dict_module.add_module("conv5", cls_init_block(ch, ls_mid_ch[5], k_size=k_size, layer_num=5))
+        ch = ls_mid_ch[5]
 
-        # ------------------ Final Classification ------------------
-        # Instead of a heavy convolution with a large kernel and max over channels,
-        # we simply map from 32 channels to ch_out using a 1x1 conv.
+        # ---- Final Classification ----
         self.dict_module.add_module("final", nn.Sequential(
             nn.Conv2d(ch, ch_out, kernel_size=1, bias=False),
             nn.Sigmoid()
