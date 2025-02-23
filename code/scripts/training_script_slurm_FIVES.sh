@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J 5x15gei_c       # Nombre del trabajo
-#SBATCH -o RoiNet5x1.5_FIVESc_Dice_GeomElasIntens_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet5x1.5_FIVESc_Dice_GeomElasIntens_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J 3x15gei_c       # Nombre del trabajo
+#SBATCH -o RoiNet3x1.5_FIVESc_Dice_GeomElasIntens_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet3x1.5_FIVESc_Dice_GeomElasIntens_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -18,7 +18,7 @@ source ../vroi/bin/activate
 
 
 # User-defined configuration variables
-MODEL="RoiNet5x1.5"
+MODEL="RoiNet3x1.5"
 DATASET="FIVESc"
 CONFIG="code/config/config.json"
 EPOCHS=300
@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet5x1.5_FIVESc_Dice_gei_"
+OUTPUT_PREFIX="RoiNet3x1.5_FIVESc_Dice_gei_"
 THRESH_VALUE=100
 
 # Augmentation variables
