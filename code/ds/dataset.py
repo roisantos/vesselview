@@ -315,7 +315,7 @@ class SegmentationDataset(Dataset):
         if self.augmentation_config.get("elastic", False): # Check config
             #print("####### applying elastic augment @@@@@@@")
             if random.random() < 0.3: # 30% chance
-                alpha = image.shape[1] * random.uniform(0.5,1.5)  #Reduced range
+                alpha = image.shape[1] * random.uniform(0.1,0.5)  #Reduced range
                 sigma = image.shape[1] * 0.05 #  sigma to 5% of image width
 
                 #print(f"alpha: {alpha}, sigma: {sigma}")
@@ -335,21 +335,21 @@ class SegmentationDataset(Dataset):
             #print("####### applying intensity and color augment @@@@@@@")
             if random.random() < 0.5:
                 # Brightness and Contrast
-                alpha = random.uniform(0.7, 1.3)  # Contrast
+                alpha = random.uniform(0.8, 1.2)  # Contrast
                 beta = random.uniform(-30, 30)   # Brightness
                 image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
 
                 # Saturation (for color images)
                 if image.ndim == 3:
                     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-                    hsv[:, :, 1] = np.clip(hsv[:, :, 1] * random.uniform(0.7, 1.3), 0, 255)
+                    hsv[:, :, 1] = np.clip(hsv[:, :, 1] * random.uniform(0.8, 1.2), 0, 255)
                     image = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
 
         # --- Gamma Correction (Only on Image) ---
         if self.augmentation_config.get("gamma", False):# Check config
             #print("####### applying gamma augment @@@@@@@")
             if random.random() < 0.5:
-                gamma = random.uniform(0.7, 1.3)
+                gamma = random.uniform(0.9, 1.1)
                 invGamma = 1.0 / gamma
                 table = np.array([((i / 255.0) ** invGamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
                 image = cv2.LUT(image, table)
@@ -358,7 +358,7 @@ class SegmentationDataset(Dataset):
         if self.augmentation_config.get("noise", False): # Check config
             #print("####### applying noise augment @@@@@@@")
             if random.random() < 0.3:
-                sigma = random.uniform(0, 10)  # Gaussian noise standard deviation
+                sigma = random.uniform(0, 5)  # Gaussian noise standard deviation
                 gauss = np.random.normal(0, sigma, image.size)
                 gauss = gauss.reshape(image.shape).astype('uint8')
                 image = cv2.add(image, gauss)
