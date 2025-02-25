@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J r7fa_c       # Nombre del trabajo
-#SBATCH -o RoiNet7_FIVESc_Dice_NewFAugmentation_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet7_FIVESc_Dice_NewFAugmentation_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J r9fa_c       # Nombre del trabajo
+#SBATCH -o RoiNet9_FIVESc_Dice_NewFAugmentation_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9_FIVESc_Dice_NewFAugmentation_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -18,8 +18,8 @@ source ../vroi/bin/activate
 
 
 # User-defined configuration variables
-MODEL="RoiNet7"
-DATASET="FIVES"
+MODEL="RoiNet9"
+DATASET="FIVESc"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet7_FIVESc_Dice_NewFAugmentation_"
+OUTPUT_PREFIX="RoiNet9_FIVESc_Dice_NewFAugmentation_"
 THRESH_VALUE=100
 
 # Augmentation variables
