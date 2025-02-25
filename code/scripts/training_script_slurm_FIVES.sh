@@ -4,7 +4,7 @@
 #SBATCH -e RoiNet7x1.5_FIVES_Dice_NewFAugmentation_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
-#SBATCH --mem=64G                # Memoria total
+#SBATCH --mem=32G                # Memoria total
 #SBATCH -p medium
 #SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución
 
