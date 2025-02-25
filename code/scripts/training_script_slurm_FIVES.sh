@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J r9geiN_c       # Nombre del trabajo
-#SBATCH -o RoiNet9_FIVESc_Dice_GeomElasIntensNOISE_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet9_FIVESc_Dice_GeomElasIntensNOISE_error_%j.log    # Archivo para la salida de errores
+#SBATCH -J r9fa_c       # Nombre del trabajo
+#SBATCH -o RoiNet9_FIVESc_Dice_NewFAugmentation_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9_FIVESc_Dice_NewFAugmentation_error_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=64G                # Memoria total
@@ -36,8 +36,8 @@ THRESH_VALUE=100
 AUGMENT_GEOMETRIC="True" 
 AUGMENT_ELASTIC="True"
 AUGMENT_INTENSITY="True"
-AUGMENT_GAMMA="False"
-AUGMENT_NOISE="False"
+AUGMENT_GAMMA="True"
+AUGMENT_NOISE="True"
 
 # Restormer
 RESTORMER="False"
