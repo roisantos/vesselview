@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J r7x05gein_c       # Nombre del trabajo
-#SBATCH -o RoiNet7x0.5_FIVESc_Dice_gein_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet7x0.5_FIVESc_Dice_gein_%j.log    # Archivo para la salida de errores
+#SBATCH -J r9x05gein_c       # Nombre del trabajo
+#SBATCH -o RoiNet9x0.5_FIVESc_Dice_gein_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9x0.5_FIVESc_Dice_gein_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -18,7 +18,7 @@ source ../vroi/bin/activate
 
 
 # User-defined configuration variables
-MODEL="RoiNet7x0.5"
+MODEL="RoiNet9x0.5"
 DATASET="FIVESc"
 CONFIG="code/config/config.json"
 EPOCHS=300
@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet7x0.5_FIVESc_Dice_gein_"
+OUTPUT_PREFIX="RoiNet9x0.5_FIVESc_Dice_gein_"
 THRESH_VALUE=100
 
 # Augmentation variables
