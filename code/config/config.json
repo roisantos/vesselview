@@ -115,7 +115,25 @@
       "cls_init_block": "ResidualBlock",
       "cls_conv_block": "ResidualBlock"
     },
-    "RoiNetx0.5": {
+    "RoiNet9x0.5": {
+      "type": "RoiNetx0.5",
+      "ch_in": 3,
+      "ch_out": 1,
+      "ls_mid_ch": [16, 32, 64, 64, 32, 16],
+      "k_size": 9,
+      "cls_init_block": "ResidualBlock",
+      "cls_conv_block": "ResidualBlock"
+    },
+    "RoiNet7x0.5": {
+      "type": "RoiNetx0.5",
+      "ch_in": 3,
+      "ch_out": 1,
+      "ls_mid_ch": [16, 32, 64, 64, 32, 16],
+      "k_size": 9,
+      "cls_init_block": "ResidualBlock",
+      "cls_conv_block": "ResidualBlock"
+    },
+    "RoiNet5x0.5": {
       "type": "RoiNetx0.5",
       "ch_in": 3,
       "ch_out": 1,
