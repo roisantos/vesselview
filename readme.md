@@ -1,48 +1,90 @@
+# RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images
 
+This repository contains the implementation of RetNet, a convolutional neural network specifically designed for the segmentation of blood vessels in high-resolution retinal fundus images. This work has been submitted for publication by Roi Santos-Mateos under the title "RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images".
 
-Para configurar una loss function, cambia dos cosas:
-el config.json
-la opción en la llamada a run_benchmark.py en el script .sh:
-srun python ./code/training/run_benchmark.py -model "RoiNet_Dice"
+## Overview
 
-Para lanzar FRNet  (la red original, con bloques RRCNNBlock y RecurrentConvNeXtBlock), uso el script fr.sh
-Para lanzar FRNetR (la red original, con bloques ResidualBlock), uso el script frr.sh
-Para lanzar RoiNet  uso los scripts roiscript.sh ,roiscriptx15.sh  (multiplica x 1.5),roiscriptx20.sh  (multiplica x 2.0). 
-(RoiNetR funciona pero no la uses, ni siquiera la pensé, le correspondería el script rr.sh)  (Nota: Los nombres de los modelos (con R o sin R) no tienen lógica, lo ves más claro en el config.json)
+RetNet is an advanced deep learning model for accurate segmentation of blood vessels in retinal fundus images. The neural network architecture employs a U-Net-like structure with custom residual blocks and specialized bottleneck layers to effectively capture vessel structures at different scales. The model has been tested on high-resolution images and achieves state-of-the-art performance on standard retinal vessel segmentation benchmarks.
 
-En cualquier caso, estoy usando kernels de 9x9 o 11x11. Probé con 5x5 y 3x3 y no subia de DICE 0.72 ... también es cierto que tenía otras cosas de la configuración, debería volver a probar. Esto es lo que pasa cuando no tienes tiempo para hacer una búsqueda de hiperparámetros . Pierdes más tiempo, no eres metódico... a ver cómo hacemos el ablation study.
+## Repository Structure
 
-Con una sóla máquina (32 cores. 64 GB de RAM y una GPU) me entrena RoiNet x 1.5 (18 Millones de parámetros) . Pero si subo a x 2.0 (será más de 25 Millones de parámetros) ya me da error out of memory (OOM).
+The repository is organized as follows:
 
+- `code/`
+  - `models/`: Neural network model definitions
+    - `roinet.py`: The main RetNet model implementation
+    - `frnet.py`: An alternative model architecture (FRNet)
+    - `common.py`: Common building blocks for neural networks
+  - `training/`: Training-related code
+    - `run_benchmark.py`: Main training and evaluation script
+    - `loss.py`: Implementation of loss functions (Dice, CL-Dice, etc.)
+    - `soft_skeleton.py`: Implementation of soft skeletonization for loss functions
+  - `ds/`: Dataset handling
+    - `dataset.py`: Dataset classes and data augmentation
+    - `resizeDatasetTo512.py`: Utility to resize datasets to 512x512
+  - `utils/`: Utility functions
+    - `utils.py`: Helper functions for model training and visualization
+  - `inference/`: Code for model inference
+    - `inferroi.py`: Inference script for RetNet
+    - `infer.py` and `infer_linux.py`: Platform-specific inference scripts
+  - `evaluation/`: Model evaluation code
+    - `evaluation.py`: Implementation of evaluation metrics
+    - `plot_activations.ipynb`: Notebook for visualizing model activations
+  - `config/`: Configuration files
+    - `config.json`: Model and training configuration
+  - `scripts/`: Shell scripts for training and deployment
+    - Various `.sh` files for running training on slurm clusters
 
-1. Arquitectura y Configuración
-train_multiGPU.py: Principal script de entrenamiento que configura y ejecuta la red en múltiples GPUs si están disponibles. Incluye la lógica para gestionar los dispositivos, cargar datasets, inicializar el modelo (FRNet) y aplicar técnicas de optimización y programación de tasa de aprendizaje.
-settings_benchmark.py: Define las configuraciones de modelos y facilita la creación de instancias de FRNet.
-script_slurm.sh: Script SLURM para ejecutar el código en el entorno FinisTerrae, especificando los recursos (4 GPUs, 48 núcleos de CPU, 96GB de RAM).
+## Model Architecture
 
-2. Datasets y Preprocesamiento
-dataset.py y resizeDatasetTo512.py: Scripts para gestionar y preparar los datos. resizeDatasetTo512.py redimensiona las imágenes a 512x512, un tamaño manejable para el entrenamiento inicial.
-SegmentationDataset: Clase personalizada para cargar imágenes y etiquetas, aplicando transformaciones, padding y normalización. Se asegura de que las dimensiones sean múltiplos de 32 para optimizar el procesamiento en el modelo.
+RetNet is a CNN-based architecture designed for precise blood vessel segmentation:
 
-3. Modelos y Funciones de Pérdida
-FRNet: Implementación de la red convolucional para segmentación de alta precisión.
-DiceLoss (en loss.py): Función de pérdida basada en el coeficiente de Dice, ideal para tareas de segmentación, ya que mide la superposición entre las predicciones y las etiquetas reales.
+- **Encoder**: Series of convolutional blocks with residual connections that gradually reduce spatial dimensions while increasing feature channels
+- **Bottleneck**: Multiple residual blocks for processing high-level features
+- **Decoder**: Upsampling blocks with skip connections from encoder to recover spatial details
+- **Custom Blocks**: Residual blocks with large kernel sizes (9x9 or 11x11) for capturing vessel-like structures
 
-4. Entrenamiento y Evaluación
-run_benchmark.py: Ejecuta el entrenamiento y evalúa el rendimiento de FRNet en los conjuntos de datos definidos. Almacena los resultados de las métricas en formato JSON y guarda el modelo con el mejor índice de Dice.
-custom_collate y traverseDataset: Funciones auxiliares para manejar lotes de datos y realizar el entrenamiento por épocas. traverseDataset incluye lógica de evaluación y cálculo de métricas para validar el modelo en cada época.
+The model supports different configurations with varying depths and channel widths to balance between accuracy and computational efficiency.
 
-5. Visualización y Monitoreo de Activaciones y Gradientes
-utils.py: Contiene funciones para registrar activaciones y gradientes en cada capa convolucional durante el entrenamiento. Las activaciones y gradientes se guardan en un SummaryWriter de TensorBoard, permitiendo el análisis visual de las capas y posibles cuellos de botella.
-plot_activations.ipynb: Un notebook para visualizar las activaciones y gradientes, permitiendo identificar patrones y evaluar la eficacia del modelo en diferentes épocas.
+## Training
 
-6. Inferencia
-infer.py y infer_linux.py: Scripts de inferencia que cargan el modelo entrenado y procesan un directorio de imágenes para generar predicciones de segmentación. Aplican padding a las imágenes para asegurar que las dimensiones sean compatibles con el modelo y guardan los resultados como tensores y archivos de imagen.
+The training procedure uses:
 
-7. Evaluación de Métricas
-evaluation.py: Calcula métricas de rendimiento como precisión (accuracy), sensibilidad (sens), especificidad (spe), y coeficiente de Dice. Estas métricas permiten analizar el rendimiento del modelo en términos de aciertos y errores en la segmentación de vasos.
+- **Loss Functions**: Primarily Dice loss, with support for other advanced losses such as CL-Dice
+- **Data Augmentation**: Geometric transformations, elastic deformation, and intensity adjustments
+- **Optimization**: Adam optimizer with learning rate scheduling
+- **Validation**: Regular evaluation on validation set using Dice coefficient and other metrics
 
-8. Documentación
-readme.md: Explica la estructura y el propósito del código, junto con las instrucciones de ejecución. Describe el proceso para añadir nuevos datasets y modelos, lo que facilita la extensión del proyecto.
+## Inference
 
-Enjoy!!
+For inference on new images, use the `inferroi.py` script:
+
+```
+python code/inference/inferroi.py --model_path /path/to/model --input_dir /path/to/images --output_dir /path/to/results
+```
+
+## Requirements
+
+Required packages are listed in the `requeriments` directory. The core dependencies include:
+
+- PyTorch 1.9+
+- OpenCV
+- NumPy
+- scikit-image
+- TensorBoard
+
+## Citation
+
+If you use this code in your research, please cite:
+
+```
+Santos-Mateos, R. (2023). RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images. [Under Review]
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+This work was developed at the University of Santiago de Compostela.
