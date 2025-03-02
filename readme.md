@@ -78,7 +78,7 @@ Required packages are listed in the `requeriments` directory. The core dependenc
 If you use this code in your research, please cite:
 
 ```
-Santos-Mateos, R. (2023). RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images. [Under Review]
+TBD
 ```
 
 ## License
