@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J r9FTgein_c       # Nombre del trabajo
-#SBATCH -o RoiNet9_FIVESc_FocalTversky_gein_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet9_FIVESc_FocalTversky_gein_%j.log    # Archivo para la salida de errores
+#SBATCH -J r9FTgein       # Nombre del trabajo
+#SBATCH -o RoiNet9_FIVES_FocalTversky_gein_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9_FIVES_FocalTversky_gein_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -19,7 +19,7 @@ source ../vroi/bin/activate
 
 # User-defined configuration variables
 MODEL="RoiNet9"
-DATASET="FIVESc"
+DATASET="FIVES"
 CONFIG="code/config/config.json"
 EPOCHS=300
 EARLY_STOP=100
@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="FocalTversky"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet9_FIVESc_FocalTversky_gein_"
+OUTPUT_PREFIX="RoiNet9_FIVES_FocalTversky_gein_"
 THRESH_VALUE=100
 
 # Augmentation variables
