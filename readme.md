@@ -1,6 +1,6 @@
 # VesselView: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images
 
-This repository contains the implementation of VesselView, a convolutional neural network specifically designed for the segmentation of blood vessels in high-resolution retinal fundus images. This work has been submitted for publication under the title "RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images".
+This repository contains the implementation of VesselView, a convolutional neural network specifically designed for the segmentation of blood vessels in high-resolution retinal fundus images. This work has been submitted for publication by Roi Santos-Mateos (me) et al. under the title "RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images".
 
 ## Overview
 
@@ -12,7 +12,7 @@ The repository is organized as follows:
 
 - `code/`
   - `models/`: Neural network model definitions
-    - `roinet.py`: The main RetNet model implementation
+    - `roinet.py`: The main VesselView model implementation
     - `frnet.py`: An alternative model architecture (FRNet)
     - `common.py`: Common building blocks for neural networks
   - `training/`: Training-related code
@@ -25,7 +25,7 @@ The repository is organized as follows:
   - `utils/`: Utility functions
     - `utils.py`: Helper functions for model training and visualization
   - `inference/`: Code for model inference
-    - `inferroi.py`: Inference script for RetNet
+    - `inferroi.py`: Inference script for VesselView
     - `infer.py` and `infer_linux.py`: Platform-specific inference scripts
   - `evaluation/`: Model evaluation code
     - `evaluation.py`: Implementation of evaluation metrics
@@ -37,7 +37,7 @@ The repository is organized as follows:
 
 ## Model Architecture
 
-RetNet is a CNN-based architecture designed for precise blood vessel segmentation:
+VesselView is a CNN-based architecture designed for precise blood vessel segmentation:
 
 - **Encoder**: Series of convolutional blocks with residual connections that gradually reduce spatial dimensions while increasing feature channels
 - **Bottleneck**: Multiple residual blocks for processing high-level features
