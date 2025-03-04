@@ -1,6 +1,6 @@
-# RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images
+# VesselView: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images
 
-This repository contains the implementation of RetNet, a convolutional neural network specifically designed for the segmentation of blood vessels in high-resolution retinal fundus images. This work has been submitted for publication by Roi Santos-Mateos under the title "RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images".
+This repository contains the implementation of VesselView, a convolutional neural network specifically designed for the segmentation of blood vessels in high-resolution retinal fundus images. This work has been submitted for publication under the title "RetNet: A CNN for Segmentation of Vessels in High-Resolution Retinal Fundus Images".
 
 ## Overview
 
