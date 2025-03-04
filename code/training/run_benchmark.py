@@ -209,7 +209,7 @@ def train_and_evaluate(model_name, dataset, logging_enabled=False):
         funcLoss = SoftDiceCLDiceLoss(iter_=3, alpha=0.5, smooth=1e-6, exclude_background=False)
         print("USING: soft_dice_cldice")
     elif loss_function == "FocalTversky":
-        funcLoss = FocalTverskyLoss(alpha=0.2, beta=0.8, gamma=0.5, smooth=1e-6)
+        funcLoss = FocalTverskyLoss(alpha=0.2, beta=0.8, gamma=1.5, smooth=1e-6)
         print("USING: FocalTverskyLoss")
     else:
         raise ValueError(f"Loss function '{loss_function}' no reconocida")
