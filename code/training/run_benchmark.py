@@ -47,7 +47,7 @@ def select_device():
     count_card = torch.cuda.device_count()
     id_card = 0
     if count_card > 1:
-        print(f"Using {count_card} GPUs")  # Imprimir el número de GPUs disponibles
+        print(f"Using {count_card} GPUs")  # Print the number of available GPUs
     return torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def custom_collate(batch):
@@ -464,40 +464,33 @@ if __name__ == "__main__":
     writer = SummaryWriter(log_dir=global_output_dir)
     set_writer(writer)
 
-    # Imprimir configuración de entrenamiento completa con comentarios de uso
+    # Print complete training configuration with usage comments
     print("Configuración de Entrenamiento:")
     print(f"  Model: {args.model}")  
-    #   -> Se utiliza para seleccionar el modelo desde la librería de modelos (load_models_from_json)
+    #   -> Used to select the model from the model library (load_models_from_json)
     print(f"  Dataset: {args.dataset}")  
-    #   -> Se usa para escoger el dataset a partir del diccionario cargado (prepare_datasets_from_json)
+    #   -> Path to the JSON configuration file, used to load models and datasets
     print(f"  Config File: {args.config}")  
-    #   -> Ruta al archivo JSON de configuración, empleado para cargar modelos y datasets
+    #   -> Number of epochs; used in the training loop in train_and_evaluate
     print(f"  Epochs: {args.epochs}")  
-    #   -> Número de epochs; se usa en el bucle de entrenamiento en train_and_evaluate
-    print(f"  Early Stopping: {args.early_stopping}")  
-    #   -> Valor de early stopping (aunque se imprime, la lógica de early stopping utiliza thresh_value)
+    #   -> Early stopping value (although it's printed, the early stopping logic uses thresh_value)
     print(f"  Thresh Value: {args.thresh_value}")  
-    #   -> Umbral para detener el entrenamiento si no hay mejoras (se usa en: if epoch - bestResult['epoch'] >= thresh_value)
+    #   -> Batch size; passed to DataLoaders for training and validation
     print(f"  Batch Size: {args.batch_size}")  
-    #   -> Tamaño del batch; se pasa a los DataLoaders para entrenamiento y validación
+    #   -> Number of threads for loading data; used in the creation of DataLoader
     print(f"  Num Workers: {args.num_workers}")  
-    #   -> Número de hilos para cargar datos; se utiliza en la creación de DataLoader
+    #   -> Selection of the loss function (e.g., Dice, clDice, etc.); used in train_and_evaluate
     print(f"  Learning Rate: {args.lr}")  
-    #   -> Tasa de aprendizaje; se usa para configurar el optimizador (Adam)
+    #   -> Dictionary that gathers augmentation flags; passed to prepare_datasets_from_json to configure the dataset
     print(f"  Weight Decay: {args.weight_decay}")  
-    #   -> Decaimiento de peso para el optimizador Adam
+    #   -> Directory where results, logs, and the best performing model will be saved (used in save_best_results)
     print(f"  Loss Function: {args.loss}")  
-    #   -> Selección de la función de pérdida (por ejemplo, Dice, clDice, etc.); se usa en train_and_evaluate
+    #   -> Flag for enabling TensorBoard logging (used to condition writes in the SummaryWriter)
     print(f"  Logging Enabled: {args.logging}")  
-    #   -> Flag para habilitar el logging en TensorBoard (se usa para condicionar los writes en el SummaryWriter)
     print(f"  Output Prefix: {args.output_prefix}")  
-    #   -> Prefijo para el directorio de salida; se utiliza para formar global_output_dir
     print(f"  Augmentation Config: {augmentation_config}")  
-    #   -> Diccionario que reúne las flags de augmentación; se pasa a prepare_datasets_from_json para configurar el dataset
     print(f"  Restormer Enabled: {args.restormer}")  
-    #   -> Flag que indica si se debe habilitar Restormer; se pasa a prepare_datasets_from_json
     print(f"  Output Directory: {global_output_dir}")  
-    #   -> Directorio donde se guardarán resultados, logs y el modelo con mejor desempeño (se usa en save_best_results)
 
 
     # Log parameters before training

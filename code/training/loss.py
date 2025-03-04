@@ -14,7 +14,7 @@ class DiceLoss(nn.Module):
         tar = target.flatten()
 
         
-        intersection = (pre * tar).sum(-1).sum()  # Multiplica el valor previsto por la etiqueta como intersección
+        intersection = (pre * tar).sum(-1).sum()  # Multiplies the predicted value by the label as intersection
 
         union = (pre + tar).sum(-1).sum()
         
@@ -28,15 +28,15 @@ class SoftCLDiceLoss(nn.Module):
     Implementa la función de pérdida soft clDice para tareas de segmentación.
     
     Entrada:
-      - y_true: Tensor de ground truth de tamaño (B, C, H, W) con valores en [0, 1].
-      - y_pred: Tensor de predicción de tamaño (B, C, H, W) con valores en [0, 1].
+      - y_true: Tensor de ground truth de tamaño (B, C, H, W) with values in [0, 1].
+      - y_pred: Tensor de predicción de tamaño (B, C, H, W) with values in [0, 1].
         En el caso de segmentación binaria, C suele ser 1.
     
     Salida:
       - Un tensor escalar que representa el valor de la pérdida clDice.
     
     Funcionamiento:
-      1. Si exclude_background es True y el número de canales es mayor a 1,
+      1. Si exclude_background is True and the number of channels is greater than 1,
          se excluye el canal de fondo (se asume que es el canal 0).
       2. Se calcula la imagen esquelética suave (soft skeleton) tanto de y_pred como de y_true.
       3. Se calculan dos términos:
@@ -101,7 +101,7 @@ class SoftDiceCLDiceLoss(nn.Module):
     
     Funcionamiento:
       1. Se calcula la pérdida soft Dice.
-      2. Se calcula la pérdida soft clDice (similar a SoftCLDiceLoss).
+      2. Se calcula la pérdida soft clDice (similar to SoftCLDiceLoss).
       3. Se retorna una combinación lineal de ambas, donde alpha pondera la contribución de clDice.
     """
     def __init__(self, iter_=3, alpha=0.5, smooth=1., exclude_background=False):
@@ -133,7 +133,7 @@ class SoftDiceCLDiceLoss(nn.Module):
 
 
 class FocalTverskyLoss(nn.Module):
-    def __init__(self, alpha=0.7, beta=0.3, gamma=0.75, smooth=1e-6):
+    def __init__(self, alpha=0.2, beta=0.8, gamma=0.5, smooth=1e-6):
         """
         Parameters:
             alpha: Weight for false positives.

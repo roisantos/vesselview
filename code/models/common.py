@@ -30,7 +30,7 @@ class ConvBlock(nn.Module):
         exit(-1)
 
 class  ResidualBlock(ConvBlock):
-    expansion = 1 # 扩展系数
+    expansion = 1 # expansion coefficient
     def init(self, in_channels, out_channels, stride, k_size, dilation, layer_num=None):
         # super(ResidualBlock, self).__init__()
         p = k_size//2 * dilation
@@ -50,7 +50,7 @@ class  ResidualBlock(ConvBlock):
         self.bn2 = nn.BatchNorm2d(out_channels)
 
         self.shortcut = nn.Sequential()
-        # 短连接方式
+        # shortcut connection method
         if stride != 1 or in_channels != out_channels * self.expansion:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_channels, out_channels * self.expansion, kernel_size=1,

@@ -44,8 +44,8 @@ def save_activation(name):
         activations[name]['max'].append(output.max().item())
         activations[name]['min'].append(output.min().item())
 
-        #print(f"\n==== Memoria después de la activación en la capa {name} ====")
-        #print_gpu_memory_info(f"Activación en {name}")
+        #print(f"\n==== Memory after activation in layer {name} ====")
+        #print_gpu_memory_info(f"Activation in {name}")
 
         if len(activations[name]['mean']) > 10:  # Keep the last 10 measurements
             for key in activations[name]:
@@ -61,8 +61,8 @@ def save_gradient(name):
         gradients[name]['max'].append(output[0].max().item())
         gradients[name]['min'].append(output[0].min().item())
 
-        #print(f"\n==== Memoria después del gradiente en la capa {name} ====")
-        #print_gpu_memory_info(f"Gradiente en {name}")
+        #print(f"\n==== Memory after gradient in layer {name} ====")
+        #print_gpu_memory_info(f"Gradient in {name}")
 
         if len(gradients[name]['mean']) > 10:  # Keep the last 10 measurements
             for key in gradients[name]:
@@ -136,7 +136,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
 
             if is_training:
                 optimizer.zero_grad()
-                #print("Tamaño del batch que llega al modelo:", data.shape)
+                #print("Batch size received by the model:", data.shape)
                 out = model(data)
                 loss = sum(funcLoss(x, label) for x in (out if isinstance(out, list) else [out]))
                 loss.backward()
@@ -144,7 +144,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
                 if scheduler: scheduler.step()
             else:
                 with torch.no_grad():
-                    #print("Tamaño del batch que llega al modelo:", data.shape)
+                    #print("Batch size received by the model:", data.shape)
                     out = model(data)
                     loss = funcLoss(out, label)
                     for index in range(loader.batch_size):
@@ -170,7 +170,7 @@ def traverseDataset(model: nn.Module, loader: DataLoader, epoch: int,
     
     # Log hook data if training and hooks are registered
 
-    if log_writer and (activations or gradients) and (optimizer is not None):  # Solo loguea si log_writer está habilitado
+    if log_writer and (activations or gradients) and (optimizer is not None):  # Only logs if log_writer is enabled
         lr = scheduler.get_last_lr()[0] if scheduler else optimizer.param_groups[0]['lr']
         log_hook_data(epoch, activations, gradients, log_writer, lr, "Train")
         activations.clear()
