@@ -209,8 +209,10 @@ def train_and_evaluate(model_name, dataset, logging_enabled=False):
         funcLoss = SoftDiceCLDiceLoss(iter_=3, alpha=0.5, smooth=1e-6, exclude_background=False)
         print("USING: soft_dice_cldice")
     elif loss_function == "FocalTversky":
-        funcLoss = FocalTverskyLoss(alpha=0.2, beta=0.8, gamma=0.3, smooth=1e-6)
-        print("USING: FocalTverskyLoss")
+        #funcLoss = FocalTverskyLoss(alpha=0.2, beta=0.8, gamma=0.3, smooth=1e-6)
+        #print("USING: FocalTverskyLoss")
+        funcLoss = FocalTverskyLoss(alpha=args.alpha, beta=args.beta, gamma=args.gamma, smooth=1e-6)
+        print(f"USANDO: FocalTverskyLoss con alpha={args.alpha}, beta={args.beta}, gamma={args.gamma}")
     else:
         raise ValueError(f"Loss function '{loss_function}' no reconocida")
 
@@ -413,6 +415,11 @@ if __name__ == "__main__":
     parser.add_argument("--augment_gamma", type=str2bool, default=False, help="Enable gamma correction augmentation")
     parser.add_argument("--augment_noise", type=str2bool, default=False, help="Enable noise addition augmentation")
 
+    parser.add_argument("--alpha", type=float, default=0.2,help="Valor de alpha (TP) para Focal Tversky Loss. Sugerido entre 0.2 y 0.3")
+    parser.add_argument("--beta", type=float, default=0.8, help="Valor de beta (FN) para Focal Tversky Loss. Sugerido entre 0.7 y 0.8")
+    parser.add_argument("--gamma", type=float, default=0.5, help="Valor de gamma (parámetro de foco) para Focal Tversky Loss. Sugerido comenzar en 0.5")
+
+
     parser.add_argument("--restormer", type=str2bool, default=False, help="Enable restormer")
 
 
@@ -485,12 +492,16 @@ if __name__ == "__main__":
     print(f"  Weight Decay: {args.weight_decay}")  
     #   -> Directory where results, logs, and the best performing model will be saved (used in save_best_results)
     print(f"  Loss Function: {args.loss}")  
+    print(f"  Loss Alpha: {args.alpha}")  
+    print(f"  Loss Beta: {args.beta}")  
+    print(f"  Loss Gamma: {args.gamma}")
     #   -> Flag for enabling TensorBoard logging (used to condition writes in the SummaryWriter)
     print(f"  Logging Enabled: {args.logging}")  
     print(f"  Output Prefix: {args.output_prefix}")  
     print(f"  Augmentation Config: {augmentation_config}")  
     print(f"  Restormer Enabled: {args.restormer}")  
     print(f"  Output Directory: {global_output_dir}")  
+
 
 
     # Log parameters before training
