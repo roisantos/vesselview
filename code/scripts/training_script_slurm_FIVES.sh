@@ -29,7 +29,7 @@ LR=1e-4
 WEIGHT_DECAY=0.001
 LOSS="FocalTversky"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet9_FIVESc_FocalTverskyGamma03_gei_"
+OUTPUT_PREFIX="RoiNet9_FIVES_FocalTverskyGamma03_gei_"
 THRESH_VALUE=100
 
 # Augmentation variables
