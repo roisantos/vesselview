@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J FGam0.3      # Nombre del trabajo
-#SBATCH -o RoiNet9_FIVES_FocalTverskyGamma0.3_gei_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet9_FIVES_FocalTverskyGamma0.3_gei_%j.log    # Archivo para la salida de errores
+#SBATCH -J r9final      # Nombre del trabajo
+#SBATCH -o RoiNet9_FIVES_Dice_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9_FIVES_Dice_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
@@ -27,9 +27,9 @@ BATCH_SIZE=1
 NUM_WORKERS=32
 LR=1e-4
 WEIGHT_DECAY=0.001
-LOSS="FocalTversky"
+LOSS="Dice"
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet9_FIVES_FocalTverskyGamma03_gei_"
+OUTPUT_PREFIX="RoiNet9_FIVES_Dice"
 THRESH_VALUE=100
 
 # Augmentation variables
