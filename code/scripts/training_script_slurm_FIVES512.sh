@@ -29,10 +29,16 @@ BATCH_SIZE=1
 NUM_WORKERS=32
 LR=1e-4
 WEIGHT_DECAY=0.001
-LOSS="Dice"
 LOGGING="True"
 OUTPUT_PREFIX="RoiNet_slurm_FIVES512_Dice_NoAugment"
 THRESH_VALUE=100
+
+# Loss function variables
+LOSS="FocalTversky"
+#Parameters for FocalTversky
+ALPHA=0.2
+BETA=0.8
+GAMMA=0.5
 
 # Augmentation variables
 AUGMENT_GEOMETRIC="False" 
@@ -57,7 +63,6 @@ python3 code/training/run_benchmark.py \
   --num_workers "$NUM_WORKERS" \
   --lr "$LR" \
   --weight_decay "$WEIGHT_DECAY" \
-  --loss "$LOSS" \
   --logging "$LOGGING" \
   --output_prefix "$OUTPUT_PREFIX" \
   --thresh_value "$THRESH_VALUE" \
@@ -66,4 +71,9 @@ python3 code/training/run_benchmark.py \
   --augment_intensity "$AUGMENT_INTENSITY" \
   --augment_gamma "$AUGMENT_GAMMA" \
   --augment_noise "$AUGMENT_NOISE" \
-  --restormer "$RESTORMER"
+  --restormer "$RESTORMER" \
+  --loss "$LOSS" \
+  --alpha "$ALPHA" \
+  --beta "$BETA" \
+  --gamma "$GAMMA" \
+
