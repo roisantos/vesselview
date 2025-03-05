@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH -J FGam0.3      # Nombre del trabajo
-#SBATCH -o RoiNet9_FIVES_FocalTverskyGamma0.3_gei_output_%j.log   # Archivo para la salida estándar (%j expande al JobID)
-#SBATCH -e RoiNet9_FIVES_FocalTverskyGamma0.3_gei_%j.log    # Archivo para la salida de errores
+#SBATCH -J RoiNet9_FIVES_Dice_sameAsOtrosfives      # Nombre del trabajo
+#SBATCH -o RoiNet9_FIVES_Dice_sameAsOtrosfives_%j.log   # Archivo para la salida estándar (%j expande al JobID)
+#SBATCH -e RoiNet9_FIVES_Dice_sameAsOtrosfives_%j.log    # Archivo para la salida de errores
 #SBATCH --gres=gpu:a100:1        # Solicita GPU A100
 #SBATCH -c 32                    # 32 núcleos de CPU
 #SBATCH --mem=32G                # Memoria total
 #SBATCH -p medium
-#SBATCH -t 3-00:00:00              # Tiempo máximo de ejecución
+#SBATCH -t 35:00:00              # Tiempo máximo de ejecución
 
 # Cargar módulos necesarios
 module load cesga/2020
@@ -28,20 +28,21 @@ NUM_WORKERS=32
 LR=1e-4
 WEIGHT_DECAY=0.001
 LOGGING="True"
-OUTPUT_PREFIX="RoiNet9_FIVES_FocalTverskyGamma03_gei_"
+OUTPUT_PREFIX="RoiNet9_FIVES_Dice_sameAsOtrosfives_slurm_"
 THRESH_VALUE=100
 
 # Loss function variables
-LOSS="FocalTversky"
+LOSS="Dice"
 #Parameters for FocalTversky
 ALPHA=0.2
 BETA=0.8
 GAMMA=0.5
 
 # Augmentation variables
-AUGMENT_GEOMETRIC="True" 
-AUGMENT_ELASTIC="True"
-AUGMENT_INTENSITY="True"
+AUGMENT_OTROSFIVES="True" 
+AUGMENT_GEOMETRIC="False" 
+AUGMENT_ELASTIC="False"
+AUGMENT_INTENSITY="False"
 AUGMENT_GAMMA="False"
 AUGMENT_NOISE="False"
 
@@ -69,9 +70,9 @@ python3 code/training/run_benchmark.py \
   --augment_intensity "$AUGMENT_INTENSITY" \
   --augment_gamma "$AUGMENT_GAMMA" \
   --augment_noise "$AUGMENT_NOISE" \
-  --restormer "$RESTORMER" \
+  --augment_otrosfives "$AUGMENT_OTROSFIVES" \
+  --restormer "$RESTORMER"\
   --loss "$LOSS" \
   --alpha "$ALPHA" \
   --beta "$BETA" \
   --gamma "$GAMMA" \
-

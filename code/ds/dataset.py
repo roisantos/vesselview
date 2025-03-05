@@ -284,6 +284,30 @@ class SegmentationDataset(Dataset):
     def augment(self, image, label):
         """Applies a combination of augmentations."""
 
+        if self.augmentation_config.get("otrosfives", False): # Check config
+            print("####### applying otrosfives augment @@@@@@@")
+            if random.random() < 0.5:  # 50% chance of applying geometric transformations
+                # Aplicar transformaciones geométricas con 50% de probabilidad
+                # --- Rotación fija aleatoria ---
+                allowed_angles = [-180, -90, 0, 90]
+                angle = random.choice(allowed_angles)
+                center = (image.shape[1] // 2, image.shape[0] // 2)
+                rot_mat = cv2.getRotationMatrix2D(center, angle, 1.0)
+                image = cv2.warpAffine(image, rot_mat, (image.shape[1], image.shape[0]), flags=cv2.INTER_LINEAR)
+                label = cv2.warpAffine(label, rot_mat, (label.shape[1], label.shape[0]), flags=cv2.INTER_NEAREST)
+                
+                # --- Flips ---
+                # Flip horizontal con p=0.5
+                if random.random() < 0.5:
+                    image = cv2.flip(image, 1)
+                    label = cv2.flip(label, 1)
+                # Flip vertical con p=0.5
+                if random.random() < 0.5:
+                    image = cv2.flip(image, 0)
+                    label = cv2.flip(label, 0)
+        
+        # Se eliminan los bloques de escalado, traslación, elastic, intensidad/color, gamma y noise.
+
         # --- Geometric Transformations ---
         if self.augmentation_config.get("geometric", False): # Check config
             #print("####### applying geometric augment @@@@@@@")

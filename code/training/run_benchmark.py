@@ -414,6 +414,7 @@ if __name__ == "__main__":
     parser.add_argument("--augment_intensity", type=str2bool, default=False, help="Enable intensity and color augmentation")
     parser.add_argument("--augment_gamma", type=str2bool, default=False, help="Enable gamma correction augmentation")
     parser.add_argument("--augment_noise", type=str2bool, default=False, help="Enable noise addition augmentation")
+    parser.add_argument("--augment_otrosfives", type=str2bool, default=False, help="Enable otrosfives augmentation")
 
     parser.add_argument("--alpha", type=float, default=0.2,help="Valor de alpha (TP) para Focal Tversky Loss. Sugerido entre 0.2 y 0.3")
     parser.add_argument("--beta", type=float, default=0.8, help="Valor de beta (FN) para Focal Tversky Loss. Sugerido entre 0.7 y 0.8")
@@ -427,12 +428,13 @@ if __name__ == "__main__":
 
     #Almacenaje de la augmentation
     augmentation_config = {
-        "enabled": (args.augment_geometric or args.augment_elastic or args.augment_intensity or args.augment_gamma or args.augment_noise),
+        "enabled": (args.augment_geometric or args.augment_elastic or args.augment_intensity or args.augment_gamma or args.augment_noise or args.augment_otrosfives),
         "geometric": args.augment_geometric,
         "elastic": args.augment_elastic,
         "intensity_and_color": args.augment_intensity,
         "gamma": args.augment_gamma,
-        "noise": args.augment_noise
+        "noise": args.augment_noise,
+        "otrosfives":args.augment_otrosfives
     }
     augmentation_enabled = augmentation_config["enabled"]
 
